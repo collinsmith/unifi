@@ -20,6 +20,11 @@ public class DataUtilsTest {
             { "False", false },
             { "True", true }
     };
+
+    private static final int[] data2 = {
+            2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41,
+            43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97
+    };
     
     @Rule
     public final ExpectedException exception = ExpectedException.none();
@@ -55,33 +60,29 @@ public class DataUtilsTest {
     
     @Test
     public void testConvertValueToInt() {
-        int validator = 31;
-        int test = DataUtils.convertValueToInt(Integer.toString(validator), ~validator);
-        assertTrue(test == validator);
-        validator = -31;
-        test = DataUtils.convertValueToInt(Integer.toString(validator), ~validator);
-        assertTrue(test == validator);
-        validator = 31;
-        test = DataUtils.convertValueToInt("0x" + Integer.toString(validator, 16), ~validator);
-        assertTrue(test == validator);
-        validator = 31;
-        test = DataUtils.convertValueToInt("#" + Integer.toString(validator, 16), ~validator);
-        assertTrue(test == validator);
-        validator = 31;
-        test = DataUtils.convertValueToInt("0" + Integer.toString(validator, 8), ~validator);
-        assertTrue(test == validator);
-        validator = -31;
-        test = DataUtils.convertValueToInt(
-                "-0x" + Integer.toString(validator, 16).substring(1), ~validator);
-        assertTrue(test == validator);
-        validator = -31;
-        test = DataUtils.convertValueToInt(
-                "-#" + Integer.toString(validator, 16).substring(1), ~validator);
-        assertTrue(test == validator);
-        validator = -31;
-        test = DataUtils.convertValueToInt(
-                "-0" + Integer.toString(validator, 8).substring(1), ~validator);
-        assertTrue(test == validator);
+        int negValidator;
+        for (int validator : data2) {
+            negValidator = -validator;
+            int test = DataUtils.convertValueToInt(Integer.toString(validator), ~validator);
+            assertTrue(test == validator);
+            test = DataUtils.convertValueToInt(Integer.toString(negValidator), ~negValidator);
+            assertTrue(test == negValidator);
+            test = DataUtils.convertValueToInt("0x" + Integer.toString(validator, 16), ~validator);
+            assertTrue(test == validator);
+            test = DataUtils.convertValueToInt("#" + Integer.toString(validator, 16), ~validator);
+            assertTrue(test == validator);
+            test = DataUtils.convertValueToInt("0" + Integer.toString(validator, 8), ~validator);
+            assertTrue(test == validator);
+            test = DataUtils.convertValueToInt(
+                    "-0x" + Integer.toString(negValidator, 16).substring(1), ~negValidator);
+            assertTrue(test == negValidator);
+            test = DataUtils.convertValueToInt(
+                    "-#" + Integer.toString(negValidator, 16).substring(1), ~negValidator);
+            assertTrue(test == negValidator);
+            test = DataUtils.convertValueToInt(
+                    "-0" + Integer.toString(negValidator, 8).substring(1), ~negValidator);
+            assertTrue(test == negValidator);
+        }
     }
     
     @Test
