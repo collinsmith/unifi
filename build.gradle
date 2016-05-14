@@ -9,6 +9,13 @@ ext {
 	gdxVersion = "1.9.3-SNAPSHOT"
 }
 
+jar {
+	manifest {
+		attributes "Implementation-Title": "Unifi",
+				   "Implementation-Version": version
+	}
+}
+
 repositories {
     mavenCentral()
     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
