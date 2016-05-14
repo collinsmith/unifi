@@ -85,7 +85,7 @@ public class RectTest {
     }
 
     @Rule
-    final ExpectedException exception = ExpectedException.none();
+    public final ExpectedException exception = ExpectedException.none();
 
     @Test
     public void testOnChange() {
