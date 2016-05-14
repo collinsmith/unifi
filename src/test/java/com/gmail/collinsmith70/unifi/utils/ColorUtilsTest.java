@@ -12,7 +12,7 @@ import com.gmail.collinsmith70.unifi.util.ColorUtils;
 
 public class ColorUtilsTest {
     
-    private final Object[][] data = {
+    private static final Object[][] data = {
             { "clear", ColorUtils.CLEAR },
             { "transparent", ColorUtils.TRANSPARENT },
             { "black", ColorUtils.BLACK },
