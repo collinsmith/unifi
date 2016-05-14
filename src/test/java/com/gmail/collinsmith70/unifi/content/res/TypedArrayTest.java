@@ -42,9 +42,9 @@ public class TypedArrayTest {
         array.recycle();
         assertTrue(array.isRecycled());
         exception.expect(IllegalStateException.class);
-        Resources res = array.getResources();
-        Object[] data = array.getData();
-        Theme theme = array.getTheme();
+        array.getResources();
+        array.getData();
+        array.getTheme();
     }
 
     @Test
