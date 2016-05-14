@@ -1,0 +1,29 @@
+apply plugin: "eclipse"
+apply plugin: "idea"
+apply plugin: "java"
+
+version = "1.0"
+sourceCompatibility = 1.6
+
+ext {
+	gdxVersion = "1.9.3-SNAPSHOT"
+}
+
+repositories {
+    mavenCentral()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    maven { url "C:/android/extras/android/m2repository" }
+}
+
+dependencies {
+    compile "com.android.support:support-annotations:23.1.1"
+    compile "com.google.guava:guava:19.+"
+    compile "org.apache.commons:commons-lang3:3.+"
+    compile "org.apache.commons:commons-collections4:4.+"
+    compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+
+    testCompile "junit:junit:4.+"
+    testCompile "com.badlogicgames.gdx:gdx:$gdxVersion"
+    testCompile "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
+    testCompile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+}
