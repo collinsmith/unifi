@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Pool.Poolable;
 import com.gmail.collinsmith70.unifi.annotation.Index;
 import com.gmail.collinsmith70.unifi.annotation.Unsigned;
 import com.gmail.collinsmith70.unifi.content.res.Resources.Theme;
+import com.gmail.collinsmith70.unifi.math.Dimension;
 import com.gmail.collinsmith70.unifi.util.ColorUtils;
 import com.gmail.collinsmith70.unifi.util.DataUtils;
 
@@ -173,6 +174,16 @@ public class TypedArray implements Poolable {
             return (Integer) value;
         } else if (value instanceof CharSequence) {
             return ColorUtils.parseColor(value.toString());
+        }
+        
+        return defaultValue;
+    }
+    
+    @Nullable
+    public Dimension getDimension(@Index int index, @Nullable Dimension defaultValue) {
+        final Object value = getData(index);
+        if (value instanceof Dimension) {
+            return (Dimension) value;
         }
         
         return defaultValue;
