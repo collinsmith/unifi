@@ -7,6 +7,7 @@ import android.support.annotation.Size;
 import org.apache.commons.lang3.Validate;
 
 import com.badlogic.gdx.utils.Pools;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Pool.Poolable;
 import com.gmail.collinsmith70.unifi.annotation.Index;
 import com.gmail.collinsmith70.unifi.annotation.Unsigned;
@@ -167,11 +168,15 @@ public class TypedArray implements Poolable {
         return defaultValue;
     }
     
-    @Unsigned
-    public int getColor(@Index int index, int defaultValue) {
+    @Nullable
+    public Color getColor(@Index int index, @Nullable Color defaultValue) {
         final Object value = getData(index);
         if (value instanceof Integer) {
-            return (Integer) value;
+            Color color = new Color();
+            Color.argb8888ToColor(color, (Integer) value);
+            return color;
+        } else if (value instanceof Color) {
+            return (Color) value;
         } else if (value instanceof CharSequence) {
             return ColorUtils.parseColor(value.toString());
         }

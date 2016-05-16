@@ -6,17 +6,21 @@ import org.apache.commons.collections4.Trie;
 import org.apache.commons.collections4.trie.PatriciaTrie;
 import org.apache.commons.lang3.Validate;
 
-import com.gmail.collinsmith70.unifi.annotation.Unsigned;
+import com.badlogic.gdx.graphics.Color;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 public class ColorUtils {
+    
+    @Nullable
+    private static Color tmp = new Color();
 
     private ColorUtils() {
     }
 
-    @Unsigned
-    public static int parseColor(@NonNull String colorString) {
+    @NonNull
+    public static Color parseColor(@NonNull String colorString) {
         Validate.isTrue(colorString != null, "colorString cannot be null");
         if (colorString.charAt(0) == '#') {
             // Use a long to avoid rollovers on #ffXXXXXX
@@ -28,11 +32,13 @@ public class ColorUtils {
                 throw new IllegalArgumentException("Unknown color: " + colorString);
             }
 
-            return (int) color;
+            Color.argb8888ToColor(tmp, (int) color);
+            return new Color(tmp);
         } else {
             Integer color = colorNames.get(colorString.toLowerCase(Locale.ROOT));
             if (color != null) {
-                return color;
+                Color.argb8888ToColor(tmp, color);
+                return new Color(tmp);
             }
         }
 

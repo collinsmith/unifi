@@ -8,6 +8,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import com.badlogic.gdx.graphics.Color;
 import com.gmail.collinsmith70.unifi.util.ColorUtils;
 
 public class ColorUtilsTest {
@@ -33,14 +34,14 @@ public class ColorUtilsTest {
 
     @Test
     public void testParseColor() {
-        int color;
+        Color color;
         int validator;
         for (Object[] row : data) {
             color = ColorUtils.parseColor((String)row[0]);
             validator = (Integer)row[1];
-            assertTrue(color == validator);
+            assertTrue(Color.argb8888(color) == validator);
             color = ColorUtils.parseColor(String.format(Locale.ROOT, "#%08X", validator));
-            assertTrue(color == validator);
+            assertTrue(Color.argb8888(color) == validator);
         }
     }
     
