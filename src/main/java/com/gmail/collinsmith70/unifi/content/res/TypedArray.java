@@ -57,6 +57,7 @@ public class TypedArray implements Poolable {
   }
 
   TypedArray() {
+    setRecycled(true);
   }
 
   TypedArray(@NonNull Resources res,
