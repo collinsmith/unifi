@@ -41,7 +41,7 @@ public class AttributeDecl<T> {
     }
 
     @NonNull
-    public Class<T> getValueType() {
+    public Class<T> getType() {
         return type;
     }
 
