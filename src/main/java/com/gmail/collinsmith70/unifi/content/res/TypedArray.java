@@ -57,12 +57,11 @@ public class TypedArray implements Poolable {
   }
 
   TypedArray() {
-    setRecycled(false);
   }
 
   TypedArray(@NonNull Resources res,
              @Size(min = 0) int len) {
-    this();
+    setRecycled(false);
     setResources(res);
     setData(new Object[len]);
   }
