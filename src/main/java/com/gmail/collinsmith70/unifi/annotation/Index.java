@@ -10,6 +10,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 @Retention(CLASS)
-@Target({METHOD,PARAMETER,FIELD,LOCAL_VARIABLE})
+@Target({METHOD, PARAMETER, FIELD, LOCAL_VARIABLE})
 public @interface Index {
 }
