@@ -44,9 +44,16 @@ public class ResourceReference implements Poolable {
       Reader r = new StringReader(resourceId);
       int ch = r.read();
       pos++;
-      if (ch != '@' && ch != '?') {
+      if (ch == -1) {
         throw new ParseException(
-            "Unable to parse resource identifier: " + "Unexpected char: " + (char) ch, pos);
+            "Unable to parse resource identifier: Unexpected end of string: "
+            + "Resource identifiers should be formatted like: "
+            + "@[package:]type/name", pos);
+      } else if (ch != '@' && ch != '?') {
+        throw new ParseException(
+            "Unable to parse resource identifier: Missing reference type: "
+            + "Resource identifiers should be formatted like: "
+            + "@[package:]type/name", pos);
       }
 
       isStyleAttributeReference = ch == '?';
@@ -66,16 +73,16 @@ public class ResourceReference implements Poolable {
         case -1:
           throw new ParseException(
               "Unable to parse resource identifier: Unexpected end of string: "
-                  + "Resource identifiers should be formatted like: "
-                  + "@[package:]type/name",
+              + "Resource identifiers should be formatted like: "
+              + "@[package:]type/name",
               pos);
         case ':':
           if (sb.length() == 0) {
             throw new ParseException(
                 "Unable to parse resource identifier: Invalid format: "
-                    + "':' given without package string preceding: "
-                    + "Resource identifiers should be formatted like: "
-                    + "@[package:]type/name",
+                + "':' given without package string preceding: "
+                + "Resource identifiers should be formatted like: "
+                + "@[package:]type/name",
                 pos);
           }
 
@@ -249,7 +256,8 @@ public class ResourceReference implements Poolable {
   }
   
   public enum Type {
-      color();
+      color(),
+      string();
 
       @Nullable
       private final String tag;
