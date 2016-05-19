@@ -2,10 +2,13 @@ package com.gmail.collinsmith70.unifi.utils;
 
 import static org.junit.Assert.*;
 
+import java.util.Locale;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import com.gmail.collinsmith70.unifi.util.ColorUtils;
 import com.gmail.collinsmith70.unifi.util.DataUtils;
 
 public class DataUtilsTest {
@@ -96,6 +99,65 @@ public class DataUtilsTest {
   public void testParseInt_negativeTest() {
     int validator = Integer.MAX_VALUE;
     int test = DataUtils.parseInt("not_an_int", validator);
+    assertTrue(test == validator);
+  }
+  
+  @Test
+  public void testParseColor_null() {
+    int validator = ColorUtils.WHITE;
+    int test = DataUtils.parseColor(null, validator);
+    assertTrue(test == validator);
+  }
+
+  @Test
+  public void testParseColor_empty() {
+    int validator = ColorUtils.WHITE;
+    int test = DataUtils.parseColor("", validator);
+    assertTrue(test == validator);
+  }
+  
+  @Test
+  public void testParseColor_negativeTest() {
+    int validator = ColorUtils.WHITE;
+    int test = DataUtils.parseColor("not_a_color", validator);
+    assertTrue(test == validator);
+  }
+  
+  @Test
+  public void testParseColor_incorrectColorString() {
+    int validator = ColorUtils.WHITE;
+    int test = DataUtils.parseColor("black1", validator);
+    assertTrue(test == validator);
+  }
+  
+  @Test
+  public void testParseColor_hexStringWithoutPrefix() {
+    int validator = ColorUtils.WHITE;
+    int test = DataUtils.parseColor(
+        String.format(Locale.ROOT, "%08X", ColorUtils.BLACK), validator);
+    assertTrue(test == validator);
+  }
+
+  @Test
+  public void testParseColor_hexStringWithInvalid() {
+    int validator = ColorUtils.WHITE;
+    int test = DataUtils.parseColor(
+        String.format(Locale.ROOT, "0x%08X", ColorUtils.BLACK), validator);
+    assertTrue(test == validator);
+  }
+  
+  @Test
+  public void testParseColor_lengths() {
+    int validator = ColorUtils.WHITE;
+    int test = DataUtils.parseColor("#0", validator);
+    assertTrue(test == validator);
+    test = DataUtils.parseColor("#00000", validator);
+    assertTrue(test == validator);
+    test = DataUtils.parseColor("#0000000", validator);
+    assertTrue(test == validator);
+    test = DataUtils.parseColor("#000000000", validator);
+    assertTrue(test == validator);
+    test = DataUtils.parseColor(String.format(Locale.ROOT, "#%X", ColorUtils.CLEAR), validator);
     assertTrue(test == validator);
   }
 
