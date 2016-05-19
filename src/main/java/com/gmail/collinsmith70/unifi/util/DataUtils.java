@@ -23,6 +23,8 @@ public class DataUtils {
   public static final int parseInt(@Nullable String str, int defaultValue) {
     if (str == null) {
       return defaultValue;
+    } else if (str.isEmpty()) {
+      return defaultValue;
     }
 
     String nm = str.toString();
@@ -55,7 +57,11 @@ public class DataUtils {
       base = 16;
     }
 
-    return Integer.parseInt(nm.substring(index), base) * sign;
+    try {
+      return Integer.parseInt(nm.substring(index), base) * sign;
+    } catch (NumberFormatException e) {
+      return defaultValue;
+    }
   }
   
   @Nullable

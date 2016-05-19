@@ -20,72 +20,82 @@ public class DataUtilsTest {
   public final ExpectedException exception = ExpectedException.none();
 
   @Test
-  public void testConvertValueToBoolean() {
+  public void testParseBoolean() {
     boolean test, validator;
     for (Object[] row : data) {
       validator = (Boolean) row[1];
-      test = DataUtils.convertValueToBoolean((String) row[0], !validator);
+      test = DataUtils.parseBoolean((String) row[0], !validator);
       assertTrue(test == validator);
     }
   }
-
+  
   @Test
-  public void testConvertValueToBooleanParams() {
+  public void testParseBoolean_null() {
     boolean validator = true;
-    boolean test = DataUtils.convertValueToBoolean(null, validator);
-    assertTrue(test == validator);
-    validator = false;
-    test = DataUtils.convertValueToBoolean(null, validator);
-    assertTrue(test == validator);
-    validator = false;
-    test = DataUtils.convertValueToBoolean("", !validator);
-    assertTrue(test == validator);
-    validator = false;
-    test = DataUtils.convertValueToBoolean("not_a_boolean", !validator);
-    assertTrue(test == validator);
-    validator = false;
-    test = DataUtils.convertValueToBoolean("12346578", !validator);
+    boolean test = DataUtils.parseBoolean(null, validator);
     assertTrue(test == validator);
   }
 
   @Test
-  public void testConvertValueToInt() {
+  public void testParseBoolean_empty() {
+    boolean validator = false;
+    boolean test = DataUtils.parseBoolean("", !validator);
+    assertTrue(test == validator);
+  }
+
+  @Test
+  public void testParseBoolean_negativeTest() {
+    boolean validator = false;
+    boolean test = DataUtils.parseBoolean("not_a_boolean", !validator);
+    assertTrue(test == validator);
+  }
+
+  @Test
+  public void testParseInt() {
+    int test;
     int negValidator;
     for (int validator : data2) {
       negValidator = -validator;
-      int test = DataUtils.convertValueToInt(Integer.toString(validator), ~validator);
+      test = DataUtils.parseInt(Integer.toString(validator), ~validator);
       assertTrue(test == validator);
-      test = DataUtils.convertValueToInt(Integer.toString(negValidator), ~negValidator);
+      test = DataUtils.parseInt(Integer.toString(negValidator), ~negValidator);
       assertTrue(test == negValidator);
-      test = DataUtils.convertValueToInt("0x" + Integer.toString(validator, 16), ~validator);
+      test = DataUtils.parseInt("0x" + Integer.toString(validator, 16), ~validator);
       assertTrue(test == validator);
-      test = DataUtils.convertValueToInt("#" + Integer.toString(validator, 16), ~validator);
+      test = DataUtils.parseInt("#" + Integer.toString(validator, 16), ~validator);
       assertTrue(test == validator);
-      test = DataUtils.convertValueToInt("0" + Integer.toString(validator, 8), ~validator);
+      test = DataUtils.parseInt("0" + Integer.toString(validator, 8), ~validator);
       assertTrue(test == validator);
-      test = DataUtils.convertValueToInt("-0x" + Integer.toString(negValidator, 16).substring(1),
+      test = DataUtils.parseInt("-0x" + Integer.toString(negValidator, 16).substring(1),
           ~negValidator);
       assertTrue(test == negValidator);
-      test = DataUtils.convertValueToInt("-#" + Integer.toString(negValidator, 16).substring(1),
+      test = DataUtils.parseInt("-#" + Integer.toString(negValidator, 16).substring(1),
           ~negValidator);
       assertTrue(test == negValidator);
-      test = DataUtils.convertValueToInt("-0" + Integer.toString(negValidator, 8).substring(1),
+      test = DataUtils.parseInt("-0" + Integer.toString(negValidator, 8).substring(1),
           ~negValidator);
       assertTrue(test == negValidator);
     }
   }
 
   @Test
-  public void testConvertValueToIntParams() {
+  public void testParseInt_null() {
     int validator = Integer.MAX_VALUE;
-    int test = DataUtils.convertValueToInt(null, validator);
+    int test = DataUtils.parseInt(null, validator);
     assertTrue(test == validator);
-    exception.expect(StringIndexOutOfBoundsException.class);
-    validator = Integer.MAX_VALUE;
-    test = DataUtils.convertValueToInt("", validator);
+  }
+
+  @Test
+  public void testParseInt_empty() {
+    int validator = Integer.MAX_VALUE;
+    int test = DataUtils.parseInt("", validator);
     assertTrue(test == validator);
-    validator = Integer.MAX_VALUE;
-    test = DataUtils.convertValueToInt("not_an_int", validator);
+  }
+  
+  @Test
+  public void testParseInt_negativeTest() {
+    int validator = Integer.MAX_VALUE;
+    int test = DataUtils.parseInt("not_an_int", validator);
     assertTrue(test == validator);
   }
 
