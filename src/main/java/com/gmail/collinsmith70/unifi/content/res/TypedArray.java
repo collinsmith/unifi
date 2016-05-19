@@ -166,14 +166,12 @@ public class TypedArray implements Poolable {
   }
 
   @Nullable
-  public Color getColor(@Index int index, @Nullable Color defaultValue) {
+  public int getColor(@Index int index, @Nullable int defaultValue) {
     final Object value = getData(index);
     if (value instanceof Integer) {
-      Color color = new Color();
-      Color.argb8888ToColor(color, (Integer) value);
-      return color;
+      return (Integer) value;
     } else if (value instanceof Color) {
-      return (Color) value;
+      return Color.argb8888((Color) value);
     } else if (value instanceof String) {
       return DataUtils.parseColor((String) value, defaultValue);
     }

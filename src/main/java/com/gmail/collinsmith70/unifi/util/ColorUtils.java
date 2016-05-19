@@ -14,34 +14,33 @@ import android.support.annotation.Nullable;
 public class ColorUtils {
 
   @Nullable
-  private static Color tmp = new Color();
+  public static Color tmp = new Color();
 
   private ColorUtils() {}
 
   @NonNull
-  public static Color parseColor(@NonNull String colorString) {
-    Validate.isTrue(colorString != null, "colorString cannot be null");
-    if (colorString.charAt(0) == '#') {
+  public static int parseColor(@NonNull String str) {
+    Validate.isTrue(str != null, "str cannot be null");
+    Validate.isTrue(!str.isEmpty(), "str cannot be empty");
+    if (str.charAt(0) == '#') {
       // Use a long to avoid rollovers on #ffXXXXXX
-      long color = Long.parseLong(colorString.substring(1), 16);
-      if (colorString.length() == 7) {
+      long color = Long.parseLong(str.substring(1), 16);
+      if (str.length() == 7) {
         // Set the alpha value
         color |= 0x00000000ff000000;
-      } else if (colorString.length() != 9) {
-        throw new IllegalArgumentException("Unknown color: " + colorString);
+      } else if (str.length() != 9) {
+        throw new IllegalArgumentException("Unknown color: " + str);
       }
 
-      Color.argb8888ToColor(tmp, (int) color);
-      return new Color(tmp);
+      return (int) color;
     } else {
-      Integer color = colorNames.get(colorString.toLowerCase(Locale.ROOT));
+      Integer color = colorNames.get(str.toLowerCase(Locale.ROOT));
       if (color != null) {
-        Color.argb8888ToColor(tmp, color);
-        return new Color(tmp);
+        return color;
       }
     }
 
-    throw new IllegalArgumentException("Unknown color: " + colorString);
+    throw new IllegalArgumentException("Unknown color: " + str);
   }
 
   private static final Trie<String, Integer> colorNames;

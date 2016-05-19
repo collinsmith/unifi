@@ -1,13 +1,33 @@
 package com.gmail.collinsmith70.unifi.content.res;
 
+import java.awt.SystemTray;
+import java.awt.TrayIcon;
+import java.text.ParseException;
+import java.util.Locale;
+import java.util.Map;
+
 import org.apache.commons.lang3.Validate;
 
+import com.badlogic.gdx.graphics.Color;
 import com.google.common.primitives.UnsignedInteger;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 public class Resources {
 
+  private static Map<ResourceReference, ?> RESOURCES;
+  
+  @Nullable
+  public Object getValue(@NonNull ResourceReference ref) {
+    if (!RESOURCES.containsKey(ref)) {
+      throw new RuntimeException(String.format(Locale.ROOT,
+          "Resource reference \"%s\" not found", ref));
+    }
+    
+    return RESOURCES.get(ref);
+  }
+  
   @NonNull
   public TypedArray obtainAttributes(@NonNull AttributeSet attrSet,
                                      @NonNull AttributeDecl<?>[] attrs) {
@@ -23,22 +43,30 @@ public class Resources {
     Validate.isTrue(attrs != null, "attrs cannot be null");
     Validate.isTrue(data != null, "data cannot be null");
     Class<?> type;
+    ResourceReference ref;
     for (AttributeDecl<?> attr : attrs) {
-      type = attr.getType();
-      if (type == Integer.class) {
-        data[attr.getIndex()] =
-            attrSet.getAttributeIntValue(attr.getNamespace(), attr.getName(), 0);
-      } else if (type == UnsignedInteger.class) {
-        data[attr.getIndex()] =
-            attrSet.getAttributeUnsignedIntValue(attr.getNamespace(), attr.getName(), 0);
-      } else if (type == Float.class) {
-        data[attr.getIndex()] =
-            attrSet.getAttributeFloatValue(attr.getNamespace(), attr.getName(), 0);
-      } else if (type == Boolean.class) {
-        data[attr.getIndex()] =
-            attrSet.getAttributeBooleanValue(attr.getNamespace(), attr.getName(), false);
-      } else if (type == String.class) {
-        data[attr.getIndex()] = attrSet.getAttributeValue(attr.getNamespace(), attr.getName());
+      try {
+        ref = ResourceReference.parse(
+            attrSet.getAttributeValue(attr.getNamespace(), attr.getName()));
+        data[attr.getIndex()] = getValue(ref);
+        ref.recycle();
+      } catch (ParseException e) {
+        type = attr.getType();
+        if (type == Integer.class) {
+          data[attr.getIndex()] =
+              attrSet.getAttributeIntValue(attr.getNamespace(), attr.getName(), 0);
+        } else if (type == UnsignedInteger.class || type == Color.class) {
+          data[attr.getIndex()] =
+              attrSet.getAttributeUnsignedIntValue(attr.getNamespace(), attr.getName(), 0);
+        } else if (type == Float.class) {
+          data[attr.getIndex()] =
+              attrSet.getAttributeFloatValue(attr.getNamespace(), attr.getName(), 0);
+        } else if (type == Boolean.class) {
+          data[attr.getIndex()] =
+              attrSet.getAttributeBooleanValue(attr.getNamespace(), attr.getName(), false);
+        } else if (type == String.class) {
+          data[attr.getIndex()] = attrSet.getAttributeValue(attr.getNamespace(), attr.getName());
+        }
       }
     }
   }

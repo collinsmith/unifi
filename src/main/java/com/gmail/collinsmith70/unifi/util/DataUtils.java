@@ -1,7 +1,5 @@
 package com.gmail.collinsmith70.unifi.util;
 
-import com.badlogic.gdx.graphics.Color;
-
 import android.support.annotation.Nullable;
 
 public class DataUtils {
@@ -65,7 +63,7 @@ public class DataUtils {
   }
   
   @Nullable
-  public static final Color parseColor(@Nullable String str, @Nullable Color defaultValue) {
+  public static final int parseColor(@Nullable String str, @Nullable int defaultValue) {
     if (str == null) {
       return defaultValue;
     }

@@ -6,9 +6,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.badlogic.gdx.graphics.Color;
 import com.gmail.collinsmith70.unifi.content.res.Resources.Theme;
 import com.gmail.collinsmith70.unifi.math.Dimension;
+import com.gmail.collinsmith70.unifi.util.ColorUtils;
 
 public class TypedArrayTest {
 
@@ -153,15 +153,15 @@ public class TypedArrayTest {
   @Test
   public void testGetColor() {
     TypedArray array = TypedArray.obtain(RES, 1);
-    Color color = Color.WHITE;
+    int color = ColorUtils.WHITE;
     array.getData()[0] = color;
-    assertTrue(array.getColor(0, null) == color);
+    assertTrue(array.getColor(0, ~color) == color);
     array.getData()[0] = 0xFFFFFFFF;
-    assertTrue(array.getColor(0, null).equals(color));
+    assertTrue(array.getColor(0, ~color) == color);
     array.getData()[0] = "#FFFFFFFF";
-    assertTrue(array.getColor(0, null).equals(color));
+    assertTrue(array.getColor(0, ~color) == color);
     array.getData()[0] = "white";
-    assertTrue(array.getColor(0, null).equals(color));
+    assertTrue(array.getColor(0, ~color) == color);
     array.getData()[0] = null;
     assertTrue(array.getColor(0, color) == color);
     array.recycle();
