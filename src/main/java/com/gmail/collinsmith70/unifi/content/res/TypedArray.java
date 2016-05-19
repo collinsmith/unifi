@@ -12,7 +12,6 @@ import com.badlogic.gdx.utils.Pool.Poolable;
 import com.gmail.collinsmith70.unifi.annotation.Index;
 import com.gmail.collinsmith70.unifi.content.res.Resources.Theme;
 import com.gmail.collinsmith70.unifi.math.Dimension;
-import com.gmail.collinsmith70.unifi.util.ColorUtils;
 import com.gmail.collinsmith70.unifi.util.DataUtils;
 
 public class TypedArray implements Poolable {
@@ -127,8 +126,8 @@ public class TypedArray implements Poolable {
     final Object value = getData(index);
     if (value instanceof Integer) {
       return (Integer) value;
-    } else if (value instanceof CharSequence) {
-      return DataUtils.convertValueToInt((CharSequence) value, defaultValue);
+    } else if (value instanceof String) {
+      return DataUtils.parseInt((String) value, defaultValue);
     }
 
     return defaultValue;
@@ -149,8 +148,8 @@ public class TypedArray implements Poolable {
     final Object value = getData(index);
     if (value instanceof Boolean) {
       return (Boolean) value;
-    } else if (value instanceof CharSequence) {
-      return DataUtils.convertValueToBoolean((CharSequence) value, defaultValue);
+    } else if (value instanceof String) {
+      return DataUtils.parseBoolean((String) value, defaultValue);
     }
 
     return defaultValue;
@@ -175,8 +174,8 @@ public class TypedArray implements Poolable {
       return color;
     } else if (value instanceof Color) {
       return (Color) value;
-    } else if (value instanceof CharSequence) {
-      return ColorUtils.parseColor(value.toString());
+    } else if (value instanceof String) {
+      return DataUtils.parseColor((String) value, defaultValue);
     }
 
     return defaultValue;
