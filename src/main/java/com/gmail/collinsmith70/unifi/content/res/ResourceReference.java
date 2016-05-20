@@ -12,6 +12,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Pool.Poolable;
 import com.badlogic.gdx.utils.Pools;
 
+import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -33,10 +34,12 @@ public class ResourceReference implements Poolable {
   private String resourceName;
   
   @NonNull
-  static ResourceReference parse(@NonNull String resourceId) throws ParseException {
+  static ResourceReference parse(@NonNull String defaultPackage,
+                                 @NonNull String resourceId) throws ParseException {
+    Validate.isTrue(defaultPackage != null, "defaultPackage cannot be null");
     Validate.isTrue(resourceId != null, "resourceId cannot be null");
     boolean isStyleAttributeReference = false;
-    String packageName = null;
+    String packageName = defaultPackage;
     Type resourceType = null;
     String resourceName = null;
     try {
@@ -152,9 +155,10 @@ public class ResourceReference implements Poolable {
   
   @NonNull
   static ResourceReference obtain(boolean styleAttributeReference,
-                                  @Nullable String packageName,
+                                  @NonNull String packageName,
                                   @NonNull Type resourceType,
                                   @NonNull String resourceName) {
+    Validate.isTrue(packageName != null, "packageName cannot be null");
     Validate.isTrue(resourceType != null, "resourceType cannot be null");
     Validate.isTrue(resourceName != null, "resourceName cannot be null");
     final ResourceReference ref = Pools.obtain(ResourceReference.class);
@@ -186,9 +190,10 @@ public class ResourceReference implements Poolable {
   }
   
   ResourceReference(boolean styleAttributeReference,
-                    @Nullable String packageName,
+                    @NonNull String packageName,
                     @NonNull Type resourceType,
                     @NonNull String resourceName) {
+    Validate.isTrue(packageName != null, "packageName cannot be null");
     Validate.isTrue(resourceType != null, "resourceType cannot be null");
     Validate.isTrue(resourceName != null, "resourceName cannot be null");
     setRecycled(false);
@@ -215,7 +220,7 @@ public class ResourceReference implements Poolable {
     this.isStyleAttributeReference = isStyleAttributeReference;
   }
   
-  @Nullable
+  @NonNull
   public String getPackageName() {
     checkRecycled();
     return packageName;
@@ -255,6 +260,42 @@ public class ResourceReference implements Poolable {
         getPackageName(), getResourceType(), getResourceName());
   }
   
+  public boolean equals(boolean isStyleAttributeReference,
+                        @Nullable String packageName,
+                        @Nullable Type resourceType,
+                        @Nullable String resourceName) {
+    return isStyleAttributeReference() == isStyleAttributeReference
+        && getPackageName().equals(packageName)
+        && getResourceType() == resourceType
+        && getResourceName().equals(resourceName);
+  }
+
+  @Override
+  @CallSuper
+  public boolean equals(@Nullable Object obj) {
+    if (obj == null) {
+      return false;
+    } else if (obj == this) {
+      return true;
+    } else if (!(obj instanceof ResourceReference)) {
+      return false;
+    }
+    
+    ResourceReference other = (ResourceReference) obj;
+    return equals(other);
+  }
+
+  @Override
+  @CallSuper
+  public int hashCode() {
+    int result = 17;
+    result = 31 * result + (isStyleAttributeReference ? 1231 : 1237);
+    result = 31 * result + ((packageName == null) ? 0 : packageName.hashCode());
+    result = 31 * result + ((resourceName == null) ? 0 : resourceName.hashCode());
+    result = 31 * result + ((resourceType == null) ? 0 : resourceType.hashCode());
+    return result;
+  }
+   
   public enum Type {
       color(),
       string();
