@@ -1,7 +1,5 @@
 package com.gmail.collinsmith70.unifi.content.res;
 
-import java.awt.SystemTray;
-import java.awt.TrayIcon;
 import java.text.ParseException;
 import java.util.Locale;
 import java.util.Map;
@@ -9,6 +7,7 @@ import java.util.Map;
 import org.apache.commons.lang3.Validate;
 
 import com.badlogic.gdx.graphics.Color;
+import com.gmail.collinsmith70.unifi.content.Context;
 import com.google.common.primitives.UnsignedInteger;
 
 import android.support.annotation.NonNull;
@@ -29,16 +28,22 @@ public class Resources {
   }
   
   @NonNull
-  public TypedArray obtainAttributes(@NonNull AttributeSet attrSet,
+  public TypedArray obtainAttributes(@NonNull Context context,
+                                     @NonNull AttributeSet attrSet,
                                      @NonNull AttributeDecl<?>[] attrs) {
+    Validate.isTrue(context != null, "context cannot be null");
+    Validate.isTrue(attrSet != null, "attrSet cannot be null");
+    Validate.isTrue(attrs != null, "attrs cannot be null");
     final TypedArray array = TypedArray.obtain(this, attrs.length);
-    retrieveAttributes(attrSet, attrs, array.getData());
+    retrieveAttributes(context, attrSet, attrs, array.getData());
     return array;
   }
 
-  public void retrieveAttributes(@NonNull AttributeSet attrSet,
+  public void retrieveAttributes(@NonNull Context context,
+                                 @NonNull AttributeSet attrSet,
                                  @NonNull AttributeDecl<?>[] attrs,
                                  @NonNull Object[] data) {
+    Validate.isTrue(context != null, "context cannot be null");
     Validate.isTrue(attrSet != null, "attrSet cannot be null");
     Validate.isTrue(attrs != null, "attrs cannot be null");
     Validate.isTrue(data != null, "data cannot be null");
@@ -46,7 +51,7 @@ public class Resources {
     ResourceReference ref;
     for (AttributeDecl<?> attr : attrs) {
       try {
-        ref = ResourceReference.parse(
+        ref = ResourceReference.parse(context.getPackageName(),
             attrSet.getAttributeValue(attr.getNamespace(), attr.getName()));
         data[attr.getIndex()] = getValue(ref);
         ref.recycle();
