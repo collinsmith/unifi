@@ -21,7 +21,7 @@ public class ResourceReferenceTest {
     ref.recycle();
     ref = ResourceReference.parse(UnifiTest.PACKAGE, "@color/white");
     assertTrue(ref.isStyleAttributeReference() == false);
-    assertTrue(ref.getPackageName() == null);
+    assertTrue(ref.getPackageName() != null);
     assertTrue(ref.getResourceType() == ResourceReference.Type.color);
     assertTrue(ref.getResourceName().equals("white"));
     ref.recycle();
@@ -37,7 +37,7 @@ public class ResourceReferenceTest {
     ref.recycle();
     ref = ResourceReference.parse(UnifiTest.PACKAGE, "@string/test");
     assertTrue(ref.isStyleAttributeReference() == false);
-    assertTrue(ref.getPackageName() == null);
+    assertTrue(ref.getPackageName() != null);
     assertTrue(ref.getResourceType() == ResourceReference.Type.string);
     assertTrue(ref.getResourceName().equals("test"));
     ref.recycle();
