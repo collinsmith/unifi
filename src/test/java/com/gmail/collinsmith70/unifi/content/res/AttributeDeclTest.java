@@ -72,6 +72,7 @@ public class AttributeDeclTest {
     };
     
     for (Class<?> point : data) {
+      @SuppressWarnings({"rawtypes", "unchecked"})
       AttributeDecl<?> decl = new AttributeDecl(0, "", "", point);
       assertTrue(decl.getType().equals(point));
     }
