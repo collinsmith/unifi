@@ -11,7 +11,7 @@ import android.support.annotation.Nullable;
 
 public class AttributeDecl<T> {
 
-  @Nullable
+  @NonNull
   private final String namespace;
 
   @NonNull
@@ -24,10 +24,11 @@ public class AttributeDecl<T> {
   private final int index;
 
   public AttributeDecl(@Index int index,
-                       @Nullable String namespace,
+                       @NonNull String namespace,
                        @NonNull String name,
                        @NonNull Class<T> type) {
     Validate.isTrue(index >= 0, "index cannot be less than 0");
+    Validate.isTrue(namespace != null, "namespace cannot be null");
     Validate.isTrue(name != null, "name cannot be null");
     Validate.isTrue(type != null, "type cannot be null");
     this.index = index;
@@ -41,7 +42,7 @@ public class AttributeDecl<T> {
     return index;
   }
 
-  @Nullable
+  @NonNull
   public String getNamespace() {
     return namespace;
   }
