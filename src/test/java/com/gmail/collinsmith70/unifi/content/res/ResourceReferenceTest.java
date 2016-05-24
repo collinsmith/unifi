@@ -6,7 +6,6 @@ import java.text.ParseException;
 
 import org.junit.Test;
 
-import com.gmail.collinsmith70.unifi.Unifi;
 import com.gmail.collinsmith70.unifi.UnifiTest;
 
 public class ResourceReferenceTest {
