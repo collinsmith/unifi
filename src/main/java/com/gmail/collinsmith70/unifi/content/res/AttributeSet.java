@@ -1,5 +1,10 @@
 package com.gmail.collinsmith70.unifi.content.res;
 
+/**
+ * Represents an aggregate of resource attributes, accessible using {@link AttributeDecl}
+ * declarations. Each data point has a generic {@code Object} reference, so it must be known
+ * beforehand if that {@code Object} can be casted to the desired class type.
+ */
 public interface AttributeSet {
 
   /**
