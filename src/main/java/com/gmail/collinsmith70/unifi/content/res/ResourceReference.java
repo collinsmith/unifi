@@ -16,6 +16,25 @@ import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+/**
+ * Represents a reference to a resource attribute. Resource references consist of (at a minimum),
+ * a package, type and name. Similar to a file system, a resource reference is used to locate a
+ * a cached resource in memory. Additionally, there are two distinct types of
+ * {@code ResourceReference} instances, one which is a raw resource reference, and another which
+ * is a styled attribute. Styled attributes are references to resources which are dependent on
+ * the current {@linkplain Resources.Theme theme}.
+ * <p>
+ * As many {@code ResourceReference} instances may exist at a time, {@code ResourceReference} is
+ * designed with <a href="https://en.wikipedia.org/wiki/Object_pool_pattern">object pooling</a>
+ * built in:
+ * <pre>
+ * {@code
+ *  ResourceReference ref = ResourceReference.parse("@unifi:string/HelloWorld");
+ *  ...
+ *  ref.recycle();
+ * }
+ * </pre>
+ */
 public class ResourceReference implements Poolable {
 
   private static final String TAG = ResourceReference.class.getSimpleName();
