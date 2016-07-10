@@ -11,4 +11,5 @@ public class TextureDrawable {
   public static final AttributeDecl<?>[] attrs = new AttributeDecl<?>[] {
     new AttributeDecl<Texture>(src, Unifi.NAMESPACE, "src", Texture.class)
   };
+  
 }
