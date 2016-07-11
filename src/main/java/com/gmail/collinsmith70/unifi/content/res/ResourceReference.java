@@ -39,19 +39,49 @@ public class ResourceReference implements Poolable {
 
   private static final String TAG = ResourceReference.class.getSimpleName();
   
+  /**
+   * @see #isRecycled
+   */
   private boolean recycled;
   
+  /**
+   * @see #isStyleAttributeReference()
+   */
   private boolean isStyleAttributeReference;
   
+  /**
+   * @see #getPackageName
+   */
   @Nullable
   private String packageName;
   
+  
+  /**
+   * @see #getResourceType
+   */
   @Nullable
   private Type resourceType;
-  
+
+  /**
+   * @see #getResourceName
+   */
   @Nullable
   private String resourceName;
   
+  /**
+   * Parses the specified {@code resourceId} and returns a pooled {@link ResourceReference}
+   * instance.
+   * 
+   * @param defaultPackage Default resource package to use if {@code resourceId} did not specify one
+   * @param resourceId     Resource ID {@code String} to parse
+   * 
+   * @return {@code ResourceReference} representing the parsed {@code resourceId}.
+   * 
+   * @throws ParseException when there was a problem parsing the given {@code resourceId}. This is
+   *                        is usually do to a formatting issue.
+   * 
+   * @see #obtain
+   */
   @NonNull
   static ResourceReference parse(@NonNull String defaultPackage,
                                  @NonNull String resourceId) throws ParseException {
@@ -172,6 +202,19 @@ public class ResourceReference implements Poolable {
         isStyleAttributeReference, packageName, resourceType, resourceName);
   }
   
+  /**
+   * Obtains a pooled {@link ResourceReference} programmatically. 
+   * 
+   * @param styleAttributeReference {@code true} if this is a reference to a styled
+   *                                {@code ResourceReference}, otherwise {@code false}
+   * @param packageName             Package which the {@code ResourceReference} belongs to
+   * @param resourceType            Type which the {@code ResourceReference} value represents
+   * @param resourceName            Name of the {@code ResourceReference}
+   * 
+   * @return {@code ResourceReference} representing the passed parameters.
+   * 
+   * @see #parse
+   */
   @NonNull
   static ResourceReference obtain(boolean styleAttributeReference,
                                   @NonNull String packageName,
@@ -189,25 +232,49 @@ public class ResourceReference implements Poolable {
     return ref;
   }
   
+  /**
+   * Recycles this {@code ResourceReference} instance and places it back into the pool.
+   * {@code ResourceReference} instances should always be recycled after use.
+   */
   public void recycle() {
     setRecycled(true);
   }
-  
+
+  /**
+   * Resets the state of this {@code ResourceReference} instance to not recycled.
+   * {@code ResourceReference} instances will be in this state when they are created.
+   */
   @Override
   public void reset() {
     setRecycled(true);
   }
   
+  /**
+   * Checks whether or not this {@code ResourceReference} has been recycled, and throws an
+   * {@link IllegalStateException} if it has.
+   */
   private void checkRecycled() {
     if (recycled) {
       throw new IllegalStateException(toString() + " has been recycled!");
     }
   }
   
+  /**
+   * Constructs an empty {@link ResourceReference} instance which is not recycled.
+   */
   ResourceReference() {
     setRecycled(true);
   }
-  
+
+  /**
+   * Constructs a {@link ResourceReference} instance with the specified parameters.
+   * 
+   * @param styleAttributeReference {@code true} if this is a reference to a styled
+   *                                {@code ResourceReference}, otherwise {@code false}
+   * @param packageName             Package which the {@code ResourceReference} belongs to
+   * @param resourceType            Type which the {@code ResourceReference} value represents
+   * @param resourceName            Name of the {@code ResourceReference}
+   */
   ResourceReference(boolean styleAttributeReference,
                     @NonNull String packageName,
                     @NonNull Type resourceType,
@@ -222,53 +289,117 @@ public class ResourceReference implements Poolable {
     setResourceName(resourceName);
   }
   
+  /**
+   * Checks whether or not this {@code ResourceReference} is marked as recycled. Recycled
+   * {@code ResourceReference} instances are invalidated and should not be operated on.
+   * 
+   * @return {@code true} if this {@code ResourceReference} has been recycled,
+   *         otherwise {@code false}
+   */
   public boolean isRecycled() {
     return recycled;
   }
   
+  /**
+   * Sets this {@code ResourceReference} to the specified {@linkplain #isRecycled() recycled} state.
+   * 
+   * @param recycled {@code true} if this {@code ResourceReference} has been recycled,
+   *                 otherwise {@code false}
+   */
   private void setRecycled(boolean recycled) {
     this.recycled = recycled;
   }
   
+  /**
+   * Checks whether or not this {@code ResourceReference} is to a styled attribute (i.e., an
+   * attribute which is based on the current {@linkplain Resources.Theme theme}, and changes
+   * dynamically to reflect that).
+   * 
+   * @return {@code true} if this {@code ResourceReference} is for a styled attribute,
+   *         otherwise {@code false}
+   */
   public boolean isStyleAttributeReference() {
     checkRecycled();
     return isStyleAttributeReference;
   }
   
+  /**
+   * Sets this {@code ResourceReference} to the specified
+   * {@linkplain #isStyleAttributeReference() isStyleAttributeReference} state.
+   * 
+   * @param isStyleAttributeReference {@code true} if this {@code ResourceReference} is for a styled
+   *                                  attribute, otherwise {@code false}
+   */
   private void setStyleAttributeReference(boolean isStyleAttributeReference) {
     this.isStyleAttributeReference = isStyleAttributeReference;
   }
   
+  /**
+   * Package which this {@code ResourceReference} belongs to.
+   * 
+   * @return Package assigned to this {@code ResourceReference}
+   */
   @NonNull
   public String getPackageName() {
     checkRecycled();
     return packageName;
   }
   
+  /**
+   * Changes the package of this {@code ResourceReference} to the specified one.
+   * 
+   * @param packageName Package to assign to this {@code ResourceReference}
+   */
   private void setPackageName(@Nullable String packageName) {
     this.packageName = packageName;
   }
   
+  /**
+   * {@link Type} which the value of this {@code ResourceReference} represents.
+   * 
+   * @return {@code Type} that this {@code ResourceReference} corresponds to
+   */
   @NonNull
   public Type getResourceType() {
     checkRecycled();
     return resourceType;
   }
   
+  /**
+   * Changes the type of this {@code ResourceReference} to the specified one.
+   * 
+   * @param resourceType {@code Type} that this {@code ResourceReference} should correspond with
+   */
   private void setResourceType(@Nullable Type resourceType) {
     this.resourceType = resourceType;
   }
   
+  /**
+   * Name assigned to this {@code ResourceReference}.
+   * 
+   * @return Name assigned to this {@code ResourceReference}
+   */
   @NonNull
   public String getResourceName() {
     checkRecycled();
     return resourceName;
   }
   
+  /**
+   * Changes the name of this {@code ResourceReference} to the specified one.
+   * 
+   * @param resourceName Name to assign to this {@code ResourceReference}
+   */
   private void setResourceName(@Nullable String resourceName) {
     this.resourceName = resourceName;
   }
   
+  /**
+   * {@code String} representation of this {@code ResourceReference} using the
+   * {@linkplain #parse parseable} format.
+   * 
+   * @return {@code String} representation of this {@code ResourceReference}
+   */
   @Override
   public String toString() {
     if (getPackageName() == null) {
@@ -279,6 +410,18 @@ public class ResourceReference implements Poolable {
         getPackageName(), getResourceType(), getResourceName());
   }
   
+  /**
+   * Checks whether or not this {@code ResourceReference} instance has fields equalling the passed
+   * parameters.
+   * 
+   * @param isStyleAttributeReference {@code true} if this is a reference to a styled
+   *                                  {@code ResourceReference}, otherwise {@code false}
+   * @param packageName               Package which the {@code ResourceReference} belongs to
+   * @param resourceType              Type which the {@code ResourceReference} value represents
+   * @param resourceName              Name of the {@code ResourceReference}
+   * 
+   * @return {@code true} if it does, otherwise {@code false}
+   */
   public boolean equals(boolean isStyleAttributeReference,
                         @Nullable String packageName,
                         @Nullable Type resourceType,
