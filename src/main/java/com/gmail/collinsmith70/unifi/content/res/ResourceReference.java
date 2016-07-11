@@ -458,6 +458,10 @@ public class ResourceReference implements Poolable {
     return result;
   }
    
+  /**
+   * Enumeration of all {@link ResourceReference} types. {@code ResourceReference} types are
+   * {@linkplain ResourceReference#parse parseable} types.
+   */
   public enum Type {
       color(),
       string();
