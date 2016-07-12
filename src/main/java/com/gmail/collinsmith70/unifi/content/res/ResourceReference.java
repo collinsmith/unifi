@@ -466,19 +466,37 @@ public class ResourceReference implements Poolable {
       color(),
       string();
 
+      /**
+       * @see #getTag
+       */
       @Nullable
       private final String tag;
 
+      /**
+       * Constructs a {@link Type} using the enumeration field's name as the
+       * {@linkplain #getTag tag}.
+       */
       Type() {
           this.tag = name().toLowerCase(Locale.ROOT);
       }
 
+      /**
+       * Constructs a {@link Type} using the specified {@linkplain #getTag tag}.
+       * 
+       * @param tag Tag to associate with the {@code Type}
+       */
       Type(@NonNull String tag) {
           Validate.isTrue(tag != null, "tag cannot null");
           Validate.isTrue(!tag.isEmpty(), "tag cannot be empty");
           this.tag = tag;
       }
 
+      /**
+       * Returns the identifier associated with this {@code Type}. Tags are synonymous with the name
+       * of the {@code Type} in most cases.
+       * 
+       * @return Tag associated with this {@code Type}
+       */
       @NonNull
       public String getTag() {
           return tag;
