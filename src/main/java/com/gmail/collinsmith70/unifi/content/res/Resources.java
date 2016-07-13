@@ -13,10 +13,23 @@ import com.google.common.primitives.UnsignedInteger;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+/**
+ * Manages references to external (e.g., files) and internal (e.g., colors) resources. Also manages
+ * themes and themed attributes (attributes whose values dynamically change based on the current
+ * theme).
+ */
 public class Resources {
 
   private static Map<ResourceReference, ?> RESOURCES;
-  
+
+  /**
+   * Current value of the specified {@link ResourceReference}. No theme is applied if it is an
+   * attribute reference.
+   * 
+   * @param ref {@code ResourceReference} to look up
+   * 
+   * @return Value of the {@code ResourceReference}.
+   */
   @Nullable
   public Object getValue(@NonNull ResourceReference ref) {
     if (!RESOURCES.containsKey(ref)) {
