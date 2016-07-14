@@ -52,6 +52,15 @@ public class Resources {
     return array;
   }
 
+  /**
+   * Retrieves the specified attributes from the given {@link AttributeDecl} and {@link Context} and
+   * populates the passed {@code Object} array with the values.
+   * 
+   * @param context Context to pull the values using
+   * @param attrSet {@code AttributeSet} containing the values
+   * @param attrs   {@code AttributeDecl} instances specifying the value keys
+   * @param data    {@code Object} array to populate with the values
+   */
   public void retrieveAttributes(@NonNull Context context,
                                  @NonNull AttributeSet attrSet,
                                  @NonNull AttributeDecl<?>[] attrs,
