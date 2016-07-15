@@ -54,7 +54,8 @@ public class Resources {
 
   /**
    * Retrieves the specified attributes from the given {@link AttributeDecl} and {@link Context} and
-   * populates the passed {@code Object} array with the values.
+   * populates the passed {@code Object} array with the values. {@code Context} is used to determine
+   * resource defaults (e.g., package name of a resource which did not provide one).
    * 
    * @param context Context to pull the values using
    * @param attrSet {@code AttributeSet} containing the values
