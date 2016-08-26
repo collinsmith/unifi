@@ -25,7 +25,7 @@ public final class ImmutablePoint extends Point {
   }
 
   private ImmutablePoint(@NonNull Point src) {
-    super();
+    super(src);
   }
 
   @Deprecated
