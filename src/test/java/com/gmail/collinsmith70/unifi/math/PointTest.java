@@ -64,30 +64,31 @@ public class PointTest {
 
   @Test
   public void testOnChange() {
+    final String expectMessage = "Point#onChange() called";
     exception.expect(RuntimeException.class);
-    exception.expectMessage("Point#onChange() called");
+    exception.expectMessage(expectMessage);
     new Point() {
       @Override
       protected void onChange() {
-        throw new RuntimeException("Point#onChange() called");
+        throw new RuntimeException(expectMessage);
       }
     }.setX(1);
     new Point() {
       @Override
       protected void onChange() {
-        throw new RuntimeException("Point#onChange() called");
+        throw new RuntimeException(expectMessage);
       }
     }.setY(1);
     new Point() {
       @Override
       protected void onChange() {
-        throw new RuntimeException("Point#onChange() called");
+        throw new RuntimeException(expectMessage);
       }
     }.set(1, 1);
     new Point() {
       @Override
       protected void onChange() {
-        throw new RuntimeException("Point#onChange() called");
+        throw new RuntimeException(expectMessage);
       }
     }.set(new Point(1, 1));
   }

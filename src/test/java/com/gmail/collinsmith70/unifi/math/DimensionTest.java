@@ -64,30 +64,31 @@ public class DimensionTest {
 
   @Test
   public void testOnChange() {
+    final String expectMessage = "Dimension#onChange() called";
     exception.expect(RuntimeException.class);
-    exception.expectMessage("Dimension#onChange() called");
+    exception.expectMessage(expectMessage);
     new Dimension() {
       @Override
       protected void onChange() {
-        throw new RuntimeException("Dimension#onChange() called");
+        throw new RuntimeException(expectMessage);
       }
     }.setWidth(1);
     new Dimension() {
       @Override
       protected void onChange() {
-        throw new RuntimeException("Dimension#onChange() called");
+        throw new RuntimeException(expectMessage);
       }
     }.setHeight(1);
     new Dimension() {
       @Override
       protected void onChange() {
-        throw new RuntimeException("Dimension#onChange() called");
+        throw new RuntimeException(expectMessage);
       }
     }.set(1, 1);
     new Dimension() {
       @Override
       protected void onChange() {
-        throw new RuntimeException("Dimension#onChange() called");
+        throw new RuntimeException(expectMessage);
       }
     }.set(new Dimension(1, 1));
   }

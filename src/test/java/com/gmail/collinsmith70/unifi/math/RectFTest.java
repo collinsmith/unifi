@@ -89,42 +89,43 @@ public class RectFTest {
 
   @Test
   public void testOnChange() {
+    final String expectMessage = "RectF#onChange() called";
     exception.expect(RuntimeException.class);
-    exception.expectMessage("RectF#onChange() called");
+    exception.expectMessage(expectMessage);
     new RectF() {
       @Override
       protected void onChange() {
-        throw new RuntimeException("RectF#onChange() called");
+        throw new RuntimeException(expectMessage);
       }
     }.setLeft(1);
     new RectF() {
       @Override
       protected void onChange() {
-        throw new RuntimeException("RectF#onChange() called");
+        throw new RuntimeException(expectMessage);
       }
     }.setTop(1);
     new RectF() {
       @Override
       protected void onChange() {
-        throw new RuntimeException("RectF#onChange() called");
+        throw new RuntimeException(expectMessage);
       }
     }.setRight(1);
     new RectF() {
       @Override
       protected void onChange() {
-        throw new RuntimeException("RectF#onChange() called");
+        throw new RuntimeException(expectMessage);
       }
     }.setBottom(1);
     new RectF() {
       @Override
       protected void onChange() {
-        throw new RuntimeException("RectF#onChange() called");
+        throw new RuntimeException(expectMessage);
       }
     }.set(1, 1, 1, 1);
     new RectF() {
       @Override
       protected void onChange() {
-        throw new RuntimeException("RectF#onChange() called");
+        throw new RuntimeException(expectMessage);
       }
     }.set(new RectF(1, 1, 1, 1));
   }
