@@ -31,7 +31,7 @@ public class Point {
     return x;
   }
 
-  private void _setX(int x) {
+  protected final void _setX(int x) {
     this.x = x;
   }
 
@@ -46,7 +46,7 @@ public class Point {
     return y;
   }
 
-  private void _setY(int y) {
+  protected final void _setY(int y) {
     this.y = y;
   }
 
@@ -57,7 +57,7 @@ public class Point {
     }
   }
 
-  private void _set(int x, int y) {
+  protected final void _set(int x, int y) {
     _setX(x);
     _setY(y);
   }
@@ -69,7 +69,7 @@ public class Point {
     }
   }
 
-  private void _set(@NonNull Point src) {
+  protected final void _set(@NonNull Point src) {
     Validate.isTrue(src != null, "source Point cannot be null");
     _setX(src.getX());
     _setY(src.getY());
