@@ -8,7 +8,11 @@ import org.apache.commons.lang3.Validate;
 
 public class Point3 extends Point {
 
+
   public static final Point3 ZERO = ImmutablePoint3.newImmutablePoint();
+
+
+
 
   private int z;
 
@@ -41,7 +45,11 @@ public class Point3 extends Point {
 
   private void _set(int x, int y, int z) {
     _setX(x);
+
     _setY(y);
+
+
+
     _setZ(z);
   }
 
