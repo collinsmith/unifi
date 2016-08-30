@@ -60,13 +60,13 @@ public final class ImmutablePoint3 extends Point3 {
 
   @Deprecated
   @Override
-  public void set(@NonNull Point src) {
+  public void set(@NonNull IPoint2 src) {
     throw new UnsupportedOperationException();
   }
 
   @Deprecated
   @Override
-  public void set(@NonNull Point3 src) {
+  public void set(@NonNull IPoint3 src) {
     throw new UnsupportedOperationException();
   }
 

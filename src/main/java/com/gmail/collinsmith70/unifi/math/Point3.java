@@ -6,9 +6,7 @@ import android.support.annotation.Nullable;
 
 import org.apache.commons.lang3.Validate;
 
-public class Point3 extends Point {
-
-  public static final Point3 ZERO = ImmutablePoint3.newImmutablePoint();
+public class Point3 extends Point2 implements IPoint3 {
 
   private int z;
 
@@ -20,7 +18,7 @@ public class Point3 extends Point {
     _set(x, y, z);
   }
 
-  public Point3(@NonNull Point3 src) {
+  public Point3(@NonNull IPoint3 src) {
     _set(src);
   }
 
@@ -52,14 +50,14 @@ public class Point3 extends Point {
     }
   }
 
-  private void _set(@NonNull Point3 src) {
+  private void _set(@NonNull IPoint3 src) {
     Validate.isTrue(src != null, "source Point cannot be null");
     super._set(src);
     _setZ(src.getZ());
     
   }
 
-  public void set(@NonNull Point3 src) {
+  public void set(@NonNull IPoint3 src) {
     Validate.isTrue(src != null, "source Point cannot be null");
     if (!equals(src.getX(), src.getY(), src.getZ())) {
       _set(src);
@@ -84,11 +82,11 @@ public class Point3 extends Point {
 //  } else if (obj == this) {
 //    return true;
 //  } else
-    if (!(obj instanceof Point3)) {
+    if (!(obj instanceof IPoint3)) {
       return false;
     }
 
-    Point3 other = (Point3) obj;
+    IPoint3 other = (IPoint3) obj;
     return getZ() == other.getZ();
   }
 
