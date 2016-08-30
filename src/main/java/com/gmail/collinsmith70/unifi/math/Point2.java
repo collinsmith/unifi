@@ -6,7 +6,10 @@ import android.support.annotation.Nullable;
 
 import org.apache.commons.lang3.Validate;
 
-public class Point2 implements IPoint2 {
+public class Point2 {
+  
+  @NonNull
+  static final Point2 ZERO = ImmutablePoint2.newImmutablePoint();
   
   private int x;
   private int y;
@@ -19,7 +22,7 @@ public class Point2 implements IPoint2 {
     _set(x, y);
   }
 
-  public Point2(@NonNull IPoint2 src) {
+  public Point2(@NonNull Point2 src) {
     _set(src);
   }
 
@@ -67,14 +70,14 @@ public class Point2 implements IPoint2 {
     }
   }
 
-  protected final void _set(@NonNull IPoint2 src) {
-    Validate.isTrue(src != null, "source Point cannot be null");
+  protected final void _set(@NonNull Point2 src) {
+    Validate.isTrue(src != null, "source Point2 cannot be null");
     _setX(src.getX());
     _setY(src.getY());
   }
 
-  public void set(@NonNull IPoint2 src) {
-    Validate.isTrue(src != null, "source Point cannot be null");
+  public void set(@NonNull Point2 src) {
+    Validate.isTrue(src != null, "source Point2 cannot be null");
     if (!equals(src.getX(), src.getY())) {
       _set(src);
       onChange();
@@ -92,11 +95,11 @@ public class Point2 implements IPoint2 {
       return false;
     } else if (obj == this) {
       return true;
-    } else if (!(obj instanceof IPoint2)) {
+    } else if (!(obj instanceof Point2)) {
       return false;
     }
 
-    IPoint2 other = (IPoint2) obj;
+    Point2 other = (Point2) obj;
     return equals(other.getX(), other.getY());
   }
 

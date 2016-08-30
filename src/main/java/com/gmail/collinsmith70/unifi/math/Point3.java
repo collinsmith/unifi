@@ -6,8 +6,11 @@ import android.support.annotation.Nullable;
 
 import org.apache.commons.lang3.Validate;
 
-public class Point3 extends Point2 implements IPoint3 {
+public class Point3 extends Point2 {
 
+  @NonNull
+  static final Point3 ZERO = ImmutablePoint3.newImmutablePoint();
+  
   private int z;
 
   public Point3() {
@@ -18,7 +21,7 @@ public class Point3 extends Point2 implements IPoint3 {
     _set(x, y, z);
   }
 
-  public Point3(@NonNull IPoint3 src) {
+  public Point3(@NonNull Point3 src) {
     _set(src);
   }
 
@@ -50,15 +53,15 @@ public class Point3 extends Point2 implements IPoint3 {
     }
   }
 
-  private void _set(@NonNull IPoint3 src) {
-    Validate.isTrue(src != null, "source Point cannot be null");
+  private void _set(@NonNull Point3 src) {
+    Validate.isTrue(src != null, "source Point3 cannot be null");
     super._set(src);
     _setZ(src.getZ());
     
   }
 
-  public void set(@NonNull IPoint3 src) {
-    Validate.isTrue(src != null, "source Point cannot be null");
+  public void set(@NonNull Point3 src) {
+    Validate.isTrue(src != null, "source Point3 cannot be null");
     if (!equals(src.getX(), src.getY(), src.getZ())) {
       _set(src);
       onChange();
@@ -82,11 +85,11 @@ public class Point3 extends Point2 implements IPoint3 {
 //  } else if (obj == this) {
 //    return true;
 //  } else
-    if (!(obj instanceof IPoint3)) {
+    if (!(obj instanceof Point3)) {
       return false;
     }
 
-    IPoint3 other = (IPoint3) obj;
+    Point3 other = (Point3) obj;
     return getZ() == other.getZ();
   }
 

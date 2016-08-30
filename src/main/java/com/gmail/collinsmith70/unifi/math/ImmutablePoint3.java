@@ -12,7 +12,7 @@ public final class ImmutablePoint3 extends Point3 {
     return new ImmutablePoint3(x, y, z);
   }
 
-  public static ImmutablePoint3 copyOf(@NonNull IPoint3 src) {
+  public static ImmutablePoint3 copyOf(@NonNull Point3 src) {
     return new ImmutablePoint3(src);
   }
 
@@ -24,7 +24,7 @@ public final class ImmutablePoint3 extends Point3 {
     super(x, y, z);
   }
 
-  private ImmutablePoint3(@NonNull IPoint3 src) {
+  private ImmutablePoint3(@NonNull Point3 src) {
     super(src);
   }
 
@@ -60,13 +60,13 @@ public final class ImmutablePoint3 extends Point3 {
 
   @Deprecated
   @Override
-  public void set(@NonNull IPoint2 src) {
+  public void set(@NonNull Point2 src) {
     throw new UnsupportedOperationException();
   }
 
   @Deprecated
   @Override
-  public void set(@NonNull IPoint3 src) {
+  public void set(@NonNull Point3 src) {
     throw new UnsupportedOperationException();
   }
 
