@@ -116,5 +116,52 @@ public class Point2 {
   public String toString() {
     return String.format("%s: { x=%d, y=%d }", getClass().getSimpleName(), getX(), getY());
   }
+  
+  public final Point2 add(@NonNull Point2 src) {
+    return add(src, this);
+  }
+  
+  public final Point2 add(@NonNull Point2 src, @NonNull Point2 dst) {
+    Validate.isTrue(src != null, "source Point2 cannot be null");
+    Validate.isTrue(dst != null, "destination Point2 cannot be null");
+    if (!equals(src.getX(), src.getY())) {
+      dst._set(getX() + src.getX(), getY() + src.getY());
+      dst.onChange();
+      return dst;
+    }
+    
+    return dst;
+  }
+  
+  public final Point2 subtract(@NonNull Point2 src) {
+    return subtract(src, this);
+  }
+  
+  public final Point2 subtract(@NonNull Point2 src, @NonNull Point2 dst) {
+    Validate.isTrue(src != null, "source Point2 cannot be null");
+    Validate.isTrue(dst != null, "destination Point2 cannot be null");
+    if (!equals(src.getX(), src.getY())) {
+      dst._set(getX() - src.getX(), getY() - src.getY());
+      dst.onChange();
+      return dst;
+    }
+    
+    return dst;
+  }
+  
+  public Point2 scale(double scalar) {
+    return scale(scalar, this);
+  }
+  
+  public final Point2 scale(double scalar, @NonNull Point2 dst) {
+    Validate.isTrue(dst != null, "destination Point2 cannot be null");
+    if (scalar != 1.0) {
+      dst._set((int)(getX() * scalar), (int)(getY() * scalar));
+      dst.onChange();
+      return dst;
+    }
+    
+    return dst;
+  }
 
 }

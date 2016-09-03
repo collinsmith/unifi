@@ -180,5 +180,28 @@ public class Rect {
     return String.format("%s: { left=%d, top=%d, right=%d, bottom=%d }", getClass().getSimpleName(),
         getLeft(), getTop(), getRight(), getBottom());
   }
+  
+  public boolean contains(@NonNull Point2 point) {
+    Validate.isTrue(point != null, "point cannot be null");
+    int left, right, top, bottom;
+    if (getLeft() < getRight()) {
+      left = getLeft();
+      right = getRight();
+    } else {
+      left = getRight();
+      right = getLeft();
+    }
+    
+    if (getBottom() < getTop()) {
+      bottom = getBottom();
+      top = getTop();
+    } else {
+      bottom = getTop();
+      top = getBottom();
+    }
+    
+    return left <= point.getX() && point.getX() <= right
+        && bottom <= point.getY() && point.getY() <= top;
+  }
 
 }
