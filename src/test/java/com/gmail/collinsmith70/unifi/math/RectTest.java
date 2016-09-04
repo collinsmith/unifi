@@ -167,4 +167,22 @@ public class RectTest {
     assertFalse(rect3.hashCode() == rect2.hashCode());
   }
 
+  @Test
+  public void testContains_Point() {
+    Point2 p1 = new Point2(-1, -1);
+    Point2 p2 = new Point2(0, 0);
+    Point2 p3 = new Point2(1, 1);
+    Point2 p4 = new Point2(9, 9);
+    Point2 p5 = new Point2(10, 10);
+    Point2 p6 = new Point2(11, 11);
+    Rect rect = new Rect(0, 10, 10, 0);
+
+    assertFalse(rect.contains(p1));
+    assertTrue(rect.contains(p2));
+    assertTrue(rect.contains(p3));
+    assertTrue(rect.contains(p4));
+    assertTrue(rect.contains(p5));
+    assertFalse(rect.contains(p6));
+  }
+
 }
