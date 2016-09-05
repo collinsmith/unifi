@@ -22,15 +22,27 @@ public class DimensionTest {
   
   @Test
   public void testDimension_IntInt() {
-    Dimension dim = new Dimension(1, 3);
-    assertTrue(dim.equals(1, 3));
+    int width, height;
+    Dimension dim;
+    for (int i = 0; i < data.length - 1; i++) {
+      width = data[i];
+      height = data[i + 1];
+      dim = new Dimension(width, height);
+      assertTrue(dim.equals(width, height));
+    }
   }
   
   @Test
   public void testDimension_Dimension() {
-    Dimension dim1 = new Dimension(1, 3);
-    Dimension dim2 = new Dimension(dim1);
-    assertTrue(dim1.equals(dim2));
+    int width, height;
+    Dimension dim1, dim2;
+    for (int i = 0; i < data.length - 1; i++) {
+      width = data[i];
+      height = data[i + 1];
+      dim1 = new Dimension(width, height);
+      dim2 = new Dimension(dim1);
+      assertTrue(dim1.equals(dim2));
+    }
   }
 
   @Test
