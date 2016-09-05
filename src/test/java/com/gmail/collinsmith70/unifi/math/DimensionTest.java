@@ -13,6 +13,25 @@ public class DimensionTest {
       2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41,
       43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97
   };
+  
+  @Test
+  public void testDimension() {
+    Dimension dim = new Dimension();
+    assertTrue(dim.equals(0, 0));
+  }
+  
+  @Test
+  public void testDimension_IntInt() {
+    Dimension dim = new Dimension(1, 3);
+    assertTrue(dim.equals(1, 3));
+  }
+  
+  @Test
+  public void testDimension_Dimension() {
+    Dimension dim1 = new Dimension(1, 3);
+    Dimension dim2 = new Dimension(dim1);
+    assertTrue(dim1.equals(dim2));
+  }
 
   @Test
   public void testSetWidth() {
