@@ -200,9 +200,6 @@ public class RectF {
       return false;
     } else if (obj == this) {
       return true;
-    } else if (obj instanceof Rect) {
-      Rect other = (Rect) obj;
-      return equals(other.getLeft(), other.getTop(), other.getRight(), other.getBottom());
     } else if (!(obj instanceof RectF)) {
       return false;
     }
