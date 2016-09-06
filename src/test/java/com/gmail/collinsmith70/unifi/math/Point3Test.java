@@ -17,9 +17,7 @@ public class Point3Test {
   @Test
   public void testPoint3() {
 	Point3 pt = new Point3();
-	assertTrue(pt.getX() == 0);
-	assertTrue(pt.getY() == 0);
-    assertTrue(pt.getZ() == 0);
+	assertTrue(pt.equals(0, 0, 0));
   }
 
   @Test
@@ -30,9 +28,7 @@ public class Point3Test {
       y = data[i + 1];
       z = data[i + 2];
       Point3 pt = new Point3(x, y, z);
-      assertTrue(pt.getX() == x);
-      assertTrue(pt.getY() == y);
-      assertTrue(pt.getZ() == z);
+      assertTrue(pt.equals(x, y, z));
     }
   }
 
@@ -45,9 +41,7 @@ public class Point3Test {
       z = data[i + 2];
       Point3 src = new Point3(x, y, z);
       Point3 pt = new Point3(src);
-      assertTrue(pt.getX() == src.getX());
-      assertTrue(pt.getY() == src.getY());
-      assertTrue(pt.getZ() == src.getZ());
+      assertTrue(pt.equals(src));
     }
   }
 

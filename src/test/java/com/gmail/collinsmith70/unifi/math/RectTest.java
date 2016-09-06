@@ -16,6 +16,42 @@ public class RectTest {
   };
   
   @Test
+  public void testRect() {
+    Rect rect = new Rect();
+    assertTrue(rect.equals(0, 0, 0, 0));
+  }
+  
+  @Test
+  public void testRect_IntIntIntInt() {
+    Rect rect = new Rect();
+    int left, top, right, bottom;
+    for (int i = 0; i < data.length - 3; i++) {
+      left = data[i];
+      top = data[i + 1];
+      right = data[i + 2];
+      bottom = data[i + 3];
+      rect = new Rect(left, top, right, bottom);
+      assertTrue(rect.equals(left, top, right, bottom));
+    }
+  }
+  
+  @Test
+  public void testRect_Rect() {
+    Rect rect = new Rect();
+    Rect src;
+    int left, top, right, bottom;
+    for (int i = 0; i < data.length - 3; i++) {
+      left = data[i];
+      top = data[i + 1];
+      right = data[i + 2];
+      bottom = data[i + 3];
+      src = new Rect(left, top, right, bottom);
+      rect = new Rect(src);
+      assertTrue(rect.equals(src));
+    }
+  }
+  
+  @Test
   public void testSetLeft() {
     Rect rect = new Rect();
     for (int testCase : data) {

@@ -14,6 +14,58 @@ public class RectFTest {
       2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41,
       43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97
   };
+  
+  @Test
+  public void testRectF() {
+    RectF rect = new RectF();
+    assertTrue(rect.equals(0, 0, 0, 0));
+  }
+  
+  @Test
+  public void testRectF_FloatFloatFloatFloat() {
+    RectF rect = new RectF();
+    float left, top, right, bottom;
+    for (int i = 0; i < data.length - 3; i++) {
+      left = data[i];
+      top = data[i + 1];
+      right = data[i + 2];
+      bottom = data[i + 3];
+      rect = new RectF(left, top, right, bottom);
+      assertTrue(rect.equals(left, top, right, bottom));
+    }
+  }
+  
+  @Test
+  public void testRectF_RectF() {
+    RectF rect = new RectF();
+    RectF src;
+    float left, top, right, bottom;
+    for (int i = 0; i < data.length - 3; i++) {
+      left = data[i];
+      top = data[i + 1];
+      right = data[i + 2];
+      bottom = data[i + 3];
+      src = new RectF(left, top, right, bottom);
+      rect = new RectF(src);
+      assertTrue(rect.equals(src));
+    }
+  }
+  
+  @Test
+  public void testRectF_Rect() {
+    RectF rect = new RectF();
+    Rect src;
+    int left, top, right, bottom;
+    for (int i = 0; i < data.length - 3; i++) {
+      left = (int)data[i];
+      top = (int)data[i + 1];
+      right = (int)data[i + 2];
+      bottom = (int)data[i + 3];
+      src = new Rect(left, top, right, bottom);
+      rect = new RectF(src);
+      assertTrue(rect.equals(src.getLeft(), src.getTop(), src.getRight(), src.getBottom()));
+    }
+  }
 
   @Test
   public void testSetLeft() {
