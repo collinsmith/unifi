@@ -200,6 +200,9 @@ public class RectF {
       return false;
     } else if (obj == this) {
       return true;
+    } else if (obj instanceof Rect) {
+      Rect other = (Rect) obj;
+      return equals(other.getLeft(), other.getTop(), other.getRight(), other.getBottom());
     } else if (!(obj instanceof RectF)) {
       return false;
     }
@@ -221,7 +224,7 @@ public class RectF {
 
   @Override
   public String toString() {
-    return String.format("%s: { left=%d, top=%d, right=%d, bottom=%d }", getClass().getSimpleName(),
+    return String.format("%s: { left=%f, top=%f, right=%f, bottom=%f }", getClass().getSimpleName(),
         getLeft(), getTop(), getRight(), getBottom());
   }
 
