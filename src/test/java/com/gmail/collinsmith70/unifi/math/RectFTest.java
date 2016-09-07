@@ -196,11 +196,13 @@ public class RectFTest {
 
   @Test
   public void testEquals_Object() {
-    RectF rect1 = new RectF(0, 0, 0, 0);
-    RectF rect2 = new RectF(1, 1, 1, 1);
+    RectF rect1 = new RectF(0, 1, 2, 3);
+    RectF rect2 = new RectF(4, 5, 6, 7);
+    RectF rect3 = new RectF(4, 5, 6, 7);
 
     assertTrue(rect1.equals(rect1));
     assertTrue(rect2.equals(rect2));
+    assertTrue(rect2.equals(rect3));
     assertFalse(rect1.equals(rect2));
     assertFalse(rect2.equals(rect1));
     assertFalse(rect1.equals(null));
@@ -209,9 +211,9 @@ public class RectFTest {
 
   @Test
   public void testHashCode() {
-    RectF rect1 = new RectF(0, 0, 0, 0);
-    RectF rect2 = new RectF(1, 1, 1, 1);
-    RectF rect3 = new RectF(0, 0, 0, 0);
+    RectF rect1 = new RectF(0, 1, 2, 3);
+    RectF rect2 = new RectF(4, 5, 6, 7);
+    RectF rect3 = new RectF(0, 1, 2, 3);
 
     assertTrue(rect1.hashCode() == rect1.hashCode());
     assertTrue(rect1.hashCode() == rect3.hashCode());
