@@ -193,6 +193,15 @@ public class RectF {
     return new Rect((int) getLeft(), (int) getTop(), (int) getRight(), (int) getBottom());
   }
 
+  @CallSuper
+  public boolean equals(@Nullable Rect obj) {
+    if (obj == null) {
+      return false;
+    }
+    
+    return equals(obj.getLeft(), obj.getTop(), obj.getRight(), obj.getBottom());
+  }
+
   @Override
   @CallSuper
   public boolean equals(@Nullable Object obj) {

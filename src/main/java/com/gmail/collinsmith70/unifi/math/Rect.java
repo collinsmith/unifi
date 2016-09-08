@@ -149,6 +149,15 @@ public class Rect {
     return getLeft() == left && getTop() == top && getRight() == right && getBottom() == bottom;
   }
 
+  @CallSuper
+  public boolean equals(@Nullable RectF obj) {
+    if (obj == null) {
+      return false;
+    }
+    
+    return obj.equals(this);
+  }
+  
   @Override
   @CallSuper
   public boolean equals(@Nullable Object obj) {
