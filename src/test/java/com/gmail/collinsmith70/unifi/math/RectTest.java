@@ -180,11 +180,13 @@ public class RectTest {
 
   @Test
   public void testEquals_Object() {
-    Rect rect1 = new Rect(0, 0, 0, 0);
-    Rect rect2 = new Rect(1, 1, 1, 1);
+    Rect rect1 = new Rect(0, 1, 2, 3);
+    Rect rect2 = new Rect(4, 5, 6, 7);
+    Rect rect3 = new Rect(4, 5, 6, 7);
 
     assertTrue(rect1.equals(rect1));
     assertTrue(rect2.equals(rect2));
+    assertTrue(rect2.equals(rect3));
     assertFalse(rect1.equals(rect2));
     assertFalse(rect2.equals(rect1));
     assertFalse(rect1.equals(null));
@@ -193,9 +195,9 @@ public class RectTest {
 
   @Test
   public void testHashCode() {
-    Rect rect1 = new Rect(0, 0, 0, 0);
-    Rect rect2 = new Rect(1, 1, 1, 1);
-    Rect rect3 = new Rect(0, 0, 0, 0);
+    Rect rect1 = new Rect(0, 1, 2, 3);
+    Rect rect2 = new Rect(4, 5, 6, 7);
+    Rect rect3 = new Rect(0, 1, 2, 3);
 
     assertTrue(rect1.hashCode() == rect1.hashCode());
     assertTrue(rect1.hashCode() == rect3.hashCode());
