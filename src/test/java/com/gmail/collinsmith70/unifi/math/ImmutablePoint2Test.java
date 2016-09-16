@@ -22,13 +22,13 @@ public class ImmutablePoint2Test {
   
   @Test
   public void testImmutablePoint2_IntInt() {
-    int width, height;
+    int x, y;
     Point2 pt;
     for (int i = 0; i < data.length - 1; i++) {
-      width = data[i];
-      height = data[i + 1];
-      pt = ImmutablePoint2.newImmutablePoint(width, height);
-      assertTrue(pt.equals(width, height));
+      x = data[i];
+      y = data[i + 1];
+      pt = ImmutablePoint2.newImmutablePoint(x, y);
+      assertTrue(pt.equals(x, y));
     }
   }
   
