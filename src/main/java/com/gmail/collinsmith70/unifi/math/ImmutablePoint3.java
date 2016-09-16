@@ -4,11 +4,11 @@ import android.support.annotation.NonNull;
 
 public final class ImmutablePoint3 extends Point3 {
 
-  public static ImmutablePoint3 newImmutablePoint() {
+  public static ImmutablePoint3 newImmutablePoint3() {
     return new ImmutablePoint3();
   }
 
-  public static ImmutablePoint3 newImmutablePoint(int x, int y, int z) {
+  public static ImmutablePoint3 newImmutablePoint3(int x, int y, int z) {
     return new ImmutablePoint3(x, y, z);
   }
 

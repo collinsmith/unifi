@@ -16,7 +16,7 @@ public class ImmutablePoint2Test {
   
   @Test
   public void testImmutablePoint2() {
-    Point2 pt = ImmutablePoint2.newImmutablePoint();
+    Point2 pt = ImmutablePoint2.newImmutablePoint2();
     assertTrue(pt.equals(0, 0));
   }
   
@@ -27,7 +27,7 @@ public class ImmutablePoint2Test {
     for (int i = 0; i < data.length - 1; i++) {
       x = data[i];
       y = data[i + 1];
-      pt = ImmutablePoint2.newImmutablePoint(x, y);
+      pt = ImmutablePoint2.newImmutablePoint2(x, y);
       assertTrue(pt.equals(x, y));
     }
   }

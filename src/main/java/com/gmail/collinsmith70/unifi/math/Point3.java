@@ -9,7 +9,7 @@ import org.apache.commons.lang3.Validate;
 public class Point3 extends Point2 {
 
   @NonNull
-  static final Point3 ZERO = ImmutablePoint3.newImmutablePoint();
+  static final Point3 ZERO = ImmutablePoint3.newImmutablePoint3();
   
   private int z;
 

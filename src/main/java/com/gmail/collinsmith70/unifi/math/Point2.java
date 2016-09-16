@@ -9,7 +9,7 @@ import org.apache.commons.lang3.Validate;
 public class Point2 {
   
   @NonNull
-  static final Point2 ZERO = ImmutablePoint2.newImmutablePoint();
+  static final Point2 ZERO = ImmutablePoint2.newImmutablePoint2();
   
   private int x;
   private int y;

@@ -16,7 +16,7 @@ public class ImmutablePoint3Test {
   
   @Test
   public void testImmutablePoint3() {
-    Point3 pt = ImmutablePoint3.newImmutablePoint();
+    Point3 pt = ImmutablePoint3.newImmutablePoint3();
     assertTrue(pt.equals(0, 0, 0));
   }
   
@@ -28,7 +28,7 @@ public class ImmutablePoint3Test {
       x = data[i];
       y = data[i + 1];
       z = data[i + 2];
-      pt = ImmutablePoint3.newImmutablePoint(x, y, z);
+      pt = ImmutablePoint3.newImmutablePoint3(x, y, z);
       assertTrue(pt.equals(x, y, z));
     }
   }
