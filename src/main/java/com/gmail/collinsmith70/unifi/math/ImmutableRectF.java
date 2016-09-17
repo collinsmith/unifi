@@ -4,11 +4,11 @@ import android.support.annotation.NonNull;
 
 public final class ImmutableRectF extends RectF {
 
-  public static ImmutableRectF newImmutableRect() {
+  public static ImmutableRectF newImmutableRectF() {
     return new ImmutableRectF();
   }
 
-  public static ImmutableRectF newImmutableRect(float left, float top, float right, float bottom) {
+  public static ImmutableRectF newImmutableRectF(float left, float top, float right, float bottom) {
     return new ImmutableRectF(left, top, right, bottom);
   }
 

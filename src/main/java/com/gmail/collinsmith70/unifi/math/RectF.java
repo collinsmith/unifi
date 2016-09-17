@@ -9,7 +9,7 @@ import org.apache.commons.lang3.Validate;
 
 public class RectF {
 
-  public static final RectF ZERO = ImmutableRectF.newImmutableRect();
+  public static final RectF ZERO = ImmutableRectF.newImmutableRectF();
 
   private float left;
   private float top;
