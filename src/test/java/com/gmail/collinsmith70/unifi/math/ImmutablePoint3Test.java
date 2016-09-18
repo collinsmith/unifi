@@ -38,16 +38,16 @@ public class ImmutablePoint3Test {
   @Test
   public void testImmutablePoint3_Point3() {
     int x, y, z;
-    Point3 pt1, pt2;
+    Point3 src, pt;
     for (int i = 0; i < data.length - 2; i++) {
       x = data[i];
       y = data[i + 1];
       z = data[i + 2];
-      pt1 = new Point3(x, y, z);
-      pt2 = ImmutablePoint3.copyOf(pt1);
-      assertTrue(pt1.getX() == pt2.getX());
-      assertTrue(pt1.getY() == pt2.getY());
-      assertTrue(pt1.getZ() == pt2.getZ());
+      src = new Point3(x, y, z);
+      pt = ImmutablePoint3.copyOf(src);
+      assertTrue(pt.getX() == src.getX());
+      assertTrue(pt.getY() == src.getY());
+      assertTrue(pt.getZ() == src.getZ());
     }
   }
 
