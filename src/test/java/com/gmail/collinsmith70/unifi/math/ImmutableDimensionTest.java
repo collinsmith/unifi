@@ -15,7 +15,8 @@ public class ImmutableDimensionTest {
   @Test
   public void testImmutableDimension() {
     Dimension dim = ImmutableDimension.newImmutableDimension();
-    assertTrue(dim.equals(0, 0));
+    assertTrue(dim.getWidth() == 0);
+    assertTrue(dim.getHeight() == 0);
   }
   
   @Test
@@ -26,7 +27,8 @@ public class ImmutableDimensionTest {
       width = data[i];
       height = data[i + 1];
       dim = ImmutableDimension.newImmutableDimension(width, height);
-      assertTrue(dim.equals(width, height));
+      assertTrue(dim.getWidth() == width);
+      assertTrue(dim.getHeight() == height);
     }
   }
   
@@ -40,7 +42,8 @@ public class ImmutableDimensionTest {
       height = data[i + 1];
       src = new Dimension(width, height);
       dim = ImmutableDimension.copyOf(src);
-      assertTrue(dim.equals(src));
+      assertTrue(dim.getWidth() == src.getWidth());
+      assertTrue(dim.getHeight() == src.getHeight());
     }
   }
 
