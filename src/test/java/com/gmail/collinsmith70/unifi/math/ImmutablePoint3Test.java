@@ -57,7 +57,6 @@ public class ImmutablePoint3Test {
     for (int testCase : data) {
       try {
         pt.setX(testCase);
-        assertTrue(pt.getX() == testCase);
         fail("UnsupportedOperationException was not thrown!");
       } catch(UnsupportedOperationException e){
         // expected
@@ -71,7 +70,6 @@ public class ImmutablePoint3Test {
     for (int testCase : data) {
       try {
         pt.setY(testCase);
-        assertTrue(pt.getY() == testCase);
         fail("UnsupportedOperationException was not thrown!");
       } catch(UnsupportedOperationException e){
         // expected
@@ -85,7 +83,6 @@ public class ImmutablePoint3Test {
     for (int testCase : data) {
       try {
         pt.setZ(testCase);
-        assertTrue(pt.getZ() == testCase);
         fail("UnsupportedOperationException was not thrown!");
       } catch(UnsupportedOperationException e){
         // expected
