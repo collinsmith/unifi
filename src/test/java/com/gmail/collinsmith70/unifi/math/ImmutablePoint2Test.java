@@ -1,11 +1,9 @@
 package com.gmail.collinsmith70.unifi.math;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
-import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class ImmutablePoint2Test {
 
@@ -45,26 +43,31 @@ public class ImmutablePoint2Test {
     }
   }
 
-  @Rule
-  public final ExpectedException exception = ExpectedException.none();
-  
   @Test
   public void testSetX() {
-    exception.expect(UnsupportedOperationException.class);
     Point2 pt = ImmutablePoint2.ZERO;
     for (int testCase : data) {
-      pt.setX(testCase);
-      assertTrue(pt.getX() == testCase);
+      try {
+        pt.setX(testCase);
+        assertTrue(pt.getX() == testCase);
+        fail("UnsupportedOperationException was not thrown!");
+      } catch(UnsupportedOperationException e){
+        // expected
+      }
     }
   }
 
   @Test
   public void testSetY() {
-    exception.expect(UnsupportedOperationException.class);
     Point2 pt = ImmutablePoint2.ZERO;
     for (int testCase : data) {
-      pt.setY(testCase);
-      assertTrue(pt.getY() == testCase);
+      try {
+        pt.setY(testCase);
+        assertTrue(pt.getY() == testCase);
+        fail("UnsupportedOperationException was not thrown!");
+      } catch (UnsupportedOperationException e) {
+        // expected
+      }
     }
   }
 
