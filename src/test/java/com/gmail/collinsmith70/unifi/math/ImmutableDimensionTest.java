@@ -1,10 +1,9 @@
 package com.gmail.collinsmith70.unifi.math;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class ImmutableDimensionTest {
 
@@ -45,26 +44,29 @@ public class ImmutableDimensionTest {
     }
   }
 
-  @Rule
-  public final ExpectedException exception = ExpectedException.none();
-
   @Test
   public void testSetWidth() {
-    exception.expect(UnsupportedOperationException.class);
     Dimension dim = ImmutableDimension.ZERO;
     for (int testCase : data) {
-      dim.setWidth(testCase);
-      assertTrue(dim.getWidth() == testCase);
+      try {
+        dim.setWidth(testCase);
+        assertTrue(dim.getWidth() == testCase);
+        fail("UnsupportedOperationException was not thrown!");
+      } catch (UnsupportedOperationException e) {
+      }
     }
   }
 
   @Test
   public void testSetHeight() {
-    exception.expect(UnsupportedOperationException.class);
     Dimension dim = ImmutableDimension.ZERO;
     for (int testCase : data) {
-      dim.setHeight(testCase);
-      assertTrue(dim.getHeight() == testCase);
+      try {
+        dim.setHeight(testCase);
+        assertTrue(dim.getHeight() == testCase);
+        fail("UnsupportedOperationException was not thrown!");
+      } catch (UnsupportedOperationException e) {
+      }
     }
   }
 
