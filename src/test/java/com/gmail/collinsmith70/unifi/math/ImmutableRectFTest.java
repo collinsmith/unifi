@@ -1,8 +1,8 @@
 package com.gmail.collinsmith70.unifi.math;
 
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
 
 public class ImmutableRectFTest {
 
@@ -14,7 +14,10 @@ public class ImmutableRectFTest {
   @Test
   public void testImmutableRectF() {
     RectF rect = ImmutableRectF.newImmutableRectF();
-    assertTrue(rect.equals(0, 0, 0, 0));
+    assertTrue(rect.getLeft() == 0f);
+    assertTrue(rect.getTop() == 0f);
+    assertTrue(rect.getRight() == 0f);
+    assertTrue(rect.getBottom() == 0f);
   }
   
   @Test
@@ -27,7 +30,10 @@ public class ImmutableRectFTest {
       right = data[i + 2];
       bottom = data[i + 3];
       rect = ImmutableRectF.newImmutableRectF(left, top, right, bottom);
-      assertTrue(rect.equals(left, top, right, bottom));
+      assertTrue(rect.getLeft() == left);
+      assertTrue(rect.getTop() == top);
+      assertTrue(rect.getRight() == right);
+      assertTrue(rect.getBottom() == bottom);
     }
   }
   
@@ -43,7 +49,10 @@ public class ImmutableRectFTest {
       bottom = (int)data[i + 3];
       src = new Rect(left, top, right, bottom);
       rect = ImmutableRectF.copyOf(src);
-      assertTrue(rect.equals(src));
+      assertTrue(rect.getLeft() == src.getLeft());
+      assertTrue(rect.getTop() == src.getTop());
+      assertTrue(rect.getRight() == src.getRight());
+      assertTrue(rect.getBottom() == src.getBottom());
     }
   }
   
@@ -58,7 +67,10 @@ public class ImmutableRectFTest {
       bottom = data[i + 3];
       src = new RectF(left, top, right, bottom);
       rect = ImmutableRectF.copyOf(src);
-      assertTrue(rect.equals(src));
+      assertTrue(rect.getLeft() == src.getLeft());
+      assertTrue(rect.getTop() == src.getTop());
+      assertTrue(rect.getRight() == src.getRight());
+      assertTrue(rect.getBottom() == src.getBottom());
     }
   }
   
