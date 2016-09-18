@@ -15,7 +15,9 @@ public class ImmutablePoint3Test {
   @Test
   public void testImmutablePoint3() {
     Point3 pt = ImmutablePoint3.newImmutablePoint3();
-    assertTrue(pt.equals(0, 0, 0));
+    assertTrue(pt.getX() == 0);
+    assertTrue(pt.getY() == 0);
+    assertTrue(pt.getZ() == 0);
   }
   
   @Test
@@ -27,7 +29,9 @@ public class ImmutablePoint3Test {
       y = data[i + 1];
       z = data[i + 2];
       pt = ImmutablePoint3.newImmutablePoint3(x, y, z);
-      assertTrue(pt.equals(x, y, z));
+      assertTrue(pt.getX() == x);
+      assertTrue(pt.getY() == y);
+      assertTrue(pt.getZ() == z);
     }
   }
   
@@ -41,7 +45,9 @@ public class ImmutablePoint3Test {
       z = data[i + 2];
       pt1 = new Point3(x, y, z);
       pt2 = ImmutablePoint3.copyOf(pt1);
-      assertTrue(pt1.equals(pt2));
+      assertTrue(pt1.getX() == pt2.getX());
+      assertTrue(pt1.getY() == pt2.getY());
+      assertTrue(pt1.getZ() == pt2.getZ());
     }
   }
 
