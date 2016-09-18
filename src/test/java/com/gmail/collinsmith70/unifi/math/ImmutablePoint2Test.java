@@ -15,7 +15,8 @@ public class ImmutablePoint2Test {
   @Test
   public void testImmutablePoint2() {
     Point2 pt = ImmutablePoint2.newImmutablePoint2();
-    assertTrue(pt.equals(0, 0));
+    assertTrue(pt.getX() == 0);
+    assertTrue(pt.getY() == 0);
   }
   
   @Test
@@ -26,7 +27,8 @@ public class ImmutablePoint2Test {
       x = data[i];
       y = data[i + 1];
       pt = ImmutablePoint2.newImmutablePoint2(x, y);
-      assertTrue(pt.equals(x, y));
+      assertTrue(pt.getX() == x);
+      assertTrue(pt.getY() == y);
     }
   }
   
@@ -39,7 +41,8 @@ public class ImmutablePoint2Test {
       y = data[i + 1];
       pt1 = new Point2(x, y);
       pt2 = ImmutablePoint2.copyOf(pt1);
-      assertTrue(pt1.equals(pt2));
+      assertTrue(pt1.getX() == pt2.getX());
+      assertTrue(pt2.getY() == pt2.getY());
     }
   }
 
