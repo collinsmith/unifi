@@ -56,6 +56,7 @@ public class ImmutableDimensionTest {
         assertTrue(dim.getWidth() == testCase);
         fail("UnsupportedOperationException was not thrown!");
       } catch (UnsupportedOperationException e) {
+        // expected
       }
     }
   }
@@ -69,6 +70,7 @@ public class ImmutableDimensionTest {
         assertTrue(dim.getHeight() == testCase);
         fail("UnsupportedOperationException was not thrown!");
       } catch (UnsupportedOperationException e) {
+        // expected
       }
     }
   }
