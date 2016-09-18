@@ -35,14 +35,14 @@ public class ImmutablePoint2Test {
   @Test
   public void testImmutablePoint2_Point2() {
     int x, y;
-    Point2 pt1, pt2;
+    Point2 src, pt;
     for (int i = 0; i < data.length - 1; i++) {
       x = data[i];
       y = data[i + 1];
-      pt1 = new Point2(x, y);
-      pt2 = ImmutablePoint2.copyOf(pt1);
-      assertTrue(pt1.getX() == pt2.getX());
-      assertTrue(pt2.getY() == pt2.getY());
+      src = new Point2(x, y);
+      pt = ImmutablePoint2.copyOf(src);
+      assertTrue(pt.getX() == src.getX());
+      assertTrue(pt.getY() == src.getY());
     }
   }
 
