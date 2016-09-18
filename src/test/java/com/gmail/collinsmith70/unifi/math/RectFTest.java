@@ -1,12 +1,10 @@
 package com.gmail.collinsmith70.unifi.math;
 
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertTrue;
-
-import org.junit.Rule;
+import static org.junit.Assert.fail;
 
 public class RectFTest {
 
@@ -136,50 +134,80 @@ public class RectFTest {
     }
   }
 
-  @Rule
-  public final ExpectedException exception = ExpectedException.none();
-
   @Test
   public void testOnChange() {
     final String expectMessage = "RectF#onChange() called";
-    exception.expect(RuntimeException.class);
-    exception.expectMessage(expectMessage);
-    new RectF() {
-      @Override
-      protected void onChange() {
-        throw new RuntimeException(expectMessage);
-      }
-    }.setLeft(1);
-    new RectF() {
-      @Override
-      protected void onChange() {
-        throw new RuntimeException(expectMessage);
-      }
-    }.setTop(1);
-    new RectF() {
-      @Override
-      protected void onChange() {
-        throw new RuntimeException(expectMessage);
-      }
-    }.setRight(1);
-    new RectF() {
-      @Override
-      protected void onChange() {
-        throw new RuntimeException(expectMessage);
-      }
-    }.setBottom(1);
-    new RectF() {
-      @Override
-      protected void onChange() {
-        throw new RuntimeException(expectMessage);
-      }
-    }.set(1, 1, 1, 1);
-    new RectF() {
-      @Override
-      protected void onChange() {
-        throw new RuntimeException(expectMessage);
-      }
-    }.set(new RectF(1, 1, 1, 1));
+    try {
+      new RectF() {
+        @Override
+        protected void onChange() {
+          throw new RuntimeException(expectMessage);
+        }
+      }.setLeft(1);
+      fail("RuntimeException was not thrown!");
+    } catch (RuntimeException e) {
+      // expected
+    }
+
+    try {
+      new RectF() {
+        @Override
+        protected void onChange() {
+          throw new RuntimeException(expectMessage);
+        }
+      }.setTop(1);
+      fail("RuntimeException was not thrown!");
+    } catch (RuntimeException e) {
+      // expected
+    }
+
+    try {
+      new RectF() {
+        @Override
+        protected void onChange() {
+          throw new RuntimeException(expectMessage);
+        }
+      }.setRight(1);
+      fail("RuntimeException was not thrown!");
+    } catch (RuntimeException e) {
+      // expected
+    }
+
+    try {
+      new RectF() {
+        @Override
+        protected void onChange() {
+          throw new RuntimeException(expectMessage);
+        }
+      }.setBottom(1);
+      fail("RuntimeException was not thrown!");
+    } catch (RuntimeException e) {
+      // expected
+    }
+
+    try {
+      new RectF() {
+        @Override
+        protected void onChange() {
+          throw new RuntimeException(expectMessage);
+        }
+      }.set(1, 1, 1, 1);
+      fail("RuntimeException was not thrown!");
+    } catch (RuntimeException e) {
+      // expected
+    }
+
+    try {
+      new RectF() {
+        @Override
+        protected void onChange() {
+          throw new RuntimeException(expectMessage);
+        }
+      }.set(new RectF(1, 1, 1, 1));
+      fail("RuntimeException was not thrown!");
+    } catch (RuntimeException e) {
+      // expected
+    }
   }
 
   @Test
