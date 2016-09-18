@@ -53,7 +53,6 @@ public class ImmutableDimensionTest {
     for (int testCase : data) {
       try {
         dim.setWidth(testCase);
-        assertTrue(dim.getWidth() == testCase);
         fail("UnsupportedOperationException was not thrown!");
       } catch (UnsupportedOperationException e) {
         // expected
@@ -67,7 +66,6 @@ public class ImmutableDimensionTest {
     for (int testCase : data) {
       try {
         dim.setHeight(testCase);
-        assertTrue(dim.getHeight() == testCase);
         fail("UnsupportedOperationException was not thrown!");
       } catch (UnsupportedOperationException e) {
         // expected
