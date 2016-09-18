@@ -3,6 +3,7 @@ package com.gmail.collinsmith70.unifi.math;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class ImmutableRectTest {
 
@@ -52,6 +53,58 @@ public class ImmutableRectTest {
       assertTrue(rect.getTop() == src.getTop());
       assertTrue(rect.getRight() == src.getRight());
       assertTrue(rect.getBottom() == src.getBottom());
+    }
+  }
+
+  @Test
+  public void testSetLeft() {
+    Rect rect = ImmutableRect.ZERO;
+    for (int testCase : data) {
+      try {
+        rect.setLeft(testCase);
+        fail("UnsupportedOperationException was not thrown!");
+      } catch (UnsupportedOperationException e) {
+        // expected
+      }
+    }
+  }
+
+  @Test
+  public void testSetTop() {
+    Rect rect = ImmutableRect.ZERO;
+    for (int testCase : data) {
+      try {
+        rect.setTop(testCase);
+        fail("UnsupportedOperationException was not thrown!");
+      } catch (UnsupportedOperationException e) {
+        // expected
+      }
+    }
+  }
+
+  @Test
+  public void testSetRight() {
+    Rect rect = ImmutableRect.ZERO;
+    for (int testCase : data) {
+      try {
+        rect.setRight(testCase);
+        fail("UnsupportedOperationException was not thrown!");
+      } catch (UnsupportedOperationException e) {
+        // expected
+      }
+    }
+  }
+
+  @Test
+  public void testSetBottom() {
+    Rect rect = ImmutableRect.ZERO;
+    for (int testCase : data) {
+      try {
+        rect.setBottom(testCase);
+        fail("UnsupportedOperationException was not thrown!");
+      } catch (UnsupportedOperationException e) {
+        // expected
+      }
     }
   }
   
