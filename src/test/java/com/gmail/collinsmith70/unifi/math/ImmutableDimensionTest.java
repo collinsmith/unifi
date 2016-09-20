@@ -125,13 +125,6 @@ public class ImmutableDimensionTest {
     Dimension dim11 = ImmutableDimension.newImmutableDimension(0, 0);
     Dimension dim22 = ImmutableDimension.newImmutableDimension(1, 1);
 
-    assertTrue(dim1.equals(dim1));
-    assertTrue(dim2.equals(dim2));
-    assertFalse(dim1.equals(dim2));
-    assertFalse(dim2.equals(dim1));
-    assertFalse(dim1.equals(null));
-    assertFalse(dim2.equals(null));
-
     assertTrue(dim11.equals(dim11));
     assertTrue(dim1.equals(dim11));
     assertTrue(dim11.equals(dim1));
@@ -139,7 +132,9 @@ public class ImmutableDimensionTest {
     assertTrue(dim2.equals(dim22));
     assertTrue(dim22.equals(dim2));
     assertFalse(dim1.equals(dim22));
+    assertFalse(dim22.equals(dim1));
     assertFalse(dim2.equals(dim11));
+    assertFalse(dim11.equals(dim2));
     assertFalse(dim11.equals(null));
     assertFalse(dim22.equals(null));
   }
@@ -157,6 +152,7 @@ public class ImmutableDimensionTest {
     assertTrue(dim11.hashCode() == dim33.hashCode());
     assertTrue(dim11.hashCode() == dim1.hashCode());
     assertTrue(dim11.hashCode() == dim3.hashCode());
+    assertTrue(dim22.hashCode() == dim2.hashCode());
     assertFalse(dim1.hashCode() == dim22.hashCode());
     assertFalse(dim3.hashCode() == dim22.hashCode());
     assertFalse(dim11.hashCode() == dim22.hashCode());
