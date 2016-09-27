@@ -71,26 +71,26 @@ public class Color {
     return new com.badlogic.gdx.graphics.Color(color);
   }
 
-  public static int parseColor(String colorString) {
-    if (colorString.charAt(0) == '#') {
+  public static int parseColor(String str) {
+    if (str.charAt(0) == '#') {
       // Use a long to avoid rollovers on #ffXXXXXX
-      long color = Long.parseLong(colorString.substring(1), 16);
-      if (colorString.length() == 7) {
+      long color = Long.parseLong(str.substring(1), 16);
+      if (str.length() == 7) {
         // Set the alpha value
         color |= 0x00000000ff000000;
-      } else if (colorString.length() != 9) {
-        throw new IllegalArgumentException("Unknown color: " + colorString);
+      } else if (str.length() != 9) {
+        throw new IllegalArgumentException("Unknown color: " + str);
       }
 
       return (int) color;
     } else {
-      Integer color = colorNames.get(colorString.toLowerCase(Locale.ROOT));
+      Integer color = colorNames.get(str.toLowerCase(Locale.ROOT));
       if (color != null) {
         return color;
       }
     }
 
-    throw new IllegalArgumentException("Unknown color: " + colorString);
+    throw new IllegalArgumentException("Unknown color: " + str);
   }
 
 }
