@@ -49,7 +49,7 @@ public class Color {
   private final int argb8888;
 
   public Color() {
-    this(0);
+    this(0xFF000000);
   }
 
   public Color(@Unsigned int argb8888) {
