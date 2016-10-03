@@ -10,4 +10,9 @@ public class Paint {
   private Paint() {
   }
 
+  @NonNull
+  public Color getColor() {
+    return color;
+  }
+
 }
