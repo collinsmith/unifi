@@ -17,7 +17,7 @@ public class Paint {
     return color;
   }
 
-  protected void _setColor(@NonNull Color color) {
+  protected final void _setColor(@NonNull Color color) {
     Validate.isTrue(color != null, "color cannot be null");
     this.color = color;
   }
