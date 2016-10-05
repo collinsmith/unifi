@@ -26,4 +26,8 @@ public class Paint {
     _setColor(color);
   }
 
+  public static class Builder {
+
+  }
+
 }
