@@ -9,7 +9,7 @@ public class Paint {
   @NonNull
   private Color color;
 
-  private Paint() {
+  public Paint() {
   }
 
   @NonNull
