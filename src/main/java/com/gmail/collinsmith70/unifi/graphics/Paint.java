@@ -28,6 +28,17 @@ public class Paint {
 
   public static class Builder {
 
+    @NonNull
+    private final Paint paint;
+
+    public Builder() {
+      this.paint = new Paint();
+    }
+
+    public Paint build() {
+      return paint;
+    }
+
   }
 
 }
