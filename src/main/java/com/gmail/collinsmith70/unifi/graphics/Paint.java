@@ -26,7 +26,7 @@ public class Paint {
     _setColor(color);
   }
 
-  public static class Builder {
+  public static final class Builder {
 
     @NonNull
     private final Paint paint;
