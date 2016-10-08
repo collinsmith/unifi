@@ -39,6 +39,16 @@ public class Paint {
       return paint;
     }
 
+    @NonNull
+    public Color getColor() {
+      return paint.getColor();
+    }
+
+    public void setColor(@NonNull Color color) {
+      Validate.isTrue(color != null, "color cannot be null");
+      paint.setColor(color);
+    }
+
   }
 
 }
