@@ -26,6 +26,12 @@ public class Paint {
     _setColor(color);
   }
 
+  @Override
+  @NonNull
+  public String toString() {
+    return String.format("Paint: { color=%s }", color);
+  }
+
   public static final class Builder {
 
     @NonNull
