@@ -61,9 +61,9 @@ public class RectTests {
 
         @Test
         public void non_empty() {
-          Rect r = new Rect(0, 0, 1, 1);
+          Rect r = new Rect(PRIMES[0], PRIMES[1], PRIMES[2], PRIMES[3]);
           if (output) System.out.println("r:" + r);
-          Assert.assertTrue(r.equals(0, 0, 1, 1));
+          Assert.assertTrue(r.equals(PRIMES[0], PRIMES[1], PRIMES[2], PRIMES[3]));
         }
 
       }
