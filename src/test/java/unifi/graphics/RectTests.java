@@ -84,7 +84,6 @@ public class RectTests {
           if (output) System.out.println("src:" + src);
           Rect r = new Rect(src);
           if (output) System.out.println("r:" + src);
-          Assert.assertNotSame(src, r);
           Assert.assertEquals(src, r);
         }
 
