@@ -553,6 +553,96 @@ public class RectTests {
   }
 
   @RunWith(Enclosed.class)
+  public static class onChange {
+
+    public static class positive_tests {
+
+      @Test
+      public void onChange() {
+        Rect r = new Rect();
+        r.onChange();
+      }
+
+    }
+
+  }
+
+  @RunWith(Enclosed.class)
+  public static class equals {
+
+    @RunWith(Enclosed.class)
+    public static class equals_int_int_int_int {
+
+      public static class positive_tests {
+
+        @Test
+        public void _true() {
+          Rect r = new Rect(0, 0, 0, 0);
+          if (output) System.out.println("r:" + r);
+          Assert.assertTrue(r.equals(0, 0, 0, 0));
+        }
+
+        @Test
+        public void _false() {
+          Rect r = new Rect(0, 0, 0, 0);
+          if (output) System.out.println("r:" + r);
+          Assert.assertFalse(r.equals(1, 0, 0, 0));
+          Assert.assertFalse(r.equals(0, 1, 0, 0));
+          Assert.assertFalse(r.equals(0, 0, 1, 0));
+          Assert.assertFalse(r.equals(0, 0, 0, 1));
+        }
+
+      }
+
+    }
+
+    @RunWith(Enclosed.class)
+    public static class equals_Object {
+
+      public static class positive_tests {
+
+        @Test
+        public void reflexive() {
+          Rect x = new Rect(0, 0, 0, 0);
+          Assert.assertTrue(x.equals(x));
+          Assert.assertEquals(x.hashCode(), x.hashCode());
+        }
+
+        @Test
+        public void symmetric() {
+          Rect x = new Rect(0, 0, 0, 0);
+          Rect y = new Rect(0, 0, 0, 0);
+          Assert.assertTrue(x.equals(y) && y.equals(x));
+          Assert.assertEquals(x.hashCode(), y.hashCode());
+        }
+
+        @Test
+        public void transitive() {
+          Rect x = new Rect(0, 0, 0, 0);
+          Rect y = new Rect(0, 0, 0, 0);
+          Rect z = new Rect(0, 0, 0, 0);
+          Assert.assertTrue(x.equals(y) && y.equals(z) && x.equals(z));
+        }
+
+        @Test
+        public void nullity() {
+          Rect x = new Rect(0, 0, 0, 0);
+          Assert.assertFalse(x.equals(null));
+        }
+
+        @Test
+        public void type() {
+          Rect x = new Rect(0, 0, 0, 0);
+          Assert.assertFalse(x.equals(new Object()));
+        }
+
+      }
+
+    }
+
+  }
+
+  @RunWith(Enclosed.class)
   public static class toString {
 
     public static class positive_tests {
