@@ -127,7 +127,15 @@ public class Rect {
   }
 
   public boolean isEmpty() {
-    return getLeft() == getRight() && getTop() == getBottom();
+    return getLeft() <= getRight() && getTop() <= getBottom();
+  }
+
+  public int getWidth() {
+    return getRight() - getLeft();
+  }
+
+  public int getHeight() {
+    return getBottom() - getTop();
   }
 
   public final boolean equals(int left, int top, int right, int bottom) {
