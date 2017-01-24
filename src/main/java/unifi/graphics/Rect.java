@@ -8,6 +8,8 @@ import javax.json.Json;
 
 public class Rect {
 
+  public static final Rect ZERO = ImmutableRect.newImmutableRect();
+
   private int left;
   private int top;
   private int right;
