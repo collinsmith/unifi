@@ -79,7 +79,7 @@ public class RectTests {
       public static class positive_tests {
 
         @Test
-        public void non_null() throws NoSuchFieldException {
+        public void non_null() {
           Rect src = new Rect(PRIMES[0], PRIMES[1], PRIMES[2], PRIMES[3]);
           if (output) System.out.println("src:" + src);
           Rect r = new Rect(src);
@@ -369,7 +369,7 @@ public class RectTests {
         }
 
         @Test
-        public void changed() throws NoSuchFieldException {
+        public void changed() {
           final boolean[] changed = {false};
           final int[] calls = {0};
           Rect src = new Rect(0, 0, 1, 1);
