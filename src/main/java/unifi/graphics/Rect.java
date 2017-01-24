@@ -129,7 +129,7 @@ public class Rect {
   }
 
   public boolean isEmpty() {
-    return getLeft() <= getRight() && getTop() <= getBottom();
+    return getLeft() >= getRight() && getTop() >= getBottom();
   }
 
   public int getWidth() {
