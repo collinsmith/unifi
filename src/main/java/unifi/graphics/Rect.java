@@ -25,8 +25,7 @@ public class Rect {
     _set(src); // Validates @NonNull
   }
 
-  protected void onChange() {
-  }
+  protected void onChange() {}
 
   public int getLeft() {
     return left;
