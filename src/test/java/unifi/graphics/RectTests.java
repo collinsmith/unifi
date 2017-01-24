@@ -53,13 +53,6 @@ public class RectTests {
       public static class positive_tests {
 
         @Test
-        public void empty() {
-          Rect r = new Rect(0, 0, 0, 0);
-          if (output) System.out.println("r:" + r);
-          Assert.assertTrue(r.equals(0, 0, 0, 0));
-        }
-
-        @Test
         public void non_empty() {
           Rect r = new Rect(PRIMES[0], PRIMES[1], PRIMES[2], PRIMES[3]);
           if (output) System.out.println("r:" + r);
