@@ -76,4 +76,10 @@ public final class ImmutableRectF extends RectF {
     throw new UnsupportedOperationException();
   }
 
+  @Deprecated
+  @Override
+  public void set(@NonNull Rect src) {
+    throw new UnsupportedOperationException();
+  }
+
 }
