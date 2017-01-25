@@ -6,90 +6,94 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import javax.json.Json;
 
-public class Rect {
+public class RectF {
 
-  public static final Rect ZERO = ImmutableRect.newImmutableRect();
+  public static final RectF ZERO = ImmutableRectF.newImmutableRect();
 
-  private int left;
-  private int top;
-  private int right;
-  private int bottom;
+  private float left;
+  private float top;
+  private float right;
+  private float bottom;
 
-  public Rect() {
+  public RectF() {
     this(0, 0, 0, 0);
   }
 
-  public Rect(int left, int top, int right, int bottom) {
+  public RectF(float left, float top, float right, float bottom) {
     _set(left, top, right, bottom);
   }
 
-  public Rect(@NonNull Rect src) {
+  public RectF(@NonNull RectF src) {
+    _set(src); // Validates @NonNull
+  }
+
+  public RectF(@NonNull Rect src) {
     _set(src); // Validates @NonNull
   }
 
   protected void onChange() {}
 
-  public int getLeft() {
+  public float getLeft() {
     return left;
   }
 
-  private void _setLeft(int left) {
+  private void _setLeft(float left) {
     this.left = left;
   }
 
-  public void setLeft(int left) {
+  public void setLeft(float left) {
     if (getLeft() != left) {
       _setLeft(left);
       onChange();
     }
   }
 
-  public int getTop() {
+  public float getTop() {
     return top;
   }
 
-  private void _setTop(int top) {
+  private void _setTop(float top) {
     this.top = top;
   }
 
-  public void setTop(int top) {
+  public void setTop(float top) {
     if (getTop() != top) {
       _setTop(top);
       onChange();
     }
   }
 
-  public int getRight() {
+  public float getRight() {
     return right;
   }
 
-  private void _setRight(int right) {
+  private void _setRight(float right) {
     this.right = right;
   }
 
-  public void setRight(int right) {
+  public void setRight(float right) {
     if (getRight() != right) {
       _setRight(right);
       onChange();
     }
   }
 
-  public int getBottom() {
+  public float getBottom() {
     return bottom;
   }
 
-  private void _setBottom(int bottom) {
+  private void _setBottom(float bottom) {
     this.bottom = bottom;
   }
 
-  public void setBottom(int bottom) {
+  public void setBottom(float bottom) {
     if (getBottom() != bottom) {
       _setBottom(bottom);
       onChange();
     }
   }
 
-  private void _set(int left, int top, int right, int bottom) {
+  private void _set(float left, float top, float right, float bottom) {
     Validate.isTrue(left <= right, "left (%d) must be <= right (%d)", left, right);
     Validate.isTrue(top <= bottom, "top (%d) must be <= bottom (%d)", top, bottom);
     _setLeft(left);
@@ -98,11 +102,19 @@ public class Rect {
     _setBottom(bottom);
   }
 
-  public void set(int left, int top, int right, int bottom) {
+  public void set(float left, float top, float right, float bottom) {
     if (!equals(left, top, right, bottom)) {
       _set(left, top, right, bottom);
       onChange();
     }
+  }
+
+  private void _set(@NonNull RectF src) {
+    Validate.isTrue(src != null, "source RectF cannot be null");
+    _setLeft(src.getLeft());
+    _setTop(src.getTop());
+    _setRight(src.getRight());
+    _setBottom(src.getBottom());
   }
 
   private void _set(@NonNull Rect src) {
@@ -113,6 +125,13 @@ public class Rect {
     _setBottom(src.getBottom());
   }
 
+  public void set(@NonNull RectF src) {
+    if (!equals(src)) { // Validates @NonNull
+      _set(src);
+      onChange();
+    }
+  }
+
   public void set(@NonNull Rect src) {
     if (!equals(src)) { // Validates @NonNull
       _set(src);
@@ -120,7 +139,7 @@ public class Rect {
     }
   }
 
-  public final void setEmpty(int length) {
+  public final void setEmpty(float length) {
     set(length, length, length, length);
   }
 
@@ -132,15 +151,15 @@ public class Rect {
     return getLeft() >= getRight() && getTop() >= getBottom();
   }
 
-  public int getWidth() {
+  public float getWidth() {
     return getRight() - getLeft();
   }
 
-  public int getHeight() {
+  public float getHeight() {
     return getBottom() - getTop();
   }
 
-  public final boolean equals(int left, int top, int right, int bottom) {
+  public final boolean equals(float left, float top, float right, float bottom) {
     return getLeft() == left
         && getTop() == top
         && getRight() == right
@@ -153,29 +172,36 @@ public class Rect {
       return false;
     } else if (obj == this) {
       return true;
-    } else if (obj instanceof RectF) {
-      RectF other = (RectF) obj;
-      return other.equals(this);
-    } else if (!(obj instanceof Rect)) {
+    } else if (obj instanceof Rect) {
+      Rect other = (Rect) obj;
+      return equals(other.getLeft(), other.getTop(), other.getRight(), other.getBottom());
+    } else if (!(obj instanceof RectF)) {
       return false;
     }
 
-    Rect other = (Rect) obj;
+    RectF other = (RectF) obj;
     return equals(other.getLeft(), other.getTop(), other.getRight(), other.getBottom());
-  }
-
-  static int hashCode(int left, int top, int right, int bottom) {
-    int result = 17;
-    result = 31 * result + left;
-    result = 31 * result + top;
-    result = 31 * result + right;
-    result = 31 * result + bottom;
-    return result;
   }
 
   @Override
   public int hashCode() {
-    return hashCode(getLeft(), getTop(), getRight(), getBottom());
+    final float left = getLeft();
+    final float top = getTop();
+    final float right = getRight();
+    final float bottom = getBottom();
+    if (left % 1.0f == 0.0f
+        && top % 1.0f == 0.0f
+        && right % 1.0f == 0.0f
+        && bottom % 1.0f == 0.0f) {
+      return Rect.hashCode((int) left, (int) top, (int) right, (int) bottom);
+    }
+
+    int result = 17;
+    result = 31 * result + Float.floatToIntBits(left);
+    result = 31 * result + Float.floatToIntBits(top);
+    result = 31 * result + Float.floatToIntBits(right);
+    result = 31 * result + Float.floatToIntBits(bottom);
+    return result;
   }
 
   @Override
@@ -187,11 +213,6 @@ public class Rect {
         .add("right", getRight())
         .add("bottom", getBottom())
         .build().toString();
-  }
-
-  @NonNull
-  public final RectF toRectF() {
-    return new RectF(this);
   }
 
 }

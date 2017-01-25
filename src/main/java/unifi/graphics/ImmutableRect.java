@@ -4,14 +4,17 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 public final class ImmutableRect extends Rect {
 
+  @NonNull
   public static ImmutableRect newImmutableRect() {
     return new ImmutableRect();
   }
 
+  @NonNull
   public static ImmutableRect newImmutableRect(int left, int top, int right, int bottom) {
     return new ImmutableRect(left, top, right, bottom);
   }
 
+  @NonNull
   public static ImmutableRect copyOf(@NonNull Rect src) {
     return new ImmutableRect(src); // Validates @NonNull
   }
