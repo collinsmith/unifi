@@ -19,6 +19,11 @@ public final class ImmutableRectF extends RectF {
   }
 
   @NonNull
+  public static ImmutableRectF copyOf(@NonNull Rect src) {
+    return new ImmutableRectF(src); // Validates @NonNull
+  }
+
+  @NonNull
   private ImmutableRectF() {
     super();
   }
@@ -28,6 +33,10 @@ public final class ImmutableRectF extends RectF {
   }
 
   private ImmutableRectF(@NonNull RectF src) {
+    super(src); // Validates @NonNull
+  }
+
+  private ImmutableRectF(@NonNull Rect src) {
     super(src); // Validates @NonNull
   }
 

@@ -191,7 +191,7 @@ public class Rect {
 
   @NonNull
   public final RectF toRectF() {
-    return new RectF(this);
+    return ImmutableRectF.copyOf(this);
   }
 
 }
