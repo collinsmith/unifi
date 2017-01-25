@@ -8,7 +8,7 @@ import javax.json.Json;
 
 public class RectF {
 
-  public static final RectF ZERO = ImmutableRectF.newImmutableRect();
+  public static final RectF ZERO = ImmutableRectF.newImmutableRectF();
 
   private float left;
   private float top;
