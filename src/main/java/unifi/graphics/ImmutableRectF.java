@@ -23,7 +23,6 @@ public final class ImmutableRectF extends RectF {
     return new ImmutableRectF(src); // Validates @NonNull
   }
 
-  @NonNull
   private ImmutableRectF() {
     super();
   }
