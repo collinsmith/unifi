@@ -418,6 +418,8 @@ public class RectTests {
           if (output) System.out.println("r:" + r);
           Assert.assertTrue(r.equals(0, 0, 0, 0));
           Assert.assertTrue(r.isEmpty());
+          Assert.assertEquals(0, r.getWidth());
+          Assert.assertEquals(0, r.getHeight());
         }
 
         @Test
@@ -439,6 +441,8 @@ public class RectTests {
           Assert.assertTrue(changed[0]);
           Assert.assertEquals(1, calls[0]);
           Assert.assertTrue(r.isEmpty());
+          Assert.assertEquals(0, r.getWidth());
+          Assert.assertEquals(0, r.getHeight());
         }
 
         @Test
@@ -455,6 +459,8 @@ public class RectTests {
 
           if (output) System.out.println("r:" + r);
           final boolean initialIsEmpty = r.isEmpty();
+          Assert.assertEquals(1, r.getWidth());
+          Assert.assertEquals(1, r.getHeight());
           r.setEmpty();
           if (output) System.out.println("r:" + r);
           Assert.assertTrue(r.equals(0, 0, 0, 0));
@@ -462,6 +468,8 @@ public class RectTests {
           Assert.assertEquals(1, calls[0]);
           final boolean isEmpty = r.isEmpty();
           Assert.assertTrue(isEmpty);
+          Assert.assertEquals(0, r.getWidth());
+          Assert.assertEquals(0, r.getHeight());
           Assert.assertNotEquals(initialIsEmpty, isEmpty);
         }
         
@@ -489,6 +497,8 @@ public class RectTests {
           if (output) System.out.println("r:" + r);
           Assert.assertTrue(r.equals(testValue, testValue, testValue, testValue));
           Assert.assertTrue(r.isEmpty());
+          Assert.assertEquals(0, r.getWidth());
+          Assert.assertEquals(0, r.getHeight());
         }
 
         @Test
@@ -511,6 +521,8 @@ public class RectTests {
           Assert.assertTrue(changed[0]);
           Assert.assertEquals(1, calls[0]);
           Assert.assertTrue(r.isEmpty());
+          Assert.assertEquals(0, r.getWidth());
+          Assert.assertEquals(0, r.getHeight());
         }
         
         @Test
@@ -527,6 +539,8 @@ public class RectTests {
 
           if (output) System.out.println("r:" + r);
           final boolean initialIsEmpty = r.isEmpty();
+          Assert.assertEquals(1, r.getWidth());
+          Assert.assertEquals(1, r.getHeight());
           final int testValue = 1;
           r.setEmpty(testValue);
           if (output) System.out.println("r:" + r);
@@ -535,6 +549,8 @@ public class RectTests {
           Assert.assertEquals(1, calls[0]);
           final boolean isEmpty = r.isEmpty();
           Assert.assertTrue(isEmpty);
+          Assert.assertEquals(0, r.getWidth());
+          Assert.assertEquals(0, r.getHeight());
           Assert.assertNotEquals(initialIsEmpty, isEmpty);
         }
 
