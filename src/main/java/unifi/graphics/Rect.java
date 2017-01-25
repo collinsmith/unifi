@@ -194,4 +194,11 @@ public class Rect {
     return ImmutableRectF.copyOf(this);
   }
 
+  @NonNull
+  public final RectF toRectF(@NonNull RectF dst) {
+    Validate.isTrue(dst != null, "destination RectF cannot be null");
+    dst.set(this);
+    return dst;
+  }
+
 }

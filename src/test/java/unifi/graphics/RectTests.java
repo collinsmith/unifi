@@ -679,17 +679,58 @@ public class RectTests {
   @RunWith(Enclosed.class)
   public static class toRectF {
 
-    public static class positive_tests {
+    @RunWith(Enclosed.class)
+    public static class toRectF_ {
 
-      @Test
-      public void equality() {
-        Rect r1 = new Rect(PRIMES[0], PRIMES[1], PRIMES[2], PRIMES[3]);
-        if (output) System.out.println("r1:" + r1);
-        RectF r2 = r1.toRectF();
-        if (output) System.out.println("r2:" + r2);
-        Assert.assertNotNull(r2);
-        Assert.assertEquals(r1, r2);
-        Assert.assertEquals(r1.hashCode(), r2.hashCode());
+      public static class positive_tests {
+
+        @Test
+        public void equality() {
+          Rect r1 = new Rect(PRIMES[0], PRIMES[1], PRIMES[2], PRIMES[3]);
+          if (output) System.out.println("r1:" + r1);
+          RectF r2 = r1.toRectF();
+          if (output) System.out.println("r2:" + r2);
+          Assert.assertNotNull(r2);
+          Assert.assertEquals(r1, r2);
+          Assert.assertEquals(r1.hashCode(), r2.hashCode());
+        }
+
+      }
+
+    }
+
+    @RunWith(Enclosed.class)
+    public static class toRectF_RectF {
+
+      public static class negative_tests {
+
+        @Test(expected = IllegalArgumentException.class)
+        public void fails_null() {
+          Rect r = new Rect(PRIMES[0], PRIMES[1], PRIMES[2], PRIMES[3]);
+          RectF dst = null;
+          if (output) System.out.println("r:" + r);
+          if (output) System.out.println("dst:" + dst);
+          RectF result = r.toRectF(dst);
+          if (output) System.out.println("result:" + result);
+        }
+
+      }
+
+      public static class positive_tests {
+
+        @Test
+        public void equality() {
+          Rect r = new Rect(PRIMES[0], PRIMES[1], PRIMES[2], PRIMES[3]);
+          RectF dst = new RectF();
+          if (output) System.out.println("r:" + r);
+          if (output) System.out.println("dst:" + dst);
+          RectF result = r.toRectF(dst);
+          if (output) System.out.println("dst:" + dst);
+          Assert.assertNotNull(result);
+          Assert.assertEquals(r, result);
+          Assert.assertSame(dst, result);
+        }
+
       }
 
     }
