@@ -477,7 +477,7 @@ public class Point2FTests {
           if (output) System.out.println("p:" + p);
           if (output) System.out.println("dst:" + dst);
           Point2 result = p.toPoint2(dst);
-          if (output) System.out.println("dst:" + dst);
+          if (output) System.out.println("result:" + dst);
           Assert.assertNotNull(result);
           Assert.assertSame(dst, result);
         }
