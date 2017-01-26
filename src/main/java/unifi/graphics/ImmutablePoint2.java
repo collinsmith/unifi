@@ -55,4 +55,48 @@ public final class ImmutablePoint2 extends Point2 {
     throw new UnsupportedOperationException();
   }
 
+  @Deprecated
+  @Override
+  public @NonNull Point2 add(@NonNull Point2 src) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public @NonNull Point2 add(@NonNull Point2 src, @NonNull Point2 dst) {
+    if (dst == this) {
+      throw new UnsupportedOperationException();
+    }
+
+    return super.add(src, dst);
+  }
+
+  @Deprecated
+  @Override
+  public @NonNull Point2 subtract(@NonNull Point2 src) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public @NonNull Point2 subtract(@NonNull Point2 src, @NonNull Point2 dst) {
+    if (dst == this) {
+      throw new UnsupportedOperationException();
+    }
+
+    return super.subtract(src, dst);
+  }
+
+  @Deprecated
+  @Override
+  public @NonNull Point2 scale(double scalar) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public @NonNull Point2 scale(double scalar, @NonNull Point2 dst) {
+    if (dst == this) {
+      throw new UnsupportedOperationException();
+    }
+
+    return super.scale(scalar, dst);
+  }
 }
