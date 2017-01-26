@@ -736,7 +736,7 @@ public class RectFTests {
 
         @Test
         public void Rect() {
-          RectF r1 = new RectF(1, 1, 1, 1);
+          Rect r1 = new Rect(1, 1, 1, 1);
           RectF r2 = new RectF(1.0f, 1.0f, 1.0f, 1.0f);
           Assert.assertEquals(r1, r2);
           Assert.assertEquals(r1.hashCode(), r2.hashCode());
