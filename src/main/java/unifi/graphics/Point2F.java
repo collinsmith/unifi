@@ -110,7 +110,7 @@ public class Point2F {
       return true;
     } else if (obj instanceof Point2) {
       Point2 other = (Point2) obj;
-      return equals(other.getY(), other.getX());
+      return equals(other.getX(), other.getY());
     } else if (!(obj instanceof Point2F)) {
       return false;
     }
