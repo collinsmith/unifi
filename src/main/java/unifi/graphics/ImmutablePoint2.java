@@ -16,7 +16,7 @@ public final class ImmutablePoint2 extends Point2 {
 
   @NonNull
   public static ImmutablePoint2 copyOf(@NonNull Point2 src) {
-    return new ImmutablePoint2(src);
+    return new ImmutablePoint2(src); // Validates @NonNull
   }
 
   private ImmutablePoint2() {
@@ -28,7 +28,7 @@ public final class ImmutablePoint2 extends Point2 {
   }
 
   private ImmutablePoint2(@NonNull Point2 src) {
-    super(src);
+    super(src); // Validates @NonNull
   }
 
   @Deprecated

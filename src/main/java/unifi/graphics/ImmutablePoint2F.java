@@ -16,12 +16,12 @@ public final class ImmutablePoint2F extends Point2F {
 
   @NonNull
   public static ImmutablePoint2F copyOf(@NonNull Point2F src) {
-    return new ImmutablePoint2F(src);
+    return new ImmutablePoint2F(src); // Validates @NonNull
   }
 
   @NonNull
   public static ImmutablePoint2F copyOf(@NonNull Point2 src) {
-    return new ImmutablePoint2F(src);
+    return new ImmutablePoint2F(src); // Validates @NonNull
   }
 
   private ImmutablePoint2F() {
@@ -33,11 +33,11 @@ public final class ImmutablePoint2F extends Point2F {
   }
 
   private ImmutablePoint2F(@NonNull Point2F src) {
-    super(src);
+    super(src); // Validates @NonNull
   }
 
   private ImmutablePoint2F(@NonNull Point2 src) {
-    super(src);
+    super(src); // Validates @NonNull
   }
 
   @Deprecated
