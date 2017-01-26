@@ -15,7 +15,7 @@ public class ImmutableDimension extends Dimension {
   }
 
   @NonNull
-  public static ImmutableDimension copyOf(@NonNull ImmutableDimension src) {
+  public static ImmutableDimension copyOf(@NonNull Dimension src) {
     return new ImmutableDimension(src); // Validates @NonNull
   }
 
