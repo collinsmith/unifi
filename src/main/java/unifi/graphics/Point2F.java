@@ -98,6 +98,85 @@ public class Point2F {
     }
   }
 
+  @NonNull
+  public final Point2F add(@NonNull Point2F src) {
+    return add(src, this); // Validates @NonNull
+  }
+
+  @NonNull
+  public Point2F add(@NonNull Point2F src, @NonNull Point2F dst) {
+    Validate.isTrue(src != null, "source Point2F cannot be null");
+    Validate.isTrue(dst != null, "destination Point2F cannot be null");
+    dst.set(getX() + src.getX(), getY() + src.getY());
+    return dst;
+  }
+
+  @NonNull
+  public final Point2F add(@NonNull Point2 src) {
+    return add(src, this); // Validates @NonNull
+  }
+
+  @NonNull
+  public Point2F add(@NonNull Point2 src, @NonNull Point2F dst) {
+    Validate.isTrue(src != null, "source Point2 cannot be null");
+    Validate.isTrue(dst != null, "destination Point2F cannot be null");
+    dst.set(getX() + src.getX(), getY() + src.getY());
+    return dst;
+  }
+
+  @NonNull
+  public final Point2F subtract(@NonNull Point2F src) {
+    return subtract(src, this);
+  }
+
+  @NonNull
+  public Point2F subtract(@NonNull Point2F src, @NonNull Point2F dst) {
+    Validate.isTrue(src != null, "source Point2F cannot be null");
+    Validate.isTrue(dst != null, "destination Point2F cannot be null");
+    dst.set(getX() - src.getX(), getY() - src.getY());
+    return dst;
+  }
+
+  @NonNull
+  public final Point2F subtract(@NonNull Point2 src) {
+    return subtract(src, this); // Validates @NonNull
+  }
+
+  @NonNull
+  public Point2F subtract(@NonNull Point2 src, @NonNull Point2F dst) {
+    Validate.isTrue(src != null, "source Point2 cannot be null");
+    Validate.isTrue(dst != null, "destination Point2F cannot be null");
+    dst.set(getX() - src.getX(), getY() - src.getY());
+    return dst;
+  }
+
+  @NonNull
+  public final Point2F scale(double scalar) {
+    return scale(scalar, this);
+  }
+
+  @NonNull
+  public Point2F scale(double scalar, @NonNull Point2F dst) {
+    Validate.isTrue(dst != null, "destination Point2F cannot be null");
+    if (scalar != 1.0 || dst != this) {
+      dst.set((int) (getX() * scalar), (int) (getY() * scalar));
+    }
+
+    return dst;
+  }
+
+  @NonNull
+  public final Point2 toPoint2() {
+    return ImmutablePoint2.newImmutablePoint2((int) getX(), (int) getY());
+  }
+
+  @NonNull
+  public final Point2 toPoint2(@NonNull Point2 dst) {
+    Validate.isTrue(dst != null, "destination Point2 cannot be null");
+    dst.set((int) getX(), (int) getY());
+    return dst;
+  }
+
   public final boolean equals(float x, float y) {
     return getX() == x && getY() == y;
   }
@@ -141,4 +220,5 @@ public class Point2F {
         .add("y", getY())
         .build().toString();
   }
+
 }
