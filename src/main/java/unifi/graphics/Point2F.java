@@ -99,7 +99,7 @@ public class Point2F {
   }
 
   @NonNull
-  public final Point2F add(@NonNull Point2F src) {
+  public Point2F add(@NonNull Point2F src) {
     return add(src, this); // Validates @NonNull
   }
 
@@ -112,7 +112,7 @@ public class Point2F {
   }
 
   @NonNull
-  public final Point2F add(@NonNull Point2 src) {
+  public Point2F add(@NonNull Point2 src) {
     return add(src, this); // Validates @NonNull
   }
 
@@ -125,7 +125,7 @@ public class Point2F {
   }
 
   @NonNull
-  public final Point2F subtract(@NonNull Point2F src) {
+  public Point2F subtract(@NonNull Point2F src) {
     return subtract(src, this);
   }
 
@@ -138,7 +138,7 @@ public class Point2F {
   }
 
   @NonNull
-  public final Point2F subtract(@NonNull Point2 src) {
+  public Point2F subtract(@NonNull Point2 src) {
     return subtract(src, this); // Validates @NonNull
   }
 
@@ -151,7 +151,7 @@ public class Point2F {
   }
 
   @NonNull
-  public final Point2F scale(double scalar) {
+  public Point2F scale(double scalar) {
     return scale(scalar, this);
   }
 

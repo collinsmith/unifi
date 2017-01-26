@@ -70,4 +70,79 @@ public final class ImmutablePoint2F extends Point2F {
     throw new UnsupportedOperationException();
   }
 
+  @Deprecated
+  @Override
+  public @NonNull Point2F add(@NonNull Point2F src) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public @NonNull Point2F add(@NonNull Point2F src, @NonNull Point2F dst) {
+    if (dst == this) {
+      throw new UnsupportedOperationException();
+    }
+
+    return super.add(src, dst);
+  }
+
+  @Deprecated
+  @Override
+  public @NonNull Point2F add(@NonNull Point2 src) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public @NonNull Point2F add(@NonNull Point2 src, @NonNull Point2F dst) {
+    if (dst == this) {
+      throw new UnsupportedOperationException();
+    }
+
+    return super.add(src, dst);
+  }
+
+  @Deprecated
+  @Override
+  public @NonNull Point2F subtract(@NonNull Point2F src) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public @NonNull Point2F subtract(@NonNull Point2F src, @NonNull Point2F dst) {
+    if (dst == this) {
+      throw new UnsupportedOperationException();
+    }
+
+    return super.subtract(src, dst);
+  }
+
+  @Deprecated
+  @Override
+  public @NonNull Point2F subtract(@NonNull Point2 src) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public @NonNull Point2F subtract(@NonNull Point2 src, @NonNull Point2F dst) {
+    if (dst == this) {
+      throw new UnsupportedOperationException();
+    }
+
+    return super.subtract(src, dst);
+  }
+
+  @Deprecated
+  @Override
+  public @NonNull Point2F scale(double scalar) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public @NonNull Point2F scale(double scalar, @NonNull Point2F dst) {
+    if (dst == this) {
+      throw new UnsupportedOperationException();
+    }
+
+    return super.scale(scalar, dst);
+  }
+
 }
