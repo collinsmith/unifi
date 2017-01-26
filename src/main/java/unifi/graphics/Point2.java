@@ -22,7 +22,8 @@ public class Point2 {
   }
 
   public Point2(@NonNull Point2 src) {
-    _set(src); // Validates @NonNull
+    Validate.isTrue(src != null, "source Point2 cannot be null");
+    _set(src);
   }
 
   protected void onChange() {
@@ -71,13 +72,14 @@ public class Point2 {
   }
 
   private void _set(@NonNull Point2 src) {
-    Validate.isTrue(src != null, "source Point2 cannot be null");
+    assert src != null : "source Point2 cannot be null";
     _setX(src.getX());
     _setY(src.getY());
   }
 
   public void set(@NonNull Point2 src) {
-    if (!equals(src)) { // Validates @NonNull
+    Validate.isTrue(src != null, "source Point2 cannot be null");
+    if (!equals(src)) {
       _set(src);
       onChange();
     }
@@ -98,7 +100,7 @@ public class Point2 {
 
   @NonNull
   public Point2 subtract(@NonNull Point2 src) {
-    return subtract(src, this);
+    return subtract(src, this); // Validates @NonNull
   }
 
   @NonNull

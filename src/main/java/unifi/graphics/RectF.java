@@ -24,11 +24,13 @@ public class RectF {
   }
 
   public RectF(@NonNull RectF src) {
-    _set(src); // Validates @NonNull
+    Validate.isTrue(src != null, "source RectF cannot be null");
+    _set(src);
   }
 
   public RectF(@NonNull Rect src) {
-    _set(src); // Validates @NonNull
+    Validate.isTrue(src != null, "source Rect cannot be null");
+    _set(src);
   }
 
   protected void onChange() {}
@@ -126,7 +128,7 @@ public class RectF {
   }
 
   private void _set(@NonNull RectF src) {
-    Validate.isTrue(src != null, "source RectF cannot be null");
+    assert src != null : "source RectF cannot be null";
     _setLeft(src.getLeft());
     _setTop(src.getTop());
     _setRight(src.getRight());
@@ -134,7 +136,7 @@ public class RectF {
   }
 
   private void _set(@NonNull Rect src) {
-    Validate.isTrue(src != null, "source Rect cannot be null");
+    assert src != null : "source Rect cannot be null";
     _setLeft(src.getLeft());
     _setTop(src.getTop());
     _setRight(src.getRight());
@@ -142,14 +144,16 @@ public class RectF {
   }
 
   public void set(@NonNull RectF src) {
-    if (!equals(src)) { // Validates @NonNull
+    Validate.isTrue(src != null, "source RectF cannot be null");
+    if (!equals(src)) {
       _set(src);
       onChange();
     }
   }
 
   public void set(@NonNull Rect src) {
-    if (!equals(src)) { // Validates @NonNull
+    Validate.isTrue(src != null, "source Rect cannot be null");
+    if (!equals(src)) {
       _set(src);
       onChange();
     }

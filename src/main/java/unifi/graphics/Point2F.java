@@ -20,11 +20,13 @@ public class Point2F {
   }
 
   public Point2F(@NonNull Point2F src) {
-    _set(src); // Validates @NonNull
+    Validate.isTrue(src != null, "source Point2F cannot be null");
+    _set(src);
   }
 
   public Point2F(@NonNull Point2 src) {
-    _set(src); // Validates @NonNull
+    Validate.isTrue(src != null, "source Point2 cannot be null");
+    _set(src);
   }
 
   protected void onChange() {
@@ -34,7 +36,7 @@ public class Point2F {
     return x;
   }
 
-  private  void _setX(float x) {
+  private void _setX(float x) {
     this.x = x;
   }
 
@@ -49,7 +51,7 @@ public class Point2F {
     return y;
   }
 
-  private  void _setY(float y) {
+  private void _setY(float y) {
     this.y = y;
   }
 
@@ -60,7 +62,7 @@ public class Point2F {
     }
   }
 
-  private  void _set(float x, float y) {
+  private void _set(float x, float y) {
     _setX(x);
     _setY(y);
   }
@@ -72,27 +74,29 @@ public class Point2F {
     }
   }
 
-  private  void _set(@NonNull Point2F src) {
-    Validate.isTrue(src != null, "source Point2F cannot be null");
+  private void _set(@NonNull Point2F src) {
+    assert src != null : "source Point2F cannot be null";
     _setX(src.getX());
     _setY(src.getY());
   }
 
-  private  void _set(@NonNull Point2 src) {
-    Validate.isTrue(src != null, "source Point2 cannot be null");
+  private void _set(@NonNull Point2 src) {
+    assert src != null : "source Point2 cannot be null";
     _setX(src.getX());
     _setY(src.getY());
   }
 
   public void set(@NonNull Point2F src) {
-    if (!equals(src)) { // Validates @NonNull
+    Validate.isTrue(src != null, "source Point2F cannot be null");
+    if (!equals(src)) {
       _set(src);
       onChange();
     }
   }
 
   public void set(@NonNull Point2 src) {
-    if (!equals(src)) { // Validates @NonNull
+    Validate.isTrue(src != null, "source Point2 cannot be null");
+    if (!equals(src)) {
       _set(src);
       onChange();
     }
@@ -126,7 +130,7 @@ public class Point2F {
 
   @NonNull
   public Point2F subtract(@NonNull Point2F src) {
-    return subtract(src, this);
+    return subtract(src, this); // Validates @NonNull
   }
 
   @NonNull

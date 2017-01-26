@@ -24,7 +24,8 @@ public class Rect {
   }
 
   public Rect(@NonNull Rect src) {
-    _set(src); // Validates @NonNull
+    Validate.isTrue(src != null, "source Rect cannot be null");
+    _set(src);
   }
 
   protected void onChange() {}
@@ -122,7 +123,7 @@ public class Rect {
   }
 
   private void _set(@NonNull Rect src) {
-    Validate.isTrue(src != null, "source Rect cannot be null");
+    assert src != null : "source Rect cannot be null";
     _setLeft(src.getLeft());
     _setTop(src.getTop());
     _setRight(src.getRight());
@@ -130,7 +131,8 @@ public class Rect {
   }
 
   public void set(@NonNull Rect src) {
-    if (!equals(src)) { // Validates @NonNull
+    Validate.isTrue(src != null, "source Rect cannot be null");
+    if (!equals(src)) {
       _set(src);
       onChange();
     }
