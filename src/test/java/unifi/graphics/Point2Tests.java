@@ -12,6 +12,8 @@ public class Point2Tests {
 
   private static final boolean output = true;
 
+  private static final double DELTA = 1e-15;
+
   @RunWith(Enclosed.class)
   public static class Constructors {
 
@@ -458,5 +460,263 @@ public class Point2Tests {
     }
 
   }
-  
+
+  @RunWith(Enclosed.class)
+  public static class add {
+
+    @RunWith(Enclosed.class)
+    public static class add_Point2 {
+
+      public static class negative_tests {
+
+        @Test(expected = IllegalArgumentException.class)
+        public void fails_null() {
+          Point2 p = new Point2();
+          p.add(null);
+        }
+
+      }
+
+      public static class positive_tests {
+
+        @Test
+        public void add() {
+          Point2 p = new Point2(PRIMES[0], PRIMES[1]);
+          Point2 src = new Point2(PRIMES[2], PRIMES[3]) {
+            @Override
+            protected void onChange() {
+              Assert.fail("src should not be changing");
+            }
+          };
+          Point2 result = p.add(src);
+          Assert.assertEquals(PRIMES[0] + PRIMES[2], result.getX());
+          Assert.assertEquals(PRIMES[1] + PRIMES[3], result.getY());
+          Assert.assertSame(p, result);
+        }
+
+      }
+
+    }
+
+    @RunWith(Enclosed.class)
+    public static class add_Point2_Point2 {
+
+      public static class negative_tests {
+
+        @Test(expected = IllegalArgumentException.class)
+        public void fails_null_src() {
+          Point2 p = new Point2();
+          p.add(null, p);
+        }
+
+        @Test(expected = IllegalArgumentException.class)
+        public void fails_null_dst() {
+          Point2 p = new Point2();
+          p.add(p, null);
+        }
+
+      }
+
+      public static class positive_tests {
+
+        @Test
+        public void add() {
+          Point2 p = new Point2(PRIMES[0], PRIMES[1]) {
+            @Override
+            protected void onChange() {
+              Assert.fail("p should not be changing");
+            }
+          };
+          Point2 src = new Point2(PRIMES[2], PRIMES[3]) {
+            @Override
+            protected void onChange() {
+              Assert.fail("src should not be changing");
+            }
+          };
+          Point2 dst = new Point2(PRIMES[4], PRIMES[5]);
+          Point2 result = p.add(src, dst);
+          Assert.assertEquals(PRIMES[0] + PRIMES[2], result.getX());
+          Assert.assertEquals(PRIMES[1] + PRIMES[3], result.getY());
+          Assert.assertSame(dst, result);
+        }
+
+      }
+
+    }
+
+  }
+
+  @RunWith(Enclosed.class)
+  public static class subtract {
+
+    @RunWith(Enclosed.class)
+    public static class subtract_Point2 {
+
+      public static class negative_tests {
+
+        @Test(expected = IllegalArgumentException.class)
+        public void fails_null() {
+          Point2 p = new Point2();
+          p.subtract(null);
+        }
+
+      }
+
+      public static class positive_tests {
+
+        @Test
+        public void subtract() {
+          Point2 p = new Point2(PRIMES[0], PRIMES[1]);
+          Point2 src = new Point2(PRIMES[2], PRIMES[3]) {
+            @Override
+            protected void onChange() {
+              Assert.fail("src should not be changing");
+            }
+          };
+          Point2 result = p.subtract(src);
+          Assert.assertEquals(PRIMES[0] - PRIMES[2], result.getX());
+          Assert.assertEquals(PRIMES[1] - PRIMES[3], result.getY());
+          Assert.assertSame(p, result);
+        }
+
+      }
+
+    }
+
+    @RunWith(Enclosed.class)
+    public static class subtract_Point2_Point2 {
+
+      public static class negative_tests {
+
+        @Test(expected = IllegalArgumentException.class)
+        public void fails_null_src() {
+          Point2 p = new Point2();
+          p.subtract(null, p);
+        }
+
+        @Test(expected = IllegalArgumentException.class)
+        public void fails_null_dst() {
+          Point2 p = new Point2();
+          p.subtract(p, null);
+        }
+
+      }
+
+      public static class positive_tests {
+
+        @Test
+        public void subtract() {
+          Point2 p = new Point2(PRIMES[0], PRIMES[1]) {
+            @Override
+            protected void onChange() {
+              Assert.fail("p should not be changing");
+            }
+          };
+          Point2 src = new Point2(PRIMES[2], PRIMES[3]) {
+            @Override
+            protected void onChange() {
+              Assert.fail("src should not be changing");
+            }
+          };
+          Point2 dst = new Point2(PRIMES[4], PRIMES[5]);
+          Point2 result = p.subtract(src, dst);
+          Assert.assertEquals(PRIMES[0] - PRIMES[2], result.getX());
+          Assert.assertEquals(PRIMES[1] - PRIMES[3], result.getY());
+          Assert.assertSame(dst, result);
+        }
+
+      }
+
+    }
+
+  }
+
+  @RunWith(Enclosed.class)
+  public static class scale {
+
+    @RunWith(Enclosed.class)
+    public static class scale_Point2 {
+
+      public static class positive_tests {
+
+        @Test
+        public void scale() {
+          Point2 p = new Point2(PRIMES[0], PRIMES[1]);
+          final double scalar = Math.PI;
+          Point2 result = p.scale(scalar);
+          Assert.assertEquals((int) (PRIMES[0] * scalar), result.getX());
+          Assert.assertEquals((int) (PRIMES[1] * scalar), result.getY());
+          Assert.assertSame(p, result);
+        }
+
+        @Test
+        public void unchanged() {
+          Point2 p = new Point2(PRIMES[0], PRIMES[1]) {
+            @Override
+            protected void onChange() {
+              Assert.fail("p should not be changing");
+            }
+          };
+          final double scalar = 1.0;
+          Point2 result = p.scale(scalar);
+          Assert.assertSame(p, result);
+        }
+
+      }
+
+    }
+
+    @RunWith(Enclosed.class)
+    public static class scale_Point2_Point2 {
+
+      public static class negative_tests {
+
+        @Test(expected = IllegalArgumentException.class)
+        public void fails_null_dst() {
+          Point2 p = new Point2();
+          final double scalar = Math.PI;
+          p.scale(scalar, null);
+        }
+
+      }
+
+      public static class positive_tests {
+
+        @Test
+        public void scale() {
+          Point2 p = new Point2(PRIMES[0], PRIMES[1]) {
+            @Override
+            protected void onChange() {
+              Assert.fail("p should not be changing");
+            }
+          };
+          final double scalar = Math.PI;
+          Point2 dst = new Point2(PRIMES[4], PRIMES[5]);
+          Point2 result = p.scale(scalar, dst);
+          Assert.assertEquals((int) (PRIMES[0] * scalar), result.getX());
+          Assert.assertEquals((int) (PRIMES[1] * scalar), result.getY());
+          Assert.assertSame(dst, result);
+        }
+
+        @Test
+        public void unchanged() {
+          Point2 p = new Point2(PRIMES[0], PRIMES[1]) {
+            @Override
+            protected void onChange() {
+              Assert.fail("p should not be changing");
+            }
+          };
+          Point2 dst = new Point2(PRIMES[2], PRIMES[3]);
+          final double scalar = 1.0;
+          Point2 result = p.scale(scalar, dst);
+          Assert.assertSame(dst, result);
+          Assert.assertEquals(p, dst);
+        }
+
+      }
+
+    }
+
+  }
+
 }

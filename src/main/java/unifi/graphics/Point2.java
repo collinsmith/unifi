@@ -83,6 +83,59 @@ public class Point2 {
     }
   }
 
+  @NonNull
+  public final Point2 add(@NonNull Point2 src) {
+    return add(src, this); // Validates @NonNull
+  }
+
+  @NonNull
+  public Point2 add(@NonNull Point2 src, @NonNull Point2 dst) {
+    Validate.isTrue(src != null, "source Point2 cannot be null");
+    Validate.isTrue(dst != null, "destination Point2 cannot be null");
+    dst.set(getX() + src.getX(), getY() + src.getY());
+    return dst;
+  }
+
+  @NonNull
+  public final Point2 subtract(@NonNull Point2 src) {
+    return subtract(src, this);
+  }
+
+  @NonNull
+  public Point2 subtract(@NonNull Point2 src, @NonNull Point2 dst) {
+    Validate.isTrue(src != null, "source Point2 cannot be null");
+    Validate.isTrue(dst != null, "destination Point2 cannot be null");
+    dst.set(getX() - src.getX(), getY() - src.getY());
+    return dst;
+  }
+
+  @NonNull
+  public final Point2 scale(double scalar) {
+    return scale(scalar, this);
+  }
+
+  @NonNull
+  public Point2 scale(double scalar, @NonNull Point2 dst) {
+    Validate.isTrue(dst != null, "destination Point2 cannot be null");
+    if (scalar != 1.0 || dst != this) {
+      dst.set((int) (getX() * scalar), (int) (getY() * scalar));
+    }
+
+    return dst;
+  }
+
+  @NonNull
+  public final Point2F toPoint2F() {
+    return ImmutablePoint2F.copyOf(this);
+  }
+
+  @NonNull
+  public final Point2F toPoint2F(@NonNull Point2F dst) {
+    Validate.isTrue(dst != null, "destination Point2F cannot be null");
+    dst.set(this);
+    return dst;
+  }
+
   public final boolean equals(int x, int y) {
     return getX() == x && getY() == y;
   }
@@ -122,18 +175,6 @@ public class Point2 {
         .add("x", getX())
         .add("y", getY())
         .build().toString();
-  }
-
-  @NonNull
-  public final Point2F toPoint2F() {
-    return ImmutablePoint2F.copyOf(this);
-  }
-
-  @NonNull
-  public final Point2F toPoint2F(@NonNull Point2F dst) {
-    Validate.isTrue(dst != null, "destination Point2F cannot be null");
-    dst.set(this);
-    return dst;
   }
 
 }
