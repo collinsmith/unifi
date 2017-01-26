@@ -117,7 +117,7 @@ public class RectTests {
       @Test
       public void change() {
         final boolean[] changed = { false };
-        Rect r = new Rect() {
+        Rect r = new Rect(0, 0, 1, 0) {
           @Override
           public void onChange() {
             changed[0] = true;
@@ -177,7 +177,7 @@ public class RectTests {
       @Test
       public void change() {
         final boolean[] changed = {false};
-        Rect r = new Rect() {
+        Rect r = new Rect(0, 0, 0, 1) {
           @Override
           public void onChange() {
             changed[0] = true;
