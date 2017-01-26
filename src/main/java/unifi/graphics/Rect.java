@@ -20,6 +20,8 @@ public class Rect {
   }
 
   public Rect(int left, int top, int right, int bottom) {
+    Validate.isTrue(left <= right, "left (%d) must be <= right (%d)", left, right);
+    Validate.isTrue(top <= bottom, "top (%d) must be <= bottom (%d)", top, bottom);
     _set(left, top, right, bottom);
   }
 
@@ -107,8 +109,8 @@ public class Rect {
   }
 
   private void _set(int left, int top, int right, int bottom) {
-    Validate.isTrue(left <= right, "left (%d) must be <= right (%d)", left, right);
-    Validate.isTrue(top <= bottom, "top (%d) must be <= bottom (%d)", top, bottom);
+    assert left <= right : "left must be <= right";
+    assert top <= bottom : "top must be <= bottom";
     _setLeft(left);
     _setTop(top);
     _setRight(right);
@@ -116,6 +118,8 @@ public class Rect {
   }
 
   public void set(int left, int top, int right, int bottom) {
+    Validate.isTrue(left <= right, "left (%d) must be <= right (%d)", left, right);
+    Validate.isTrue(top <= bottom, "top (%d) must be <= bottom (%d)", top, bottom);
     if (!equals(left, top, right, bottom)) {
       _set(left, top, right, bottom);
       onChange();

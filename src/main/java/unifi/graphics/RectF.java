@@ -20,6 +20,8 @@ public class RectF {
   }
 
   public RectF(float left, float top, float right, float bottom) {
+    Validate.isTrue(left <= right, "left (%d) must be <= right (%d)", left, right);
+    Validate.isTrue(top <= bottom, "top (%d) must be <= bottom (%d)", top, bottom);
     _set(left, top, right, bottom);
   }
 
@@ -112,8 +114,8 @@ public class RectF {
   }
 
   private void _set(float left, float top, float right, float bottom) {
-    Validate.isTrue(left <= right, "left (%d) must be <= right (%d)", left, right);
-    Validate.isTrue(top <= bottom, "top (%d) must be <= bottom (%d)", top, bottom);
+    assert left <= right : "left must be <= right";
+    assert top <= bottom : "top must be <= bottom";
     _setLeft(left);
     _setTop(top);
     _setRight(right);
@@ -121,6 +123,8 @@ public class RectF {
   }
 
   public void set(float left, float top, float right, float bottom) {
+    Validate.isTrue(left <= right, "left (%d) must be <= right (%d)", left, right);
+    Validate.isTrue(top <= bottom, "top (%d) must be <= bottom (%d)", top, bottom);
     if (!equals(left, top, right, bottom)) {
       _set(left, top, right, bottom);
       onChange();
