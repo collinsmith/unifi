@@ -32,7 +32,7 @@ public class ImmutableRectFTests {
     }
 
     @RunWith(Enclosed.class)
-    public static class newImmutableRectF_int_int_int_int {
+    public static class newImmutableRectF_float_float_float_float {
 
       public static class negative_tests {
 
@@ -189,7 +189,7 @@ public class ImmutableRectFTests {
   public static class set {
 
     @RunWith(Enclosed.class)
-    public static class set_int_int_int_int {
+    public static class set_float_float_float_float {
 
       public static class positive_tests {
 
