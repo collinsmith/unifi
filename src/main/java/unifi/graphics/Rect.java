@@ -40,6 +40,10 @@ public class Rect {
   public void setLeft(int left) {
     if (getLeft() != left) {
       _setLeft(left);
+      if (getRight() < left) {
+        _setRight(left);
+      }
+
       onChange();
     }
   }
@@ -55,6 +59,10 @@ public class Rect {
   public void setTop(int top) {
     if (getTop() != top) {
       _setTop(top);
+      if (getBottom() < top) {
+        _setBottom(top);
+      }
+
       onChange();
     }
   }
@@ -70,6 +78,10 @@ public class Rect {
   public void setRight(int right) {
     if (getRight() != right) {
       _setRight(right);
+      if (right < getLeft()) {
+        _setLeft(right);
+      }
+
       onChange();
     }
   }
@@ -85,6 +97,10 @@ public class Rect {
   public void setBottom(int bottom) {
     if (getBottom() != bottom) {
       _setBottom(bottom);
+      if (bottom < getTop()) {
+        _setTop(bottom);
+      }
+
       onChange();
     }
   }

@@ -132,6 +132,23 @@ public class RectTests {
         Assert.assertTrue(changed[0]);
       }
 
+      @Test
+      public void right_reassignment() {
+        final boolean[] changed = {false};
+        Rect r = new Rect() {
+          @Override
+          public void onChange() {
+            changed[0] = true;
+          }
+        };
+
+        if (output) System.out.println("r:" + r);
+        final int testValue = 1;
+        r.setLeft(testValue);
+        if (output) System.out.println("r:" + r);
+        Assert.assertEquals(testValue, r.getRight());
+      }
+
     }
 
   }
@@ -173,6 +190,23 @@ public class RectTests {
         if (output) System.out.println("r:" + r);
         Assert.assertEquals(testValue, r.getTop());
         Assert.assertTrue(changed[0]);
+      }
+
+      @Test
+      public void bottom_reassignment() {
+        final boolean[] changed = {false};
+        Rect r = new Rect() {
+          @Override
+          public void onChange() {
+            changed[0] = true;
+          }
+        };
+
+        if (output) System.out.println("r:" + r);
+        final int testValue = 1;
+        r.setTop(testValue);
+        if (output) System.out.println("r:" + r);
+        Assert.assertEquals(testValue, r.getBottom());
       }
 
     }
@@ -218,6 +252,23 @@ public class RectTests {
         Assert.assertTrue(changed[0]);
       }
 
+      @Test
+      public void left_reassignment() {
+        final boolean[] changed = {false};
+        Rect r = new Rect() {
+          @Override
+          public void onChange() {
+            changed[0] = true;
+          }
+        };
+
+        if (output) System.out.println("r:" + r);
+        final int testValue = -1;
+        r.setRight(testValue);
+        if (output) System.out.println("r:" + r);
+        Assert.assertEquals(testValue, r.getLeft());
+      }
+
     }
 
   }
@@ -259,6 +310,23 @@ public class RectTests {
         if (output) System.out.println("r:" + r);
         Assert.assertEquals(testValue, r.getBottom());
         Assert.assertTrue(changed[0]);
+      }
+
+      @Test
+      public void top_reassignment() {
+        final boolean[] changed = {false};
+        Rect r = new Rect() {
+          @Override
+          public void onChange() {
+            changed[0] = true;
+          }
+        };
+
+        if (output) System.out.println("r:" + r);
+        final int testValue = -1;
+        r.setBottom(testValue);
+        if (output) System.out.println("r:" + r);
+        Assert.assertEquals(testValue, r.getTop());
       }
 
     }
