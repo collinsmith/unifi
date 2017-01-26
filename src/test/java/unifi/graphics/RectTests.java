@@ -83,7 +83,7 @@ public class RectTests {
           Rect src = new Rect(PRIMES[0], PRIMES[1], PRIMES[2], PRIMES[3]);
           if (output) System.out.println("src:" + src);
           Rect r = new Rect(src);
-          if (output) System.out.println("r:" + src);
+          if (output) System.out.println("r:" + r);
           Assert.assertEquals(src, r);
         }
 
