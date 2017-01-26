@@ -34,7 +34,7 @@ public class Point2F {
     return x;
   }
 
-  private final void _setX(float x) {
+  private  void _setX(float x) {
     this.x = x;
   }
 
@@ -49,7 +49,7 @@ public class Point2F {
     return y;
   }
 
-  private final void _setY(float y) {
+  private  void _setY(float y) {
     this.y = y;
   }
 
@@ -60,7 +60,7 @@ public class Point2F {
     }
   }
 
-  private final void _set(float x, float y) {
+  private  void _set(float x, float y) {
     _setX(x);
     _setY(y);
   }
@@ -72,13 +72,13 @@ public class Point2F {
     }
   }
 
-  private final void _set(@NonNull Point2F src) {
+  private  void _set(@NonNull Point2F src) {
     Validate.isTrue(src != null, "source Point2F cannot be null");
     _setX(src.getX());
     _setY(src.getY());
   }
 
-  private final void _set(@NonNull Point2 src) {
+  private  void _set(@NonNull Point2 src) {
     Validate.isTrue(src != null, "source Point2 cannot be null");
     _setX(src.getX());
     _setY(src.getY());
