@@ -488,7 +488,10 @@ public class Point2Tests {
               Assert.fail("src should not be changing");
             }
           };
+          if (output) System.out.println("p:" + p);
+          if (output) System.out.println("src:" + src);
           Point2 result = p.add(src);
+          if (output) System.out.println("result:" + src);
           Assert.assertEquals(PRIMES[0] + PRIMES[2], result.getX());
           Assert.assertEquals(PRIMES[1] + PRIMES[3], result.getY());
           Assert.assertSame(p, result);
@@ -534,7 +537,11 @@ public class Point2Tests {
             }
           };
           Point2 dst = new Point2(PRIMES[4], PRIMES[5]);
+          if (output) System.out.println("p:" + p);
+          if (output) System.out.println("src:" + src);
+          if (output) System.out.println("dst:" + dst);
           Point2 result = p.add(src, dst);
+          if (output) System.out.println("result:" + result);
           Assert.assertEquals(PRIMES[0] + PRIMES[2], result.getX());
           Assert.assertEquals(PRIMES[1] + PRIMES[3], result.getY());
           Assert.assertSame(dst, result);
@@ -573,7 +580,10 @@ public class Point2Tests {
               Assert.fail("src should not be changing");
             }
           };
+          if (output) System.out.println("p:" + p);
+          if (output) System.out.println("src:" + src);
           Point2 result = p.subtract(src);
+          if (output) System.out.println("result:" + result);
           Assert.assertEquals(PRIMES[0] - PRIMES[2], result.getX());
           Assert.assertEquals(PRIMES[1] - PRIMES[3], result.getY());
           Assert.assertSame(p, result);
@@ -619,7 +629,11 @@ public class Point2Tests {
             }
           };
           Point2 dst = new Point2(PRIMES[4], PRIMES[5]);
+          if (output) System.out.println("p:" + p);
+          if (output) System.out.println("src:" + src);
+          if (output) System.out.println("dst:" + dst);
           Point2 result = p.subtract(src, dst);
+          if (output) System.out.println("result:" + result);
           Assert.assertEquals(PRIMES[0] - PRIMES[2], result.getX());
           Assert.assertEquals(PRIMES[1] - PRIMES[3], result.getY());
           Assert.assertSame(dst, result);
@@ -643,7 +657,9 @@ public class Point2Tests {
         public void scale() {
           Point2 p = new Point2(PRIMES[0], PRIMES[1]);
           final double scalar = Math.PI;
+          if (output) System.out.println("p:" + p);
           Point2 result = p.scale(scalar);
+          if (output) System.out.println("p:" + p);
           Assert.assertEquals((int) (PRIMES[0] * scalar), result.getX());
           Assert.assertEquals((int) (PRIMES[1] * scalar), result.getY());
           Assert.assertSame(p, result);
@@ -658,7 +674,9 @@ public class Point2Tests {
             }
           };
           final double scalar = 1.0;
+          if (output) System.out.println("p:" + p);
           Point2 result = p.scale(scalar);
+          if (output) System.out.println("p:" + p);
           Assert.assertSame(p, result);
         }
 
@@ -690,9 +708,12 @@ public class Point2Tests {
               Assert.fail("p should not be changing");
             }
           };
-          final double scalar = Math.PI;
           Point2 dst = new Point2(PRIMES[4], PRIMES[5]);
+          if (output) System.out.println("p:" + p);
+          if (output) System.out.println("dst:" + dst);
+          final double scalar = Math.PI;
           Point2 result = p.scale(scalar, dst);
+          if (output) System.out.println("result:" + result);
           Assert.assertEquals((int) (PRIMES[0] * scalar), result.getX());
           Assert.assertEquals((int) (PRIMES[1] * scalar), result.getY());
           Assert.assertSame(dst, result);
@@ -707,8 +728,11 @@ public class Point2Tests {
             }
           };
           Point2 dst = new Point2(PRIMES[2], PRIMES[3]);
+          if (output) System.out.println("p:" + p);
+          if (output) System.out.println("dst:" + dst);
           final double scalar = 1.0;
           Point2 result = p.scale(scalar, dst);
+          if (output) System.out.println("result:" + result);
           Assert.assertSame(dst, result);
           Assert.assertEquals(p, dst);
         }
