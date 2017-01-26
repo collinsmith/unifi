@@ -263,7 +263,7 @@ public class ImmutablePoint2Tests {
   public static class scale {
 
     @RunWith(Enclosed.class)
-    public static class scale_Point2 {
+    public static class scale_double {
 
       public static class positive_tests {
 
@@ -281,7 +281,7 @@ public class ImmutablePoint2Tests {
     }
 
     @RunWith(Enclosed.class)
-    public static class scale_Point2_Point2 {
+    public static class scale_double_Point2 {
 
       public static class positive_tests {
 
