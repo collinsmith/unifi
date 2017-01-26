@@ -612,6 +612,7 @@ public class RectTests {
         @Test
         public void reflexive() {
           Rect x = new Rect(0, 0, 0, 0);
+          if (output) System.out.println("x:" + x);
           Assert.assertTrue(x.equals(x));
           Assert.assertEquals(x.hashCode(), x.hashCode());
         }
@@ -620,6 +621,8 @@ public class RectTests {
         public void symmetric() {
           Rect x = new Rect(0, 0, 0, 0);
           Rect y = new Rect(0, 0, 0, 0);
+          if (output) System.out.println("x:" + x);
+          if (output) System.out.println("y:" + y);
           Assert.assertTrue(x.equals(y) && y.equals(x));
           Assert.assertEquals(x.hashCode(), y.hashCode());
         }
@@ -629,18 +632,23 @@ public class RectTests {
           Rect x = new Rect(0, 0, 0, 0);
           Rect y = new Rect(0, 0, 0, 0);
           Rect z = new Rect(0, 0, 0, 0);
+          if (output) System.out.println("x:" + x);
+          if (output) System.out.println("y:" + y);
+          if (output) System.out.println("z:" + z);
           Assert.assertTrue(x.equals(y) && y.equals(z) && x.equals(z));
         }
 
         @Test
         public void nullity() {
           Rect x = new Rect(0, 0, 0, 0);
+          if (output) System.out.println("x:" + x);
           Assert.assertFalse(x.equals(null));
         }
 
         @Test
         public void type() {
           Rect x = new Rect(0, 0, 0, 0);
+          if (output) System.out.println("x:" + x);
           Assert.assertFalse(x.equals(new Object()));
         }
 
@@ -648,6 +656,8 @@ public class RectTests {
         public void RectF() {
           Rect r1 = new Rect(1, 1, 1, 1);
           RectF r2 = new RectF(1.0f, 1.0f, 1.0f, 1.0f);
+          if (output) System.out.println("r1:" + r1);
+          if (output) System.out.println("r2:" + r2);
           Assert.assertEquals(r1, r2);
           Assert.assertEquals(r1.hashCode(), r2.hashCode());
         }
