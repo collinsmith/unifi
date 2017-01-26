@@ -4,15 +4,16 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.Size;
 
-import org.apache.commons.lang3.Validate;
-
-import com.badlogic.gdx.utils.Pools;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Pool.Poolable;
+import com.badlogic.gdx.utils.Pools;
 import com.gmail.collinsmith70.unifi.annotation.Index;
 import com.gmail.collinsmith70.unifi.content.res.Resources.Theme;
-import com.gmail.collinsmith70.unifi.math.Dimension;
 import com.gmail.collinsmith70.unifi.util.DataUtils;
+
+import org.apache.commons.lang3.Validate;
+
+import unifi.graphics.Dimension;
 
 public class TypedArray implements Poolable {
 

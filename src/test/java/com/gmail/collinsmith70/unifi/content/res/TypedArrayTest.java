@@ -1,14 +1,15 @@
 package com.gmail.collinsmith70.unifi.content.res;
 
-import static org.junit.Assert.assertTrue;
+import com.gmail.collinsmith70.unifi.content.res.Resources.Theme;
+import com.gmail.collinsmith70.unifi.util.ColorUtils;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.gmail.collinsmith70.unifi.content.res.Resources.Theme;
-import com.gmail.collinsmith70.unifi.math.Dimension;
-import com.gmail.collinsmith70.unifi.util.ColorUtils;
+import unifi.graphics.Dimension;
+
+import static org.junit.Assert.assertTrue;
 
 public class TypedArrayTest {
 
