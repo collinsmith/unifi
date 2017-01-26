@@ -649,7 +649,7 @@ public class Point2Tests {
   public static class scale {
 
     @RunWith(Enclosed.class)
-    public static class scale_Point2 {
+    public static class scale_double {
 
       public static class positive_tests {
 
@@ -685,7 +685,7 @@ public class Point2Tests {
     }
 
     @RunWith(Enclosed.class)
-    public static class scale_Point2_Point2 {
+    public static class scale_double_Point2 {
 
       public static class negative_tests {
 
