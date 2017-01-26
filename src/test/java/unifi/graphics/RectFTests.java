@@ -147,7 +147,7 @@ public class RectFTests {
       @Test
       public void change() {
         final boolean[] changed = { false };
-        RectF r = new RectF() {
+        RectF r = new RectF(0, 0, 1, 0) {
           @Override
           public void onChange() {
             changed[0] = true;
@@ -160,6 +160,23 @@ public class RectFTests {
         if (output) System.out.println("r:" + r);
         Assert.assertEquals(testValue, r.getLeft(), DELTA);
         Assert.assertTrue(changed[0]);
+      }
+
+      @Test
+      public void right_reassignment() {
+        final boolean[] changed = {false};
+        RectF r = new RectF() {
+          @Override
+          public void onChange() {
+            changed[0] = true;
+          }
+        };
+
+        if (output) System.out.println("r:" + r);
+        final float testValue = 1;
+        r.setLeft(testValue);
+        if (output) System.out.println("r:" + r);
+        Assert.assertEquals(testValue, r.getRight(), DELTA);
       }
 
     }
@@ -190,7 +207,7 @@ public class RectFTests {
       @Test
       public void change() {
         final boolean[] changed = {false};
-        RectF r = new RectF() {
+        RectF r = new RectF(0, 0, 0, 1) {
           @Override
           public void onChange() {
             changed[0] = true;
@@ -203,6 +220,23 @@ public class RectFTests {
         if (output) System.out.println("r:" + r);
         Assert.assertEquals(testValue, r.getTop(), DELTA);
         Assert.assertTrue(changed[0]);
+      }
+
+      @Test
+      public void bottom_reassignment() {
+        final boolean[] changed = {false};
+        RectF r = new RectF() {
+          @Override
+          public void onChange() {
+            changed[0] = true;
+          }
+        };
+
+        if (output) System.out.println("r:" + r);
+        final float testValue = 1;
+        r.setTop(testValue);
+        if (output) System.out.println("r:" + r);
+        Assert.assertEquals(testValue, r.getBottom(), DELTA);
       }
 
     }
@@ -248,6 +282,23 @@ public class RectFTests {
         Assert.assertTrue(changed[0]);
       }
 
+      @Test
+      public void left_reassignment() {
+        final boolean[] changed = {false};
+        RectF r = new RectF() {
+          @Override
+          public void onChange() {
+            changed[0] = true;
+          }
+        };
+
+        if (output) System.out.println("r:" + r);
+        final float testValue = -1;
+        r.setRight(testValue);
+        if (output) System.out.println("r:" + r);
+        Assert.assertEquals(testValue, r.getLeft(), DELTA);
+      }
+
     }
 
   }
@@ -289,6 +340,23 @@ public class RectFTests {
         if (output) System.out.println("r:" + r);
         Assert.assertEquals(testValue, r.getBottom(), DELTA);
         Assert.assertTrue(changed[0]);
+      }
+
+      @Test
+      public void top_reassignment() {
+        final boolean[] changed = {false};
+        RectF r = new RectF() {
+          @Override
+          public void onChange() {
+            changed[0] = true;
+          }
+        };
+
+        if (output) System.out.println("r:" + r);
+        final float testValue = -1;
+        r.setBottom(testValue);
+        if (output) System.out.println("r:" + r);
+        Assert.assertEquals(testValue, r.getTop(), DELTA);
       }
 
     }

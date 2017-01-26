@@ -44,6 +44,10 @@ public class RectF {
   public void setLeft(float left) {
     if (getLeft() != left) {
       _setLeft(left);
+      if (getRight() < left) {
+        _setRight(left);
+      }
+
       onChange();
     }
   }
@@ -59,6 +63,10 @@ public class RectF {
   public void setTop(float top) {
     if (getTop() != top) {
       _setTop(top);
+      if (getBottom() < top) {
+        _setBottom(top);
+      }
+
       onChange();
     }
   }
@@ -74,6 +82,10 @@ public class RectF {
   public void setRight(float right) {
     if (getRight() != right) {
       _setRight(right);
+      if (right < getLeft()) {
+        _setLeft(right);
+      }
+
       onChange();
     }
   }
@@ -89,6 +101,10 @@ public class RectF {
   public void setBottom(float bottom) {
     if (getBottom() != bottom) {
       _setBottom(bottom);
+      if (bottom < getTop()) {
+        _setTop(bottom);
+      }
+
       onChange();
     }
   }
