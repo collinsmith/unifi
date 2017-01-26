@@ -74,6 +74,7 @@ public final class Color {
   @Unsigned
   public static int parseColor(@NonNull String str) {
     Validate.isTrue(str != null, "str cannot be null");
+    Validate.isTrue(!str.isEmpty(), "Unknown color: str cannot be empty");
     if (str.charAt(0) == '#') {
       // Use a long to avoid rollovers on #ffXXXXXX
       long color = Long.parseLong(str.substring(1), 16);

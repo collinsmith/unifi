@@ -227,6 +227,12 @@ public class ColorTests {
         if (output) System.out.println("color:" + Color.toHexString(color));
       }
 
+      @Test(expected = IllegalArgumentException.class)
+      public void empty_string() {
+        final int color = Color.parseColor("");
+        if (output) System.out.println("color:" + Color.toHexString(color));
+      }
+
     }
 
     public static class positive_tests {
