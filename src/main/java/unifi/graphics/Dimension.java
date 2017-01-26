@@ -18,8 +18,8 @@ public class Dimension {
   }
 
   public Dimension(int width, int height) {
-    Validate.isTrue(width >= 0, "width must be greater than or equal to 0");
-    Validate.isTrue(height >= 0, "height must be greater than or equal to 0");
+    Validate.isTrue(width >= 0, "width (%d) must be greater than or equal to 0", width);
+    Validate.isTrue(height >= 0, "height (%d) must be greater than or equal to 0", height);
     _set(width, height);
   }
 
@@ -72,8 +72,8 @@ public class Dimension {
   }
 
   public void set(int width, int height) {
-    Validate.isTrue(width >= 0, "width must be greater than or equal to 0");
-    Validate.isTrue(height >= 0, "height must be greater than or equal to 0");
+    Validate.isTrue(width >= 0, "width (%d) must be greater than or equal to 0", width);
+    Validate.isTrue(height >= 0, "height (%d) must be greater than or equal to 0", height);
     if (!equals(width, height)) {
       _set(width, height);
       onChange();
