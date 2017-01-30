@@ -19,7 +19,7 @@ jar {
 repositories {
     mavenCentral()
     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-    maven { url "C:/android/extras/android/m2repository" }
+    maven { url "file:///C:/android/extras/android/m2repository" }
 }
 
 dependencies {
