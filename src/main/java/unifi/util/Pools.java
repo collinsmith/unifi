@@ -215,10 +215,7 @@ public final class Pools {
         poolJsonArray.add(pool[i].toString());
       }
 
-      return Json.createObjectBuilder()
-          .add("size", size)
-          .add("pool", poolJsonArray)
-          .build().toString();
+      return poolJsonArray.build().toString();
     }
 
   }
