@@ -7,8 +7,7 @@ import unifi.graphics.Color;
 
 public final class DataUtils {
 
-  private DataUtils() {
-  }
+  private DataUtils() {}
 
   /**
    * Attempts to parse the specified {@code String} as a {@code boolean} value, returning
