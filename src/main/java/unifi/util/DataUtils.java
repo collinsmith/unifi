@@ -5,7 +5,7 @@ import org.checkerframework.checker.signedness.qual.Unsigned;
 
 import unifi.graphics.Color;
 
-public class DataUtils {
+public final class DataUtils {
 
   private DataUtils() {
   }
