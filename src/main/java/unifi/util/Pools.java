@@ -48,7 +48,7 @@ public final class Pools {
    * @param p   pool to be "wrapped" in a synchronized pool
    * @return synchronized view of the specified pool
    */
-  public static <T extends Poolable> Pool<T> synchronizedPool(Pool<T> p) {
+  public static <T extends Poolable> Pool<T> synchronizedPool(@NonNull Pool<T> p) {
     return new SynchronizedPool<T>(p);
   }
 
