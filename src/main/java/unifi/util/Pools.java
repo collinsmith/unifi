@@ -137,6 +137,7 @@ public final class Pools {
     public SimplePool(int maxSize) {
       Validate.isTrue(maxSize > 0, "maxSize must be > 0");
       this.pool = new Object[maxSize];
+      this.supplier = null;
     }
 
     /**
