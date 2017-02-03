@@ -3,6 +3,9 @@ package unifi.graphics;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+
 /**
  * Rect holds four integer coordinates for a rectangle. The rectangle is represented by the
  * coordinates of its 4 edges ({@link #left}, {@link #top}, {@link #right} and {@link #bottom}).
@@ -168,6 +171,31 @@ public class Rect {
         && top == other.top
         && right == other.right
         && bottom == other.bottom;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = left;
+    result = 31 * result + top;
+    result = 31 * result + right;
+    result = 31 * result + bottom;
+    return result;
+  }
+
+  @Override
+  @NonNull
+  public String toString() {
+    return "Rect(" + left + ", " + top + ", " + right + ", " + bottom + ")";
+  }
+
+  @NonNull
+  public JsonObject toJsonObject() {
+    return Json.createObjectBuilder()
+        .add("left", left)
+        .add("top", top)
+        .add("right", right)
+        .add("bottom", bottom)
+        .build();
   }
 
   /**
@@ -414,6 +442,125 @@ public class Rect {
    */
   public static boolean intersects(@NonNull Rect a, @NonNull Rect b) {
     return a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom;
+  }
+
+  /**
+   * Updates this rectangle's bounds to enclose itself and those of a specified rectangle.
+   * <p>
+   * Note: If the specified bounds are {@linkplain #isEmpty() empty}, then this rectangle is left
+   *       unmodified.
+   * <p>
+   * Note: If this rectangle is {@linkplain #isEmpty() empty}, then it is set to the bounds of the
+   *       specified rectangle.
+   *
+   * @param left   The left edge being combined with this rectangle
+   * @param top    The top edge being combined with this rectangle
+   * @param right  The right edge being combined with this rectangle
+   * @param bottom The bottom edge being combined with this rectangle
+   *
+   * @see #union(Rect)
+   */
+  public void union(int left, int top, int right, int bottom) {
+    if ((left < right) && (top < bottom)) {
+      if ((this.left < this.right) && (this.top < this.bottom)) {
+        if (this.left > left) this.left = left;
+        if (this.top > top) this.top = top;
+        if (this.right < right) this.right = right;
+        if (this.bottom < bottom) this.bottom = bottom;
+      } else {
+        this.left = left;
+        this.top = top;
+        this.right = right;
+        this.bottom = bottom;
+      }
+    }
+  }
+
+  /**
+   * Updates this rectangle's bounds to enclose itself and those of the specified rectangle
+   * {@code r}.
+   * <p>
+   * Note: If the specified rectangle is {@linkplain #isEmpty() empty}, then this rectangle is left
+   *       unmodified.
+   * <p>
+   * Note: If this rectangle is {@linkplain #isEmpty() empty}, then it is set to the bounds of the
+   *       specified rectangle.
+   *
+   * @param r The rectangle being combined with this rectangle
+   *
+   * @throws NullPointerException if {@code r} is {@code null}
+   *
+   * @see #union(int, int, int, int)
+   */
+  public void union(@NonNull Rect r) {
+    union(r.left, r.top, r.right, r.bottom);
+  }
+
+  /**
+   * Updates this rectangle's bounds to enclose itself and the specified {@code (x, y)} coordinate.
+   * <p>
+   * Note: There is no check to test that this rectangle is {@linkplain #isEmpty() non-empty}.
+   *
+   * @param x The x-coordinate of the point to add to the rectangle
+   * @param y The y-coordinate of the point to add to the rectangle
+   */
+  public void union(int x, int y) {
+    if (x < left) {
+      left = x;
+    } else if (x > right) {
+      right = x;
+    }
+
+    if (y < top) {
+      top = y;
+    } else if (y > bottom) {
+      bottom = y;
+    }
+  }
+
+  /**
+   * Checks whether or not the invariants for the sides of this rectangle holds
+   * (i.e., {@link #left}<code> <= </code>{@link #right} and
+   * {@link #top}<code> <= </code>{@link #bottom}), and swaps them (left with right and/or top with
+   * bottom) in the case that they do not. This method can be called if the edges are computed
+   * separately, and may have crossed over each other. If the edges are already correct, then this
+   * rectangle is left unmodified.
+   */
+  public void sort() {
+    if (left > right) {
+      int temp = left;
+      left = right;
+      right = temp;
+    }
+    if (top > bottom) {
+      int temp = top;
+      top = bottom;
+      bottom = temp;
+    }
+  }
+
+  /**
+   * Scales this rectangle by the specified factor.
+   */
+  public void scale(float scale) {
+    if (scale != 1.0f) {
+      left = (int) (left * scale + 0.5f);
+      top = (int) (top * scale + 0.5f);
+      right = (int) (right * scale + 0.5f);
+      bottom = (int) (bottom * scale + 0.5f);
+    }
+  }
+
+  /**
+   * Scales this rectangle by the specified factor, rounding values towards the inside.
+   */
+  public void scaleRoundIn(float scale) {
+    if (scale != 1.0f) {
+      left = (int) Math.ceil(left * scale);
+      top = (int) Math.ceil(top * scale);
+      right = (int) Math.floor(right * scale);
+      bottom = (int) Math.floor(bottom * scale);
+    }
   }
 
 }
