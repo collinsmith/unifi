@@ -1,9 +1,12 @@
-package unifi.graphics;
+package unifi.graphics.old;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
+
+import unifi.graphics.old.ImmutablePoint2;
+import unifi.graphics.old.Point2;
 
 import static unifi.Data.PRIMES;
 

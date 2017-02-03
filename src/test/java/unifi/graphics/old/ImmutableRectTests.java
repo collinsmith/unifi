@@ -1,14 +1,17 @@
-package unifi.graphics;
+package unifi.graphics.old;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
+import unifi.graphics.old.ImmutableRect;
+import unifi.graphics.old.Rect;
+
 import static unifi.Data.PRIMES;
 
 @RunWith(Enclosed.class)
-public class ImmutableRectFTests {
+public class ImmutableRectTests {
 
   private static final boolean output = true;
 
@@ -16,13 +19,13 @@ public class ImmutableRectFTests {
   public static class FactoryMethods {
 
     @RunWith(Enclosed.class)
-    public static class newImmutableRectF_ {
+    public static class newImmutableRect_ {
 
       public static class positive_tests {
 
         @Test
         public void empty() {
-          ImmutableRectF r = ImmutableRectF.newImmutableRectF();
+          ImmutableRect r = ImmutableRect.newImmutableRect();
           if (output) System.out.println("r:" + r);
           Assert.assertTrue(r.equals(0, 0, 0, 0));
         }
@@ -32,19 +35,19 @@ public class ImmutableRectFTests {
     }
 
     @RunWith(Enclosed.class)
-    public static class newImmutableRectF_float_float_float_float {
+    public static class newImmutableRect_int_int_int_int {
 
       public static class negative_tests {
 
         @Test(expected = IllegalArgumentException.class)
         public void fails_left_greater_than_right() {
-          ImmutableRectF r = ImmutableRectF.newImmutableRectF(1, 0, 0, 0);
+          ImmutableRect r = ImmutableRect.newImmutableRect(1, 0, 0, 0);
           if (output) System.out.println("r:" + r);
         }
 
         @Test(expected = IllegalArgumentException.class)
         public void fails_top_greater_than_bottom() {
-          ImmutableRectF r = ImmutableRectF.newImmutableRectF(0, 1, 0, 0);
+          ImmutableRect r = ImmutableRect.newImmutableRect(0, 1, 0, 0);
           if (output) System.out.println("r:" + r);
         }
 
@@ -54,37 +57,9 @@ public class ImmutableRectFTests {
 
         @Test
         public void non_empty() {
-          ImmutableRectF r = ImmutableRectF.newImmutableRectF(PRIMES[0], PRIMES[1], PRIMES[2], PRIMES[3]);
+          ImmutableRect r = ImmutableRect.newImmutableRect(PRIMES[0], PRIMES[1], PRIMES[2], PRIMES[3]);
           if (output) System.out.println("r:" + r);
           Assert.assertTrue(r.equals(PRIMES[0], PRIMES[1], PRIMES[2], PRIMES[3]));
-        }
-
-      }
-
-    }
-
-    @RunWith(Enclosed.class)
-    public static class copyOf_RectF {
-
-      public static class negative_tests {
-
-        @Test(expected = IllegalArgumentException.class)
-        public void fails_null() {
-          ImmutableRectF r = ImmutableRectF.copyOf((RectF) null);
-          if (output) System.out.println("r:" + r);
-        }
-
-      }
-
-      public static class positive_tests {
-
-        @Test
-        public void non_null() throws NoSuchFieldException {
-          RectF src = new RectF(PRIMES[0], PRIMES[1], PRIMES[2], PRIMES[3]);
-          if (output) System.out.println("src:" + src);
-          ImmutableRectF r = ImmutableRectF.copyOf(src);
-          if (output) System.out.println("r:" + src);
-          Assert.assertEquals(src, r);
         }
 
       }
@@ -98,7 +73,7 @@ public class ImmutableRectFTests {
 
         @Test(expected = IllegalArgumentException.class)
         public void fails_null() {
-          ImmutableRectF r = ImmutableRectF.copyOf((Rect) null);
+          ImmutableRect r = ImmutableRect.copyOf(null);
           if (output) System.out.println("r:" + r);
         }
 
@@ -110,7 +85,7 @@ public class ImmutableRectFTests {
         public void non_null() throws NoSuchFieldException {
           Rect src = new Rect(PRIMES[0], PRIMES[1], PRIMES[2], PRIMES[3]);
           if (output) System.out.println("src:" + src);
-          ImmutableRectF r = ImmutableRectF.copyOf(src);
+          ImmutableRect r = ImmutableRect.copyOf(src);
           if (output) System.out.println("r:" + src);
           Assert.assertEquals(src, r);
         }
@@ -128,7 +103,7 @@ public class ImmutableRectFTests {
 
       @Test(expected = UnsupportedOperationException.class)
       public void unsupported() {
-        ImmutableRectF r = ImmutableRectF.newImmutableRectF();
+        ImmutableRect r = ImmutableRect.newImmutableRect();
         if (output) System.out.println("r:" + r);
         r.setLeft(0);
       }
@@ -144,7 +119,7 @@ public class ImmutableRectFTests {
 
       @Test(expected = UnsupportedOperationException.class)
       public void unsupported() {
-        ImmutableRectF r = ImmutableRectF.newImmutableRectF();
+        ImmutableRect r = ImmutableRect.newImmutableRect();
         if (output) System.out.println("r:" + r);
         r.setTop(0);
       }
@@ -160,7 +135,7 @@ public class ImmutableRectFTests {
 
       @Test(expected = UnsupportedOperationException.class)
       public void unsupported() {
-        ImmutableRectF r = ImmutableRectF.newImmutableRectF();
+        ImmutableRect r = ImmutableRect.newImmutableRect();
         if (output) System.out.println("r:" + r);
         r.setRight(0);
       }
@@ -176,7 +151,7 @@ public class ImmutableRectFTests {
 
       @Test(expected = UnsupportedOperationException.class)
       public void unsupported() {
-        ImmutableRectF r = ImmutableRectF.newImmutableRectF();
+        ImmutableRect r = ImmutableRect.newImmutableRect();
         if (output) System.out.println("r:" + r);
         r.setBottom(0);
       }
@@ -189,34 +164,15 @@ public class ImmutableRectFTests {
   public static class set {
 
     @RunWith(Enclosed.class)
-    public static class set_float_float_float_float {
+    public static class set_int_int_int_int {
 
       public static class positive_tests {
 
         @Test(expected = UnsupportedOperationException.class)
         public void unsupported() {
-          ImmutableRectF r = ImmutableRectF.newImmutableRectF();
+          ImmutableRect r = ImmutableRect.newImmutableRect();
           if (output) System.out.println("r:" + r);
           r.set(0, 0, 0, 0);
-        }
-
-      }
-
-    }
-
-    @RunWith(Enclosed.class)
-    public static class set_RectF {
-
-      public static class positive_tests {
-
-        @Test(expected = UnsupportedOperationException.class)
-        public void unsupported() {
-          RectF src = new RectF();
-          ImmutableRectF r = ImmutableRectF.newImmutableRectF();
-          if (output) System.out.println("src:" + r);
-          if (output) System.out.println("r:" + r);
-          r.set(src);
-          if (output) System.out.println("r:" + r);
         }
 
       }
@@ -231,7 +187,7 @@ public class ImmutableRectFTests {
         @Test(expected = UnsupportedOperationException.class)
         public void unsupported() {
           Rect src = new Rect();
-          ImmutableRectF r = ImmutableRectF.newImmutableRectF();
+          ImmutableRect r = ImmutableRect.newImmutableRect();
           if (output) System.out.println("src:" + r);
           if (output) System.out.println("r:" + r);
           r.set(src);
