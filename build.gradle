@@ -4,16 +4,22 @@ apply plugin: "java"
 
 version = "1.0"
 sourceCompatibility = JavaVersion.VERSION_1_6
+targetCompatibility = JavaVersion.VERSION_1_6
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+sourceSets.main.java.srcDirs = ["src/main/java/"]
+sourceSets.main.java.excludes = ["**/deprecated/**"]
+sourceSets.test.java.srcDirs = ["src/test/java/"]
 
 ext {
-	gdxVersion = "1.9.+"
+    gdxVersion = "1.9.+"
 }
 
 jar {
-	manifest {
-		attributes "Implementation-Title":  "Unifi",
-				   "Implementation-Version": version
-	}
+    manifest {
+        attributes "Implementation-Title": "Unifi",
+                   "Implementation-Version": version
+    }
 }
 
 repositories {
@@ -31,9 +37,8 @@ dependencies {
     compile group: 'com.badlogicgames.gdx', name: 'gdx', version: gdxVersion
     compile group: 'javax.json', name: 'javax.json-api', version: '1.0'
     compile group: 'net.sf.kxml', name: 'kxml2', version: '2.3.0'
-    compile group: 'org.checkerframework', name: 'checker', version: '2.1.+'
     compile group: 'org.glassfish', name: 'javax.json', version: '1.0.4'
-    compile group: 'com.google.guava', name: 'guava', version: '19.+'
+    compile group: 'com.google.guava', name: 'guava', version: '20.0'
     compile group: 'com.google.inject', name: 'guice', version: '4.1.+'
     compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.+'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.+'
