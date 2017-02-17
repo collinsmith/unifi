@@ -10,6 +10,7 @@ targetCompatibility = JavaVersion.VERSION_1_6
 sourceSets.main.java.srcDirs = ["src/main/java/"]
 sourceSets.main.java.excludes = ["**/deprecated/**"]
 sourceSets.test.java.srcDirs = ["src/test/java/"]
+sourceSets.test.java.excludes = ["**/deprecated/**"]
 
 ext {
     gdxVersion = "1.9.+"
