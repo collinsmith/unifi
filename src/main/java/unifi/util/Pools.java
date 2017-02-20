@@ -1,4 +1,4 @@
-package deprecated.unifi3.util;
+package unifi.util;
 
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
