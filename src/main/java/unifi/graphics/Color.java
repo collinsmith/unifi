@@ -1,80 +1,147 @@
 package unifi.graphics;
 
-import org.apache.commons.collections4.Trie;
-import org.apache.commons.collections4.trie.PatriciaTrie;
-import org.apache.commons.collections4.trie.UnmodifiableTrie;
-import org.apache.commons.lang.Validate;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.signedness.qual.Unsigned;
+import com.google.common.collect.ImmutableMap;
+
+import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 
 import java.util.Locale;
+import java.util.Map;
 
+/**
+ * The Color class defines methods for creating and converting color ints. Colors are represented
+ * as packed ints, made up of 4 bytes: alpha, red, green, blue. The values are unpremultiplied,
+ * meaning any transparency is stored solely in the alpha component, and not in the color
+ * components. The components are stored as follows {@code (alpha << 24) | (red << 16) |
+ * (green << 8) | blue}. Each component ranges between {@code [0..255]} with {@code 0} meaning no
+ * contribution for that component, and {@code 255} meaning 100% contribution. Thus opaque-black
+ * would be {@code 0xFF000000} (100% opaque but no contributions from red, green, or blue), and
+ * opaque-white would be {@code 0xFFFFFFFF}
+ */
 public final class Color {
 
   private Color() {}
 
+  // Note: ALPHA_OFFSET and BLUE_OFFSET are optimized, if changed, make sure to change their impls
+  //       Also, all of the below color definitions are defined in ARGB, so they will need to be
+  //       changed as well (or a static method to convert at runtime)
   private static final int ALPHA_OFFSET = 24;
   private static final int RED_OFFSET = 16;
   private static final int GREEN_OFFSET = 8;
   private static final int BLUE_OFFSET = 0;
 
-  @Unsigned
-  private static final int ALPHA_MASK = 0xFF << ALPHA_OFFSET;
+  public static final int TRANSPARENT = 0x00000000;
+  public static final int CLEAR = TRANSPARENT;
 
-  @Unsigned
-  private static final int RED_MASK = 0xFF << RED_OFFSET;
+  public static final int BLACK = 0xFF000000;
+  public static final int WHITE = 0xFFFFFFFF;
+  public static final int DARK_GRAY = 0xFF444444;
+  public static final int GRAY = 0xFF888888;
+  public static final int LIGHT_GRAY = 0xFFCCCCCC;
+  public static final int RED = 0xFFFF0000;
+  public static final int GREEN = 0xFF00FF00;
+  public static final int BLUE = 0xFF0000FF;
+  public static final int YELLOW = 0xFFFFFF00;
+  public static final int CYAN = 0xFF00FFFF;
+  public static final int MAGENTA = 0xFFFF00FF;
 
-  @Unsigned
-  private static final int GREEN_MASK = 0xFF << GREEN_OFFSET;
-
-  @Unsigned
-  private static final int BLUE_MASK = 0xFF << BLUE_OFFSET;
-
-  @Unsigned
-  private static final int CLEAR = 0xFF000000;
-
-  @Unsigned
-  private static final int DARK_GRAY = 0xFF444444;
-
-  @Unsigned
-  private static final int GRAY = 0xFF888888;
-
-  @Unsigned
-  private static final int LIGHT_GRAY = 0xFFCCCCCC;
-
-  private static final Trie<String, Integer> colorNames;
-  static {
-    PatriciaTrie<Integer> names = new PatriciaTrie<Integer>();
-    names.put("black", 0xFF000000);
-    names.put("white", 0xFFFFFFFF);
-    names.put("darkgray", DARK_GRAY);
-    names.put("darkgrey", DARK_GRAY);
-    names.put("gray", GRAY);
-    names.put("grey", GRAY);
-    names.put("lightgray", LIGHT_GRAY);
-    names.put("lightgrey", LIGHT_GRAY);
-    names.put("red", 0xFFFF0000);
-    names.put("green", 0xFF00FF00);
-    names.put("blue", 0xFF0000FF);
-    names.put("yellow", 0xFFFFFF00);
-    names.put("cyan", 0xFF00FFFF);
-    names.put("magenta", 0xFFFF00FF);
-    names.put("aqua", 0xFF00FFFF);
-    names.put("fuchsia", 0xFFFF00FF);
-    names.put("lime", 0xFF00FF00);
-    names.put("maroon", 0xFF800000);
-    names.put("navy", 0xFF000080);
-    names.put("olive", 0xFF808000);
-    names.put("purple", 0xFF800080);
-    names.put("silver", 0xFFC0C0C0);
-    names.put("teal", 0xFF008080);
-    colorNames = UnmodifiableTrie.unmodifiableTrie(names);
+  /**
+   * Returns the alpha component of a color int.
+   * This is the same as saying {@code color >>> 24}.
+   */
+  public static int alpha(@ColorInt int color) {
+    return color >>> ALPHA_OFFSET;
   }
 
-  @Unsigned
+  /**
+   * Returns the red component of a color int.
+   * This is the same as saying {@code (color >> 16) & 0xFF}
+   */
+  public static int red(@ColorInt int color) {
+    return (color >> RED_OFFSET) & 0xFF;
+  }
+
+  /**
+   * Returns the green component of a color int.
+   * This is the same as saying {@code (color >> 8) & 0xFF}
+   */
+  public static int green(@ColorInt int color) {
+    return (color >> GREEN_OFFSET) & 0xFF;
+  }
+
+  /**
+   * Returns the blue component of a color int.
+   * This is the same as saying {@code color & 0xFF}
+   */
+  public static int blue(@ColorInt int color) {
+    return color & 0xFF;
+  }
+
+  /**
+   * Returns a color-int from the specified red, green, and blue components. The alpha component is
+   * implicitly {@code 255} (fully opaque). These component values should be {@code [0..255]}, but
+   * there is no range check performed, so if they are out of range, the returned color is
+   * undefined.
+   *
+   * @param red   Red component {@code [0..255]} of the color
+   * @param green Green component {@code [0..255]} of the color
+   * @param blue  Blue component {@code [0..255]} of the color
+   *
+   * @return The color-int defined by the specified {@code red}, {@code green} and {@code blue}
+   *         values
+   */
+  @ColorInt
+  public static int rgb(int red, int green, int blue) {
+    return (0xFF << ALPHA_OFFSET) | (red << RED_OFFSET) | (green << GREEN_OFFSET) | blue;
+  }
+
+  /**
+   * Return a color-int from alpha, red, green, blue components. These component values should be
+   * {@code [0..255]}, but there is no range check performed, so if they are out of range, the
+   * returned color is undefined.
+   *
+   * @param alpha Alpha component {@code [0..255]} of the color
+   * @param red   Red component {@code [0..255]} of the color
+   * @param green Green component {@code [0..255]} of the color
+   * @param blue  Blue component {@code [0..255]} of the color
+   *
+   * @return The color-int defined by the specified {@code red}, {@code green} and {@code blue}
+   *         values with the given {@code alpha} transparency
+   */
+  @ColorInt
+  public static int argb(int alpha, int red, int green, int blue) {
+    return (alpha << ALPHA_OFFSET) | (red << RED_OFFSET) | (green << GREEN_OFFSET) | blue;
+  }
+
+  /**
+   * Converts the packed color-int from the default format into rgba by shifting the values.
+   *
+   * @param color The color int to convert
+   *
+   * @return A color int encoded as rgba
+   */
+  public static int rgba(@ColorInt int color) {
+    return (color << 8) | alpha(color);
+  }
+
+  /**
+   * Parse the color string, and return the corresponding color-int. Supported formats are:
+   * <ul>
+   *   <li>{@code #RRGGBB}</li>
+   *   <li>{@code #AARRGGBB}</li>
+   *   <li>'red', 'blue', 'green', 'black', 'white', 'gray', 'cyan', 'magenta', 'yellow',
+   *       'lightgray', 'darkgray', 'grey', 'lightgrey', 'darkgrey', 'aqua', 'fuschia', 'lime',
+   *       'maroon', 'navy', 'olive', 'purple', 'silver', 'teal'</li>
+   * </ul>
+   *
+   * @param str The color string to parse
+   *
+   * @return The corresponding color-int of {@code str}
+   *
+   * @throws IllegalArgumentException if {@code str} cannot be parsed.
+   */
+  @ColorInt
   public static int parseColor(@NonNull String str) {
-    Validate.isTrue(str != null, "str cannot be null");
-    Validate.isTrue(!str.isEmpty(), "Unknown color: str cannot be empty");
     if (str.charAt(0) == '#') {
       // Use a long to avoid rollovers on #ffXXXXXX
       long color = Long.parseLong(str.substring(1), 16);
@@ -96,64 +163,32 @@ public final class Color {
     throw new IllegalArgumentException("Unknown color: " + str);
   }
 
-  @Unsigned
-  public static int rgb(int r, int g, int b) {
-    return argb(0xFF, r, g, b);
-  }
-
-  @Unsigned
-  public static int argb(int a, int r, int g, int b) {
-    Validate.isTrue(0 <= a && a < 256, "a (%d) must be between 0 and 255 (inclusive)", a);
-    Validate.isTrue(0 <= r && r < 256, "r (%d) must be between 0 and 255 (inclusive)", r);
-    Validate.isTrue(0 <= g && g < 256, "g (%d) must be between 0 and 255 (inclusive)", g);
-    Validate.isTrue(0 <= b && b < 256, "b (%d) must be between 0 and 255 (inclusive)", b);
-    return a << ALPHA_OFFSET | r << RED_OFFSET | g << GREEN_OFFSET | b << BLUE_OFFSET;
-  }
-
-  public static int alpha(@Unsigned int color) {
-    return (color & ALPHA_MASK) >>> ALPHA_OFFSET;
-  }
-
-  public static int red(@Unsigned int color) {
-    return (color & RED_MASK) >>> RED_OFFSET;
-  }
-
-  public static int green(@Unsigned int color) {
-    return (color & GREEN_MASK) >>> GREEN_OFFSET;
-  }
-
-  public static int blue(@Unsigned int color) {
-    return (color & BLUE_MASK) >>> BLUE_OFFSET;
-  }
-
-  // TODO: Replace with org.checkerframework annotations, however not working with qualified
-  @android.annotation.NonNull
-  public static com.badlogic.gdx.graphics.Color toGdxColor(@Unsigned int color) {
-    return toGdxColor(color, new com.badlogic.gdx.graphics.Color());
-  }
-
-  // TODO: Replace with org.checkerframework annotations, however not working with qualified
-  @android.annotation.NonNull
-  public static com.badlogic.gdx.graphics.Color toGdxColor(@Unsigned int color,
-      // TODO: Replace with org.checkerframework annotations, however not working with qualified
-      @android.annotation.NonNull com.badlogic.gdx.graphics.Color dst) {
-    Validate.isTrue(dst != null, "dst Color cannot be null");
-    com.badlogic.gdx.graphics.Color.argb8888ToColor(dst, color);
-    return new com.badlogic.gdx.graphics.Color(dst);
-  }
-
-  public static boolean equalsGdxColor(@Unsigned int color,
-      // TODO: Replace with org.checkerframework annotations, however not working with qualified
-      @android.annotation.Nullable com.badlogic.gdx.graphics.Color c) {
-    // TODO: Check if cleaner method. Unfortunately LibGDX depends on direct field access to get
-    //       the color components, so this method should be more interoperable.
-    com.badlogic.gdx.graphics.Color asGdxColor = toGdxColor(color);
-    return asGdxColor.equals(c);
-  }
-
-  @NonNull
-  public static String toHexString(@Unsigned int color) {
-    return String.format("#%08x", color);
-  }
+  private static final Map<String, Integer> colorNames = ImmutableMap.<String, Integer>builder()
+      .put("clear", CLEAR)
+      .put("transparent", TRANSPARENT)
+      .put("black", BLACK)
+      .put("white", WHITE)
+      .put("darkgray", DARK_GRAY)
+      .put("darkgrey", DARK_GRAY)
+      .put("gray", GRAY)
+      .put("grey", GRAY)
+      .put("lightgray", LIGHT_GRAY)
+      .put("lightgrey", LIGHT_GRAY)
+      .put("red", RED)
+      .put("green", GREEN)
+      .put("blue", BLUE)
+      .put("yellow", YELLOW)
+      .put("cyan", CYAN)
+      .put("magenta", MAGENTA)
+      .put("aqua", 0xFF00FFFF)
+      .put("fuchsia", 0xFFFF00FF)
+      .put("lime", 0xFF00FF00)
+      .put("maroon", 0xFF800000)
+      .put("navy", 0xFF000080)
+      .put("olive", 0xFF808000)
+      .put("purple", 0xFF800080)
+      .put("silver", 0xFFC0C0C0)
+      .put("teal", 0xFF008080)
+      .build();
 
 }
