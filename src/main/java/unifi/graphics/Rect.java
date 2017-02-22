@@ -1,17 +1,16 @@
 package unifi.graphics;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
-import javax.json.Json;
-import javax.json.JsonObject;
+import java.io.PrintWriter;
 
 /**
  * Rect holds four integer coordinates for a rectangle. The rectangle is represented by the
  * coordinates of its 4 edges ({@link #left}, {@link #top}, {@link #right} and {@link #bottom}).
- * These fields can be accessed directly. Use {@link #width} and {@link #height} to retrieve
- * the rectangle's width and height. Note: most methods do not check to see that the coordinates
- * are sorted correctly (i.e. {@code left <= right} and {@code top <= bottom}).
+ * These fields can be accessed directly. Use {@link #width} and {@link #height} to retrieve the
+ * rectangle's width and height. Note: most methods do not check to see that the coordinates are
+ * sorted correctly (i.e. {@code left <= right} and {@code top <= bottom}).
  */
 public class Rect {
   /**
@@ -83,6 +82,173 @@ public class Rect {
     }
   }
 
+  @Override
+  public boolean equals(@Nullable Object obj) {
+    if (obj == this) {
+      return true;
+    } else if (obj == null) {
+      return false;
+    } else if (getClass() != obj.getClass()) {
+      return false;
+    }
+
+    Rect other = (Rect) obj;
+    return left == other.left && top == other.top && right == other.right && bottom == other.bottom;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = left;
+    result = 31 * result + top;
+    result = 31 * result + right;
+    result = 31 * result + bottom;
+    return result;
+  }
+
+  @NonNull
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder(32);
+    sb.append("Rect(");
+    sb.append(left);
+    sb.append(", ");
+    sb.append(top);
+    sb.append(" - ");
+    sb.append(right);
+    sb.append(", ");
+    sb.append(bottom);
+    sb.append(")");
+    return sb.toString();
+  }
+
+  /**
+   * Return a string representation of the rectangle in a compact form.
+   */
+  @NonNull
+  public String toShortString() {
+    return toShortString(new StringBuilder(32));
+  }
+
+  /**
+   * Return a string representation of the rectangle in a compact form.
+   *
+   * @param sb String builder to write to
+   *
+   * @throws NullPointerException if the builder {@code sb} is {@code null}
+   */
+  @NonNull
+  public String toShortString(@NonNull StringBuilder sb) {
+    sb.setLength(0);
+    sb.append('[');
+    sb.append(left);
+    sb.append(',');
+    sb.append(top);
+    sb.append("][");
+    sb.append(right);
+    sb.append(',');
+    sb.append(bottom);
+    sb.append(']');
+    return sb.toString();
+  }
+
+  /**
+   * Print short representation to given writer.
+   *
+   * @param pw Print writer to print to
+   *
+   * @throws NullPointerException if the writer {@code pw} is {@code null}
+   */
+  public void printShortString(@NonNull PrintWriter pw) {
+    pw.print('[');
+    pw.print(left);
+    pw.print(',');
+    pw.print(top);
+    pw.print("][");
+    pw.print(right);
+    pw.print(',');
+    pw.print(bottom);
+    pw.print(']');
+  }
+
+  /**
+   * Checks whether or not this rectangle is empty, i.e., {@link #left}<code> >= </code>{@link
+   * #right} or {@link #top}<code> >= </code>{@link #bottom}.
+   *
+   * @return {@code true} if this rectangle is empty, otherwise {@code false}
+   */
+  public boolean isEmpty() {
+    return left >= right || top >= bottom;
+  }
+
+  /**
+   * Sets all coordinates of this rectangle to {@code 0}.
+   */
+  public void setEmpty() {
+    left = right = top = bottom = 0;
+  }
+
+  /**
+   * Returns the width of this rectangle.
+   * <p>
+   * Note: This method does not validate the invariants for the sides of the rectangle, i.e.,
+   *       {@link #left}<code> <= </code>{@link #right}, so the result may be negative.
+   *
+   * @return The width of this rectangle
+   */
+  public final int width() {
+    return right - left;
+  }
+
+  /**
+   * Returns the height of this rectangle.
+   * <p>
+   * Note: This method does not validate the invariants for the sides of the rectangle, i.e.,
+   *       {@link #top}<code> <= </code>{@link #bottom}, so the result may be negative.
+   *
+   * @return The height of this rectangle
+   */
+  public final int height() {
+    return bottom - top;
+  }
+
+  /**
+   * Returns the horizontal center of the rectangle. If the computed value is fractional, this
+   * method returns the largest integer that is less than the computed value.
+   *
+   * @return The horizontal center of the rectangle
+   */
+  public final int centerX() {
+    return (left + right) >> 1;
+  }
+
+  /**
+   * The vertical center of the rectangle. If the computed value is fractional, this method
+   * returns the largest integer that is less than the computed value.
+   *
+   * @return The vertical center of the rectangle
+   */
+  public final int centerY() {
+    return (top + bottom) >> 1;
+  }
+
+  /**
+   * The exact horizontal center of the rectangle as a float.
+   *
+   * @return The horizontal center of the rectangle
+   */
+  public final float exactCenterX() {
+    return (left + right) * 0.5f;
+  }
+
+  /**
+   * The exact vertical center of the rectangle as a float.
+   *
+   * @return The vertical center of the rectangle
+   */
+  public final float exactCenterY() {
+    return (top + bottom) * 0.5f;
+  }
+
   /**
    * Sets this rectangle's coordinates to the specified values.
    * <p>
@@ -116,89 +282,6 @@ public class Rect {
   }
 
   /**
-   * Checks whether or not this rectangle is empty, i.e.,
-   * {@link #left}<code> >= </code>{@link #right} or {@link #top}<code> >= </code>{@link #bottom}.
-   *
-   * @return {@code true} if this rectangle is empty, otherwise {@code false}
-   */
-  public final boolean isEmpty() {
-    return left >= right || top >= bottom;
-  }
-
-  /**
-   * Sets all coordinates of this rectangle to {@code 0}.
-   */
-  public void setEmpty() {
-    left = right = top = bottom = 0;
-  }
-
-  /**
-   * Returns the width of this rectangle.
-   * <p>
-   * Note: This method does not validate the invariants for the sides of the rectangle,
-   *       i.e., {@link #left}<code> <= </code>{@link #right}, so the result may be negative.
-   *
-   * @return The width of this rectangle
-   */
-  public final int width() {
-    return right - left;
-  }
-
-  /**
-   * Returns the height of this rectangle.
-   * <p>
-   * Note: This method does not validate the invariants for the sides of the rectangle,
-   *       i.e., {@link #top}<code> <= </code>{@link #bottom}, so the result may be negative.
-   *
-   * @return The height of this rectangle
-   */
-  public final int height() {
-    return bottom - top;
-  }
-
-  @Override
-  public boolean equals(@Nullable Object obj) {
-    if (obj == this) {
-      return true;
-    } else if (obj == null) {
-      return false;
-    } else if (obj.getClass() != Rect.class) {
-      return false;
-    }
-
-    Rect other = (Rect) obj;
-    return left == other.left
-        && top == other.top
-        && right == other.right
-        && bottom == other.bottom;
-  }
-
-  @Override
-  public int hashCode() {
-    int result = left;
-    result = 31 * result + top;
-    result = 31 * result + right;
-    result = 31 * result + bottom;
-    return result;
-  }
-
-  @Override
-  @NonNull
-  public String toString() {
-    return "Rect(" + left + ", " + top + ", " + right + ", " + bottom + ")";
-  }
-
-  @NonNull
-  public JsonObject toJsonObject() {
-    return Json.createObjectBuilder()
-        .add("left", left)
-        .add("top", top)
-        .add("right", right)
-        .add("bottom", bottom)
-        .build();
-  }
-
-  /**
    * Offsets this rectangle by adding {@code dx} to its {@link #left} and {@link #right}
    * coordinates, and {@code dy} to its {@link #top} and {@link #bottom} coordinates.
    *
@@ -213,8 +296,8 @@ public class Rect {
   }
 
   /**
-   * Offset this rectangle to a specific {@code (left, top)} coordinate, keeping its
-   * {@link #width} and {@link #height} the same.
+   * Offset this rectangle to a specific {@code (left, top)} coordinate, keeping its {@link #width}
+   * and {@link #height} the same.
    *
    * @param left The new {@link #left} coordinate for this rectangle
    * @param top  The new {@link #top} coordinate for this rectangle
@@ -227,9 +310,9 @@ public class Rect {
   }
 
   /**
-   * Insets this rectangle by {@code (dx, dy)}. If {@code dx} is positive, then the sides are
-   * moved inwards (i.e., making the rectangle narrower), otherwise the sides are moved outwards
-   * (i.e., making the rectangle wider). The same holds true for {@code dy} and the {@link #height}
+   * Insets this rectangle by {@code (dx, dy)}. If {@code dx} is positive, then the sides are moved
+   * inwards (i.e., making the rectangle narrower), otherwise the sides are moved outwards (i.e.,
+   * making the rectangle wider). The same holds true for {@code dy} and the {@link #height}
    * coordinates.
    *
    * @param dx The amount to add (or subtract) from this rectangle's {@link #width}
@@ -248,16 +331,16 @@ public class Rect {
    * <p>
    * Note: Coordinates on the {@link #left} and {@link #top} sides are considered to be inside,
    *       while coordinates on the {@link #right} and {@link #bottom} sides are not. This means
-   *       that contains is represented invariably as
-   *       {@code left <= x < right and top <= y < bottom}.
+   *       that contains is represented invariably as {@code left <= x < right and
+   *       top <= y < bottom}.
    * <p>
    * Note: An empty rectangle never contains any point.
    *
    * @param x The x-coordinate of the point being tested for containment
    * @param y The y-coordinate of the point being tested for containment
    *
-   * @return {@code true} if and only if {@code (x, y)} are contained within the rectangle,
-   *         where containment means {@code left <= x < right and top <= y < bottom}
+   * @return {@code true} if and only if {@code (x, y)} are contained within the rectangle, where
+   *         containment means {@code left <= x < right and top <= y < bottom}
    */
   public boolean contains(int x, int y) {
     // check for empty first
@@ -324,9 +407,9 @@ public class Rect {
    * @param right  The right side of the rectangle being intersected with this rectangle
    * @param bottom The bottom of the rectangle being intersected with this rectangle
    *
-   * @return {@code true} if the specified bounds intersect with the bounds of this rectangle
-   *         (in which case this rectangle is then set to that intersection),
-   *         otherwise {@code false} and this rectangle is left unmodified
+   * @return {@code true} if the specified bounds intersect with the bounds of this rectangle (in
+   *         which case this rectangle is then set to that intersection), otherwise {@code false}
+   *         and this rectangle is left unmodified
    *
    * @see #intersects(Rect, Rect)
    */
@@ -343,9 +426,9 @@ public class Rect {
   }
 
   /**
-   * Checks whether or not the specified rectangle {code r} intersects with this rectangle.
-   * If it does, then this rectangle is set to that intersection, otherwise this rectangle is
-   * left unmodified.
+   * Checks whether or not the specified rectangle {code r} intersects with this rectangle. If it
+   * does, then this rectangle is set to that intersection, otherwise this rectangle is left
+   * unmodified.
    * <p>
    * Note: No check is performed to test if either rectangle is {@linkplain #isEmpty() empty}.
    * <p>
@@ -445,13 +528,12 @@ public class Rect {
   }
 
   /**
-   * Updates this rectangle's bounds to enclose itself and those of a specified rectangle.
+   * Updates this rectangle's bounds to enclose itself and those of a specified rectangle. <p> Note:
+   * If the specified bounds are {@linkplain #isEmpty() empty}, then this rectangle is left
+   * unmodified.
    * <p>
-   * Note: If the specified bounds are {@linkplain #isEmpty() empty}, then this rectangle is left
-   *       unmodified.
-   * <p>
-   * Note: If this rectangle is {@linkplain #isEmpty() empty}, then it is set to the bounds of the
-   *       specified rectangle.
+   * Note: If this rectangle is {@linkplain #isEmpty() empty}, then it is set to the bounds of
+   *       the specified rectangle.
    *
    * @param left   The left edge being combined with this rectangle
    * @param top    The top edge being combined with this rectangle
@@ -477,14 +559,12 @@ public class Rect {
   }
 
   /**
-   * Updates this rectangle's bounds to enclose itself and those of the specified rectangle
-   * {@code r}.
+   * Updates this rectangle's bounds to enclose itself and those of the specified rectangle {@code
+   * r}.
    * <p>
-   * Note: If the specified rectangle is {@linkplain #isEmpty() empty}, then this rectangle is left
-   *       unmodified.
-   * <p>
-   * Note: If this rectangle is {@linkplain #isEmpty() empty}, then it is set to the bounds of the
-   *       specified rectangle.
+   * Note: If the specified rectangle is {@linkplain #isEmpty() empty}, then this rectangle
+   *       is left unmodified. <p> Note: If this rectangle is {@linkplain #isEmpty() empty}, then
+   *       it is set to the bounds of the specified rectangle.
    *
    * @param r The rectangle being combined with this rectangle
    *
@@ -519,12 +599,11 @@ public class Rect {
   }
 
   /**
-   * Checks whether or not the invariants for the sides of this rectangle holds
-   * (i.e., {@link #left}<code> <= </code>{@link #right} and
-   * {@link #top}<code> <= </code>{@link #bottom}), and swaps them (left with right and/or top with
-   * bottom) in the case that they do not. This method can be called if the edges are computed
-   * separately, and may have crossed over each other. If the edges are already correct, then this
-   * rectangle is left unmodified.
+   * Checks whether or not the invariants for the sides of this rectangle holds (i.e., {@link
+   * #left}<code> <= </code>{@link #right} and {@link #top}<code> <= </code>{@link #bottom}), and
+   * swaps them (left with right and/or top with bottom) in the case that they do not. This method
+   * can be called if the edges are computed separately, and may have crossed over each other. If
+   * the edges are already correct, then this rectangle is left unmodified.
    */
   public void sort() {
     if (left > right) {
