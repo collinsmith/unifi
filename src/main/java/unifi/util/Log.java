@@ -22,11 +22,11 @@ public class Log {
     Gdx.app.debug(tag, msg, tr);
   }
 
-  public static void l(String tag, String msg) {
+  public static void i(String tag, String msg) {
     Gdx.app.log(tag, msg);
   }
 
-  public static void l(String tag, String msg, Throwable tr) {
+  public static void i(String tag, String msg, Throwable tr) {
     Gdx.app.log(tag, msg, tr);
   }
 
