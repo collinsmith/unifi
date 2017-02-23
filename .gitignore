@@ -1,6 +1,8 @@
 /bin/
 /build/
 /deprecated/
-/.gradle/
-/.idea/
-/.settings/
+.gradle/
+.idea/
+.settings/
+.classpath/
+.project/
