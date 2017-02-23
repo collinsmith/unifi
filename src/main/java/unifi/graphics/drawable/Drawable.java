@@ -428,8 +428,7 @@ public interface Drawable {
      * @param when The time (in milliseconds) to run. Timebase is {@link
      *             unifi.runtime.SystemClock#millisTime()}
      */
-    void scheduleDrawable(@NonNull Drawable who, @NonNull Runnable what, long
-        when);
+    void scheduleDrawable(@NonNull Drawable who, @NonNull Runnable what, long when);
 
     /**
      * Unschedules an action previously scheduled with
