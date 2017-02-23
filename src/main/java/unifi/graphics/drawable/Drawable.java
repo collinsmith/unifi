@@ -239,7 +239,7 @@ public interface Drawable {
    *
    * @return One of {@link LayoutDirection#LTR}, {@link LayoutDirection#RTL}
    */
-  @View.ResolvedLayoutDir
+  @LayoutDirection.Resolved
   int getLayoutDirection();
 
   /**
@@ -250,7 +250,7 @@ public interface Drawable {
    * @param layoutDirection One of {@link LayoutDirection#LTR},
    *                               {@link LayoutDirection#RTL}
    */
-  void setLayoutDirection(@View.ResolvedLayoutDir int layoutDirection);
+  void setLayoutDirection(@LayoutDirection.Resolved int layoutDirection);
 
   /**
    * Gets the alpha value for this drawable in the range {@code [0..255]}, where

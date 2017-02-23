@@ -9,8 +9,8 @@ import java.util.Arrays;
 
 import unifi.graphics.Insets;
 import unifi.graphics.Rect;
+import unifi.util.LayoutDirection;
 import unifi.util.StateSet;
-import unifi.view.View;
 
 /**
  * Abstract implementation of a {@link Drawable}.
@@ -56,7 +56,7 @@ public abstract class AbstractDrawable implements Drawable {
   /**
    * The resolved layout direction of this drawable.
    */
-  @View.ResolvedLayoutDir
+  @LayoutDirection.Resolved
   private int mLayoutDirection;
 
   @Override
@@ -180,13 +180,13 @@ public abstract class AbstractDrawable implements Drawable {
   }
 
   @Override
-  @View.ResolvedLayoutDir
+  @LayoutDirection.Resolved
   public int getLayoutDirection() {
     return mLayoutDirection;
   }
 
   @Override
-  public void setLayoutDirection(@View.ResolvedLayoutDir int layoutDirection) {
+  public void setLayoutDirection(@LayoutDirection.Resolved int layoutDirection) {
     // TODO: This seems like an odd choice, may be due to better compat.
     if (getLayoutDirection() != layoutDirection) {
       mLayoutDirection = layoutDirection;
