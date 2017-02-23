@@ -9,9 +9,9 @@ import unifi.graphics.Insets;
 import unifi.graphics.PixelFormat;
 import unifi.graphics.Rect;
 import unifi.util.LayoutDirection;
-import unifi.util.LayoutDirection.ResolvedLayoutDir;
+import unifi.view.View;
 
-import static unifi.graphics.PixelFormat.*;
+import static unifi.graphics.PixelFormat.Opacity;
 
 /**
  * A {@code Drawable} is a general abstraction for "something that can be
@@ -239,7 +239,7 @@ public interface Drawable {
    *
    * @return One of {@link LayoutDirection#LTR}, {@link LayoutDirection#RTL}
    */
-  @ResolvedLayoutDir
+  @View.ResolvedLayoutDir
   int getLayoutDirection();
 
   /**
@@ -250,7 +250,7 @@ public interface Drawable {
    * @param layoutDirection One of {@link LayoutDirection#LTR},
    *                               {@link LayoutDirection#RTL}
    */
-  void setLayoutDirection(@ResolvedLayoutDir int layoutDirection);
+  void setLayoutDirection(@View.ResolvedLayoutDir int layoutDirection);
 
   /**
    * Gets the alpha value for this drawable in the range {@code [0..255]}, where
