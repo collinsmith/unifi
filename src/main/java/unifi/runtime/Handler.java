@@ -143,8 +143,7 @@ public class Handler {
    * messages are not subject to the synchronization barriers introduced by
    * {@link MessageQueue#enqueueSyncBarrier(long)}.
    *
-   * @param async If true, the handler calls
-   * {@link Message#setAsynchronous(boolean)}
+   * @param async If true, the handler calls {@link Message#setAsynchronous(boolean)}
    *              for each {@link Message} that is sent to it or {@link
    *              Runnable} that is posted to it.
    *
@@ -168,8 +167,7 @@ public class Handler {
    *
    * @param callback The callback interface in which to handle messages, or
    *                 null.
-   * @param async    If true, the handler calls
-   * {@link Message#setAsynchronous(boolean)}
+   * @param async    If true, the handler calls {@link Message#setAsynchronous(boolean)}
    *                 for each {@link Message} that is sent to it or {@link
    *                 Runnable} that is posted to it.
    *
@@ -211,8 +209,7 @@ public class Handler {
    * @param looper   The looper, must not be null.
    * @param callback The callback interface in which to handle messages, or
    *                 null.
-   * @param async    If true, the handler calls
-   * {@link Message#setAsynchronous(boolean)}
+   * @param async    If true, the handler calls {@link Message#setAsynchronous(boolean)}
    *                 for each {@link Message} that is sent to it or {@link
    *                 Runnable} that is posted to it.
    *
