@@ -4,10 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import java.io.PrintWriter;
-import java.util.AbstractQueue;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
@@ -57,7 +54,7 @@ public final class MessageQueue {
       throw new NullPointerException("Can't add a null IdleHandler");
     }
 
-    synchronized (this) {
+    synchronized (mQueue) {
       mIdleHandlers.add(handler);
     }
   }
@@ -73,7 +70,7 @@ public final class MessageQueue {
       return;
     }
 
-    synchronized (this) {
+    synchronized (mQueue) {
       mIdleHandlers.remove(handler);
     }
   }
@@ -119,7 +116,7 @@ public final class MessageQueue {
         continue;
       }
 
-      synchronized (this) {
+      synchronized (mQueue) {
         // Try the receive the next message. Return if found.
         final long now = SystemClock.millisTime();
         Message prevMsg = null;
@@ -142,7 +139,7 @@ public final class MessageQueue {
             if (prevMsg != null) {
               prevMsg.next = msg.next;
             } else {
-              mQueue.removeFirst();
+              mMessages = msg.next;
             }
 
             msg.next = null;
@@ -197,7 +194,7 @@ public final class MessageQueue {
         }
 
         if (!keep) {
-          synchronized (this) {
+          synchronized (mQueue) {
             mIdleHandlers.remove(idler);
           }
         }
@@ -221,16 +218,16 @@ public final class MessageQueue {
       if (mQuitting) {
         return;
       }
-
       mQuitting = true;
+
       if (safe) {
         removeAllFutureMessagesLocked();
       } else {
         removeAllMessagesLocked();
       }
 
-      mQueue.notifyAll();
-      mQueue = null;
+      // We can assume mPtr != 0 because mQuitting was previously false.
+      mQueue.wake();
     }
   }
 
@@ -244,7 +241,22 @@ public final class MessageQueue {
       msg.markInUse();
       msg.when = when;
       msg.arg1 = token;
-      mQueue.offer(msg);
+
+      Message prev = null;
+      Message p = mMessages;
+      if (when != 0) {
+        while (p != null && p.when <= when) {
+          prev = p;
+          p = p.next;
+        }
+      }
+      if (prev != null) { // invariant: p == prev.next
+        msg.next = p;
+        prev.next = msg;
+      } else {
+        msg.next = p;
+        mMessages = msg;
+      }
       return token;
     }
   }
@@ -259,13 +271,12 @@ public final class MessageQueue {
         prev = p;
         p = p.next;
       }
-
       if (p == null) {
-        throw new IllegalStateException(
-            "The specified message queue synchronization barrier token has " +
-            "not been posted or has already been removed.");
+        throw new IllegalStateException("The specified message queue " +
+            "synchronization "
+            + " barrier token has not been posted or has already been removed" +
+            ".");
       }
-
       final boolean needWake;
       if (prev != null) {
         prev.next = p.next;
@@ -279,32 +290,62 @@ public final class MessageQueue {
       // If the loop is quitting then it is already awake.
       // We can assume mPtr != 0 when mQuitting is false.
       if (needWake && !mQuitting) {
-        mQueue.notifyAll();
+        mQueue.wake();
       }
     }
   }
 
   boolean enqueue(@NonNull Message msg, long when) {
     if (msg.target == null) {
-      throw new IllegalArgumentException("Messages must have a target to be queued.");
-    } else if (msg.isInUse()) {
-      throw new IllegalStateException("Message " + msg + " is already in use.");
+      throw new IllegalArgumentException("Message must have a target.");
+    }
+    if (msg.isInUse()) {
+      throw new IllegalStateException(msg + " This message is already in use.");
     }
 
     synchronized (this) {
       if (mQuitting) {
         IllegalStateException e = new IllegalStateException(
             msg.target + " sending message to a Handler on a dead thread");
-        Log.w(TAG, e.getMessage(), e);
+        Log.w("MessageQueue", e.getMessage(), e);
         msg.recycle();
         return false;
       }
 
       msg.markInUse();
       msg.when = when;
-      mQueue.offer(msg);
-    }
+      Message p = mMessages;
+      boolean needWake;
+      if (p == null || when == 0 || when < p.when) {
+        // New head, wake up the event queue if blocked.
+        msg.next = p;
+        mMessages = msg;
+        needWake = mBlocked;
+      } else {
+        // Inserted within the middle of the queue.  Usually we don't have to wake
+        // up the event queue unless there is a barrier at the head of the queue
+        // and the message is the earliest asynchronous message in the queue.
+        needWake = mBlocked && p.target == null && msg.isAsynchronous();
+        Message prev;
+        for (; ; ) {
+          prev = p;
+          p = p.next;
+          if (p == null || when < p.when) {
+            break;
+          }
+          if (needWake && p.isAsynchronous()) {
+            needWake = false;
+          }
+        }
+        msg.next = p; // invariant: p == prev.next
+        prev.next = msg;
+      }
 
+      // We can assume mPtr != 0 because mQuitting is false.
+      if (needWake) {
+        mQueue.wake();
+      }
+    }
     return true;
   }
 
@@ -313,7 +354,7 @@ public final class MessageQueue {
       return false;
     }
 
-    synchronized (this) {
+    synchronized (mQueue) {
       Message p = mMessages;
       while (p != null) {
         if (p.target == h && p.what == what && (object == null || p.obj == object)) {
@@ -332,7 +373,7 @@ public final class MessageQueue {
       return false;
     }
 
-    synchronized (this) {
+    synchronized (mQueue) {
       Message p = mMessages;
       while (p != null) {
         if (p.target == h && p.callback == r && (object == null || p.obj == object)) {
@@ -347,7 +388,7 @@ public final class MessageQueue {
   }
 
   boolean isIdling() {
-    synchronized (this) {
+    synchronized (mQueue) {
       return isIdlingLocked();
     }
   }
@@ -362,7 +403,7 @@ public final class MessageQueue {
       return;
     }
 
-    synchronized (this) {
+    synchronized (mQueue) {
       Message p = mMessages;
 
       // Remove all messages at front.
@@ -396,7 +437,7 @@ public final class MessageQueue {
       return;
     }
 
-    synchronized (this) {
+    synchronized (mQueue) {
       Message p = mMessages;
 
       // Remove all messages at front.
@@ -430,7 +471,7 @@ public final class MessageQueue {
       return;
     }
 
-    synchronized (this) {
+    synchronized (mQueue) {
       Message p = mMessages;
 
       // Remove all messages at front.
@@ -499,7 +540,7 @@ public final class MessageQueue {
   }
 
   void dump(PrintWriter pw, String prefix) {
-    synchronized (this) {
+    synchronized (mQueue) {
       long now = SystemClock.millisTime();
       int n = 0;
       for (Message msg = mMessages; msg != null; msg = msg.next) {
@@ -518,192 +559,46 @@ public final class MessageQueue {
    * {@code DelayQueue} methods, the {@link java.util.concurrent.Delayed}
    * dependency has been removed and comparisons improved.
    */
-  private class BlockingQueue extends AbstractQueue<Message>
-      implements java.util.concurrent.BlockingQueue<Message> {
-    final transient ReentrantLock lock = new ReentrantLock();
+  private class BlockingQueue {
+    final ReentrantLock lock = new ReentrantLock();
 
     /**
-     * Thread designated to wait for the element at the head of
-     * the queue.  This variant of the Leader-Follower pattern
-     * (http://www.cs.wustl.edu/~schmidt/POSA/POSA2/) serves to
-     * minimize unnecessary timed waiting.  When a thread becomes
-     * the leader, it waits only for the next delay to elapse, but
-     * other threads await indefinitely.  The leader thread must
-     * signal some other thread before returning from take() or
-     * poll(...), unless some other thread becomes leader in the
-     * interim.  Whenever the head of the queue is replaced with
-     * an element with an earlier expiration time, the leader
-     * field is invalidated by being reset to null, and some
-     * waiting thread, but not necessarily the current leader, is
-     * signalled.  So waiting threads must be prepared to acquire
-     * and lose leadership while waiting.
+     * Thread designated to wait for the element at the head of the queue.  This
+     * variant of the Leader-Follower pattern (http://www.cs.wustl
+     * .edu/~schmidt/POSA/POSA2/)
+     * serves to minimize unnecessary timed waiting.  When a thread becomes the
+     * leader, it waits only for the next delay to elapse, but other threads
+     * await indefinitely.  The leader thread must signal some other thread
+     * before returning from take() or poll(...), unless some other thread
+     * becomes leader in the interim.  Whenever the head of the queue is
+     * replaced with an element with an earlier expiration time, the leader
+     * field is invalidated by being reset to null, and some waiting thread, but
+     * not necessarily the current leader, is signalled.  So waiting threads
+     * must be prepared to acquire and lose leadership while waiting.
      */
     @Nullable Thread leader = null;
 
     /**
-     * Condition signalled when a newer element becomes available
-     * at the head of the queue or a new thread may need to
-     * become leader.
+     * Condition signalled when a newer element becomes available at the head of
+     * the queue or a new thread may need to become leader.
      */
     @Nullable final Condition available = lock.newCondition();
 
-    @Override
-    public int size() {
-      throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public int remainingCapacity() {
-      return Integer.MAX_VALUE;
-    }
-
-    /**
-     * Inserts the specified element into this message queue. As the queue is
-     * unbounded this method will never block.
-     *
-     * @param message The message to add
-     * @param timeout This parameter is ignored as the method never blocks
-     * @param unit    This parameter is ignored as the method never blocks
-     *
-     * @return {@code true}
-     *
-     * @throws NullPointerException {@inheritDoc}
-     */
-    @Override
-    public boolean offer(@NonNull Message message, long timeout, @NonNull TimeUnit unit) {
-      return offer(message);
-    }
-
-    /**
-     * Inserts the specified element into this delay queue.
-     *
-     * @param message The message to add
-     *
-     * @return {@code true}
-     *
-     * @throws NullPointerException {@inheritDoc}
-     */
-    @Override
-    public boolean offer(@NonNull Message message) {
-      if (message == null) {
-        throw new NullPointerException("Cannot queue null messages.");
-      }
-
+    void wake() {
       final ReentrantLock lock = this.lock;
       lock.lock();
       try {
-        Message node = mMessages, prev = null;
-        while (node != null && node.when <= message.when) {
-          prev = node;
-          node = node.next;
-        }
-
-        if (prev == null) {
-          mMessages = message;
-          message.next = null;
-
-          leader = null;
-          available.signal();
-        } else {
-          prev.next = message;
-          message.next = node;
-        }
-
-        return true;
+        available.signal();
       } finally {
         lock.unlock();
       }
     }
 
-    /**
-     * Inserts the specified element into this message queue. As the queue is
-     * unbounded this method will never block.
-     *
-     * @param message The message to add
-     *
-     * @throws NullPointerException {@inheritDoc}
-     */
-    @Override
-    public void put(@NonNull Message message) {
-      offer(message);
+    boolean isIdling() {
+      return lock.hasWaiters(available);
     }
 
-    /**
-     * Retrieves, but does not remove, the head of this queue, or returns
-     * {@code null} if this queue is empty. Unlike {@code poll}, if no expired
-     * elements are available in the queue, this method returns the element that
-     * will expire next, if one exists.
-     *
-     * @return The head of this queue, or {@code null} if this queue is empty
-     */
-    @Nullable
-    @Override
-    public Message peek() {
-      final ReentrantLock lock = this.lock;
-      lock.lock();
-      try {
-        return mMessages;
-      } finally {
-        lock.unlock();
-      }
-    }
-
-    /**
-     * Retrieves and removes the head of this queue, waiting if necessary until
-     * an element with the expired delay is available in this queue.
-     *
-     * @return The head of this queue.
-     *
-     * @throws InterruptedException {@inheritDoc}
-     */
-    @Override
-    public Message take() throws InterruptedException {
-      final ReentrantLock lock = this.lock;
-      lock.lockInterruptibly();
-      try {
-        for (;;) {
-          Message first = mMessages;
-          if (first == null) {
-            available.await();
-          } else {
-            long delay = first.when - SystemClock.millisTime();
-            if (delay <= 0) {
-              return removeFirst();
-            }
-
-            first = null;
-            if (leader != null) {
-              available.await();
-            } else {
-              Thread thisThread = Thread.currentThread();
-              leader = thisThread;
-              try {
-                available.awaitNanos(TimeUnit.MILLISECONDS.toNanos(delay));
-              } finally {
-                if (leader == thisThread) {
-                  leader = null;
-                }
-              }
-            }
-          }
-        }
-      } finally {
-        if (leader == null && mMessages != null) {
-          available.signal();
-        }
-
-        lock.unlock();
-      }
-    }
-
-    private Message removeFirst() {
-      Message first = mMessages;
-      mMessages = first.next;
-      first.next = null;
-      return first;
-    }
-
-    public void pollOnce(long timeout, TimeUnit unit) throws InterruptedException {
+    void pollOnce(long timeout, TimeUnit unit) throws InterruptedException {
       long nanos = unit.toNanos(timeout);
       final ReentrantLock lock = this.lock;
       lock.lockInterruptibly();
@@ -751,171 +646,6 @@ public final class MessageQueue {
 
         lock.unlock();
       }
-    }
-
-    /**
-     * Retrieves and removes the head of this queue, waiting if necessary until
-     * an element with an expired delay is available on this queue, or the
-     * specified wait time expires.
-     *
-     * @return The head of this queue, or {@code null} if the specified waiting
-     *         time elapses before an element with an expired delay becomes
-     *         available
-     *
-     * @throws InterruptedException {@inheritDoc}
-     */
-    @Override
-    public Message poll(long timeout, TimeUnit unit) throws InterruptedException {
-      long nanos = unit.toNanos(timeout);
-      final ReentrantLock lock = this.lock;
-      lock.lockInterruptibly();
-      try {
-        for (;;) {
-          Message first = mMessages;
-          if (first == null) {
-            if (nanos <= 0) {
-              return null;
-            } else {
-              nanos = available.awaitNanos(nanos);
-            }
-          } else {
-            long delay = first.when - SystemClock.millisTime();
-            if (delay <= 0) {
-              return removeFirst();
-            }
-
-            if (nanos <= 0) {
-              return null;
-            }
-
-            first = null;
-            delay = TimeUnit.MILLISECONDS.toNanos(delay);
-            if (nanos < delay || leader != null) {
-              nanos = available.awaitNanos(nanos);
-            } else {
-              Thread thisThread = Thread.currentThread();
-              leader = thisThread;
-              try {
-                long timeLeft = available.awaitNanos(delay);
-                nanos -= delay - timeLeft;
-              } finally {
-                if (leader == thisThread) {
-                  leader = null;
-                }
-              }
-            }
-          }
-        }
-      } finally {
-        if (leader == null && mMessages != null) {
-          available.signal();
-        }
-
-        lock.unlock();
-      }
-    }
-
-    /**
-     * Retrieves and removes the head of this queue, or returns {@code null} if
-     * this queue has no elements with an expired delay.
-     *
-     * @return The head of this queue, or {@code null} if this queue has no
-     *         elements with an expired delay
-     */
-    @Override
-    public Message poll() {
-      final ReentrantLock lock = this.lock;
-      lock.lock();
-      try {
-        Message first = mMessages;
-        if (first == null || first.when > SystemClock.millisTime()) {
-          return null;
-        } else {
-          return removeFirst();
-        }
-      } finally {
-        lock.unlock();
-      }
-    }
-
-    /**
-     * Returns the first element if it is expired. Used only by {@link #drainTo}
-     * and {@link #drainTo(Collection, int)}. Call only when holding lock.
-     *
-     * @return
-     */
-    private Message peekExpired(long now) {
-      // assert lock.isHeldByCurrentThread();
-      Message first = mMessages;
-      return (first == null || first.when <= now) ? null : first;
-    }
-
-    /**
-     * @throws UnsupportedOperationException {@inheritDoc}
-     * @throws ClassCastException            {@inheritDoc}
-     * @throws NullPointerException          {@inheritDoc}
-     * @throws IllegalArgumentException      {@inheritDoc}
-     */
-    @Override
-    public int drainTo(@NonNull Collection<? super Message> c) {
-      if (c == null) {
-        throw new NullPointerException();
-      } if (c == this) {
-        throw new IllegalArgumentException();
-      }
-
-      final ReentrantLock lock = this.lock;
-      lock.lock();
-      long now = SystemClock.millisTime();
-      try {
-        int n = 0;
-        for (Message m; (m = peekExpired(now)) != null; ) {
-          c.add(m);
-          removeFirst();
-          ++n;
-        }
-        return n;
-      } finally {
-        lock.unlock();
-      }
-    }
-
-    /**
-     * @throws UnsupportedOperationException {@inheritDoc}
-     * @throws ClassCastException            {@inheritDoc}
-     * @throws NullPointerException          {@inheritDoc}
-     * @throws IllegalArgumentException      {@inheritDoc}
-     */
-    @Override
-    public int drainTo(@NonNull Collection<? super Message> c, int maxElements) {
-      if (c == null) {
-        throw new NullPointerException();
-      } else if (c == this) {
-        throw new IllegalArgumentException();
-      } else if (maxElements <= 0) {
-        return 0;
-      }
-
-      final ReentrantLock lock = this.lock;
-      lock.lock();
-      long now = SystemClock.millisTime();
-      try {
-        int n = 0;
-        for (Message m; n < maxElements && (m = peekExpired(now)) != null; ) {
-          c.add(m);
-          removeFirst();
-          ++n;
-        }
-
-        return n;
-      } finally {
-        lock.unlock();
-      }
-    }
-
-    @Override
-    public Iterator<Message> iterator() {
-      throw new UnsupportedOperationException();
     }
   }
 }
