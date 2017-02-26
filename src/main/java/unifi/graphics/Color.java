@@ -9,22 +9,26 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
- * The Color class defines methods for creating and converting color ints. Colors are represented
- * as packed ints, made up of 4 bytes: alpha, red, green, blue. The values are unpremultiplied,
- * meaning any transparency is stored solely in the alpha component, and not in the color
- * components. The components are stored as follows {@code (alpha << 24) | (red << 16) |
- * (green << 8) | blue}. Each component ranges between {@code [0..255]} with {@code 0} meaning no
- * contribution for that component, and {@code 255} meaning 100% contribution. Thus opaque-black
- * would be {@code 0xFF000000} (100% opaque but no contributions from red, green, or blue), and
- * opaque-white would be {@code 0xFFFFFFFF}
+ * The Color class defines methods for creating and converting color ints. Colors
+ * are represented as packed ints, made up of 4 bytes: alpha, red, green, blue.
+ * The values are unpremultiplied, meaning any transparency is stored solely in
+ * the alpha component, and not in the color components. The components are stored
+ * as follows {@code (alpha << 24) | (red << 16) | (green << 8) | blue}. Each
+ * component ranges between {@code [0..255]} with {@code 0} meaning no contribution
+ * for that component, and {@code 255} meaning 100% contribution. Thus opaque-black
+ * would be {@code 0xFF000000} (100% opaque but no contributions from red, green,
+ * or blue), and opaque-white would be {@code 0xFFFFFFFF}
  */
 public final class Color {
 
   private Color() {}
 
-  // Note: ALPHA_OFFSET and BLUE_OFFSET are optimized, if changed, make sure to change their impls
-  //       Also, all of the below color definitions are defined in ARGB, so they will need to be
-  //       changed as well (or a static method to convert at runtime)
+  // Note: ALPHA_OFFSET and BLUE_OFFSET are optimized, if changed, make sure to
+  //       change their impls.
+  //
+  //       Also, all of the below color definitions are defined in ARGB, so they
+  //       will need to be changed as well (or a static method to convert at
+  //       runtime)
   private static final int ALPHA_OFFSET = 24;
   private static final int RED_OFFSET = 16;
   private static final int GREEN_OFFSET = 8;
@@ -78,17 +82,17 @@ public final class Color {
   }
 
   /**
-   * Returns a color-int from the specified red, green, and blue components. The alpha component is
-   * implicitly {@code 255} (fully opaque). These component values should be {@code [0..255]}, but
-   * there is no range check performed, so if they are out of range, the returned color is
-   * undefined.
+   * Returns a color-int from the specified red, green, and blue components. The
+   * alpha component is implicitly {@code 255} (fully opaque). These component
+   * values should be {@code [0..255]}, but there is no range check performed,
+   * so if they are out of range, the returned color is undefined.
    *
    * @param red   Red component {@code [0..255]} of the color
    * @param green Green component {@code [0..255]} of the color
    * @param blue  Blue component {@code [0..255]} of the color
    *
-   * @return The color-int defined by the specified {@code red}, {@code green} and {@code blue}
-   *         values
+   * @return The color-int defined by the specified {@code red}, {@code green}
+   *         and {@code blue} values
    */
   @ColorInt
   public static int rgb(int red, int green, int blue) {
@@ -96,17 +100,17 @@ public final class Color {
   }
 
   /**
-   * Return a color-int from alpha, red, green, blue components. These component values should be
-   * {@code [0..255]}, but there is no range check performed, so if they are out of range, the
-   * returned color is undefined.
+   * Return a color-int from alpha, red, green, blue components. These component
+   * values should be {@code [0..255]}, but there is no range check performed,
+   * so if they are out of range, the returned color is undefined.
    *
    * @param alpha Alpha component {@code [0..255]} of the color
    * @param red   Red component {@code [0..255]} of the color
    * @param green Green component {@code [0..255]} of the color
    * @param blue  Blue component {@code [0..255]} of the color
    *
-   * @return The color-int defined by the specified {@code red}, {@code green} and {@code blue}
-   *         values with the given {@code alpha} transparency
+   * @return The color-int defined by the specified {@code red}, {@code green}
+   *         and {@code blue} values with the given {@code alpha} transparency
    */
   @ColorInt
   public static int argb(int alpha, int red, int green, int blue) {
@@ -114,24 +118,41 @@ public final class Color {
   }
 
   /**
-   * Converts the packed color-int from the default format into rgba by shifting the values.
+   * Converts the packed color-int from the default format into {@code rgba} by
+   * shifting the values.
    *
-   * @param color The color int to convert
+   * @param color The color-int to convert
    *
-   * @return A color int encoded as rgba
+   * @return A color-int encoded as {@code rgba}
    */
   public static int rgba(@ColorInt int color) {
-    return (color << 8) | alpha(color);
+    return (color << 8) | (color >>> ALPHA_OFFSET);
   }
 
   /**
-   * Parse the color string, and return the corresponding color-int. Supported formats are:
+   * Converts the packed color-int from the default format into {@code abgr} by
+   * shifting the values.
+   *
+   * @param color The color-int to convert
+   *
+   * @return A color-int encoded as {@code abgr}
+   */
+  public static int abgr(@ColorInt int color) {
+    return (color & 0xFF00FF00) | ((color & 0xFF) << 16) | ((color & 0xFF0000) >> 16);
+  }
+
+  /**
+   * Parse the color string, and return the corresponding color-int. Supported
+   * formats are:
    * <ul>
-   *   <li>{@code #RRGGBB}</li>
-   *   <li>{@code #AARRGGBB}</li>
-   *   <li>'red', 'blue', 'green', 'black', 'white', 'gray', 'cyan', 'magenta', 'yellow',
-   *       'lightgray', 'darkgray', 'grey', 'lightgrey', 'darkgrey', 'aqua', 'fuschia', 'lime',
-   *       'maroon', 'navy', 'olive', 'purple', 'silver', 'teal'</li>
+   *   <li>{@code #RRGGBB}
+   *
+   *   <li>{@code #AARRGGBB}
+   *
+   *   <li>'red', 'blue', 'green', 'black', 'white', 'gray', 'cyan', 'magenta',
+   *   'yellow', 'lightgray', 'darkgray', 'grey', 'lightgrey', 'darkgrey',
+   *   'aqua', 'fuschia', 'lime', 'maroon', 'navy', 'olive', 'purple', 'silver',
+   *   'teal'
    * </ul>
    *
    * @param str The color string to parse
@@ -163,7 +184,8 @@ public final class Color {
     throw new IllegalArgumentException("Unknown color: " + str);
   }
 
-  private static final Map<String, Integer> colorNames = ImmutableMap.<String, Integer>builder()
+  private static final Map<String, Integer> colorNames
+      = ImmutableMap.<String, Integer>builder()
       .put("clear", CLEAR)
       .put("transparent", TRANSPARENT)
       .put("black", BLACK)
