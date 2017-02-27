@@ -179,7 +179,12 @@ public class Canvas implements Disposable {
     mViewport.project(tmp);
     left = tmp.x;
     bottom = tmp.y;
-    HdpiUtils.glScissor((int) left, (int) bottom, width, height);
+    tmp.set(right, top);
+    mViewport.project(tmp);
+    right = tmp.x;
+    top = tmp.y;
+    HdpiUtils.glScissor((int) left, (int) bottom,
+        (int) (right - left), (int) (top - bottom));
     return width > 0 && height > 0;
   }
 
