@@ -42,7 +42,7 @@ public class Canvas implements Disposable {
 
   private static class BatchState {
     boolean mSaved = false;
-    @NonNull Matrix4 mProjectionMatrix = new Matrix4();
+    @NonNull final Matrix4 mProjectionMatrix = new Matrix4();
     boolean mBlendingEnabled;
 
     void save(@NonNull Batch batch) {
@@ -168,6 +168,8 @@ public class Canvas implements Disposable {
     onEnd();
 
     if (!mOwnsBatch) {
+      // Invariant: mOwnsBatch <=> mRestorableState != null
+      //noinspection ConstantConditions
       mRestorableState.restore(mBatch);
     }
   }
