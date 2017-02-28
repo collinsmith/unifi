@@ -40,11 +40,13 @@ public class Canvas implements Disposable {
   //region Batch
   @NonNull private final Batch mBatch;
   private final boolean mOwnsBatch;
+  @NonNull private final Matrix4 mTransformationMatrix;
   @Nullable BatchState mRestorableState;
 
   private static class BatchState {
     boolean mSaved = false;
     @NonNull final Matrix4 mProjectionMatrix = new Matrix4();
+    @NonNull final Matrix4 mTransformationMatrix = new Matrix4();
     boolean mBlendingEnabled;
 
     void save(@NonNull Batch batch) {
@@ -53,6 +55,7 @@ public class Canvas implements Disposable {
       }
 
       mProjectionMatrix.set(batch.getProjectionMatrix());
+      mTransformationMatrix.set(batch.getTransformMatrix());
       mBlendingEnabled = batch.isBlendingEnabled();
       mSaved = true;
     }
@@ -63,6 +66,7 @@ public class Canvas implements Disposable {
       }
 
       batch.setProjectionMatrix(mProjectionMatrix);
+      batch.setTransformMatrix(mTransformationMatrix);
       if (mBlendingEnabled) {
         batch.enableBlending();
       } else {
@@ -92,6 +96,7 @@ public class Canvas implements Disposable {
 
     mBatch = new SpriteBatch();
     mOwnsBatch = true;
+    mTransformationMatrix = mBatch.getTransformMatrix();
 
     mSaves = new RectF[INITIAL_SAVE_COUNT];
     mSaveCount = 0;
@@ -105,6 +110,7 @@ public class Canvas implements Disposable {
     mViewport = viewport;
     mBatch = new SpriteBatch();
     mOwnsBatch = true;
+    mTransformationMatrix = mBatch.getTransformMatrix();
 
     mSaves = new RectF[INITIAL_SAVE_COUNT];
     mSaveCount = 0;
@@ -117,6 +123,7 @@ public class Canvas implements Disposable {
 
     mBatch = batch;
     mOwnsBatch = false;
+    mTransformationMatrix = batch.getTransformMatrix();
 
     OrthographicCamera camera = new OrthographicCamera();
     camera.setToOrtho(true);
@@ -138,6 +145,7 @@ public class Canvas implements Disposable {
     mViewport = viewport;
     mBatch = batch;
     mOwnsBatch = false;
+    mTransformationMatrix = batch.getTransformMatrix();
 
     mSaves = new RectF[INITIAL_SAVE_COUNT];
     mSaveCount = 0;
@@ -454,6 +462,26 @@ public class Canvas implements Disposable {
     if (mClip == null) {
       Gdx.gl.glDisable(GL20.GL_SCISSOR_TEST);
     }
+  }
+
+  /**
+   * Offsets subsequent drawing commands by the specified amount.
+   *
+   * @param dx The x-axis offset
+   * @param dy The y-axis offset
+   */
+  public void translate(int dx, int dy) {
+    mTransformationMatrix.translate(dx, dy, 0);
+  }
+
+  /**
+   * Scales subsequent drawing commands by the specified amount.
+   *
+   * @param sx The amount to scale in the x-direction
+   * @param sy The amount to scale in the y-direction
+   */
+  public void scale(int sx, int sy) {
+    mTransformationMatrix.scale(sx, sy, 1);
   }
 
   /**
