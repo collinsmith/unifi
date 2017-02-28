@@ -143,6 +143,14 @@ public class Canvas implements Disposable {
     mSaveCount = 0;
   }
 
+  /**
+   * Returns the viewport associated with this canvas.
+   */
+  @NonNull
+  public Viewport getViewport() {
+    return mViewport;
+  }
+
   public final void update(int width, int height) {
     mViewport.update(width, height, true);
   }
