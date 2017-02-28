@@ -46,6 +46,11 @@ public class Log {
     Gdx.app.error(tag, msg, tr);
   }
 
+  // TODO: Implement this more completely: What a Terrible Failure
+  public static void wtf(String tag, String msg, Throwable tr) {
+    Gdx.app.error(tag, msg, tr);
+  }
+
   public static boolean isLoggable(String tag, int level) {
     return Gdx.app.getLogLevel() >= level;
   }
