@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.HdpiUtils;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.NumberUtils;
@@ -37,6 +38,38 @@ public class Canvas implements Disposable {
   @NonNull private final Batch mBatch;
   private final boolean mOwnsBatch;
   @NonNull private Viewport mViewport;
+  @Nullable BatchState mRestorableState;
+
+  private static class BatchState {
+    boolean mSaved = false;
+    @NonNull Matrix4 mProjectionMatrix = new Matrix4();
+    boolean mBlendingEnabled;
+
+    void save(@NonNull Batch batch) {
+      if (mSaved) {
+        throw new IllegalStateException("save() overwriting previous save()");
+      }
+
+      mProjectionMatrix.set(batch.getProjectionMatrix());
+      mBlendingEnabled = batch.isBlendingEnabled();
+      mSaved = true;
+    }
+
+    void restore(@NonNull Batch batch) {
+      if (!mSaved) {
+        throw new IllegalStateException("restore() called with save()");
+      }
+
+      batch.setProjectionMatrix(mProjectionMatrix);
+      if (mBlendingEnabled) {
+        batch.enableBlending();
+      } else {
+        batch.disableBlending();
+      }
+
+      mSaved = false;
+    }
+  }
 
   @NonNull private final Pixmap mPixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
   @Nullable private Texture mTexture;
@@ -50,7 +83,16 @@ public class Canvas implements Disposable {
   public Canvas() {
     mBatch = new SpriteBatch();
     mOwnsBatch = true;
+    init();
+  }
 
+  public Canvas(@NonNull Batch batch) {
+    mBatch = batch;
+    mOwnsBatch = false;
+    init();
+  }
+
+  private void init() {
     OrthographicCamera camera = new OrthographicCamera();
     camera.setToOrtho(true);
 
@@ -61,7 +103,7 @@ public class Canvas implements Disposable {
     mSaveCount = 0;
   }
 
-  public final void resize(int width, int height) {
+  public final void update(int width, int height) {
     mViewport.update(width, height, true);
   }
 
@@ -88,6 +130,14 @@ public class Canvas implements Disposable {
    * terminate with a call to {@link #end()}.
    */
   public final void begin() {
+    if (!mOwnsBatch) {
+      if (mRestorableState == null) {
+        mRestorableState = new BatchState();
+      }
+
+      mRestorableState.save(mBatch);
+    }
+
     mBatch.begin();
     mBatch.enableBlending();
     mBatch.setProjectionMatrix(mViewport.getCamera().combined);
@@ -116,6 +166,10 @@ public class Canvas implements Disposable {
     mBatch.end();
     restoreToCount(0);
     onEnd();
+
+    if (!mOwnsBatch) {
+      mRestorableState.restore(mBatch);
+    }
   }
 
   /**
