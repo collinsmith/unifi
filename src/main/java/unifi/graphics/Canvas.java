@@ -14,7 +14,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.HdpiUtils;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.NumberUtils;
 import com.badlogic.gdx.utils.Scaling;
@@ -33,11 +33,13 @@ public class Canvas implements Disposable {
     return NumberUtils.intToFloatColor(Color.abgr(color));
   }
 
-  private final Vector2 tmp = new Vector2();
+  private final Vector3 tmp = new Vector3();
+  private final Rect mScissors = new Rect();
+  @NonNull private final Viewport mViewport;
 
+  //region Batch
   @NonNull private final Batch mBatch;
   private final boolean mOwnsBatch;
-  @NonNull private Viewport mViewport;
   @Nullable BatchState mRestorableState;
 
   private static class BatchState {
@@ -70,6 +72,7 @@ public class Canvas implements Disposable {
       mSaved = false;
     }
   }
+  //endregion
 
   @NonNull private final Pixmap mPixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
   @Nullable private Texture mTexture;
@@ -81,23 +84,60 @@ public class Canvas implements Disposable {
   @Nullable RectF mClip;
 
   public Canvas() {
-    mBatch = new SpriteBatch();
-    mOwnsBatch = true;
-    init();
-  }
-
-  public Canvas(@NonNull Batch batch) {
-    mBatch = batch;
-    mOwnsBatch = false;
-    init();
-  }
-
-  private void init() {
     OrthographicCamera camera = new OrthographicCamera();
     camera.setToOrtho(true);
 
     mViewport = new ScalingViewport(Scaling.fit,
         Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
+
+    mBatch = new SpriteBatch();
+    mOwnsBatch = true;
+
+    mSaves = new RectF[INITIAL_SAVE_COUNT];
+    mSaveCount = 0;
+  }
+
+  public Canvas(@NonNull Viewport viewport) {
+    if (viewport == null) {
+      throw new IllegalArgumentException("Cannot create a canvas with a null Viewport");
+    }
+
+    mViewport = viewport;
+    mBatch = new SpriteBatch();
+    mOwnsBatch = true;
+
+    mSaves = new RectF[INITIAL_SAVE_COUNT];
+    mSaveCount = 0;
+  }
+
+  public Canvas(@NonNull Batch batch) {
+    if (batch == null) {
+      throw new IllegalArgumentException("Cannot create a canvas with a null Batch");
+    }
+
+    mBatch = batch;
+    mOwnsBatch = false;
+
+    OrthographicCamera camera = new OrthographicCamera();
+    camera.setToOrtho(true);
+
+    mViewport = new ScalingViewport(Scaling.fit,
+        Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
+
+    mSaves = new RectF[INITIAL_SAVE_COUNT];
+    mSaveCount = 0;
+  }
+
+  public Canvas(@NonNull Viewport viewport, @NonNull Batch batch) {
+    if (viewport == null) {
+      throw new IllegalArgumentException("Cannot create a canvas with a null Viewport");
+    } else if (batch == null) {
+      throw new IllegalArgumentException("Cannot create a canvas with a null Batch");
+    }
+
+    mViewport = viewport;
+    mBatch = batch;
+    mOwnsBatch = false;
 
     mSaves = new RectF[INITIAL_SAVE_COUNT];
     mSaveCount = 0;
@@ -193,6 +233,28 @@ public class Canvas implements Disposable {
   protected void onFlush() {}
 
   /**
+   * Calculates the scissors' bounds and stores the result in {@link #mScissors}.
+   *
+   * <p>Implementation Note: This will automatically convert the representation
+   * and flip the y-axis, so top > bottom, even though OpenGL expects scissors
+   * bounds to be given with bottom left = (0,0)
+   */
+  private void calculateScissors(float left, float top, float right, float bottom) {
+    Matrix4 batchTransform = mBatch.getTransformMatrix();
+    tmp.set(left, top, 0);
+    tmp.mul(batchTransform);
+    mViewport.project(tmp);
+    mScissors.left = Math.round(tmp.x);
+    mScissors.bottom = Math.round(tmp.y);
+
+    tmp.set(right, bottom, 0);
+    tmp.mul(batchTransform);
+    mViewport.project(tmp);
+    mScissors.right = Math.round(tmp.x);
+    mScissors.top = Math.round(tmp.y);
+  }
+
+  /**
    * Clips the subsequent draw commands to the intersection of the bounds of the
    * specified rectangle and the current clip bounds. If there are no clip
    * bounds set yet, then this will set the clip bounds to the specified bounds.
@@ -229,18 +291,10 @@ public class Canvas implements Disposable {
     }
 
     flush();
-    int width = (int) (right - left);
-    int height = (int) (bottom - top);
-    tmp.set(left, bottom);
-    mViewport.project(tmp);
-    left = tmp.x;
-    bottom = tmp.y;
-    tmp.set(right, top);
-    mViewport.project(tmp);
-    right = tmp.x;
-    top = tmp.y;
-    HdpiUtils.glScissor((int) left, (int) bottom,
-        (int) (right - left), (int) (top - bottom));
+    calculateScissors(left, top, right, bottom);
+    int width = mScissors.right - mScissors.left;
+    int height = mScissors.bottom - mScissors.top;
+    HdpiUtils.glScissor(mScissors.left, mScissors.top, width, height);
     return width > 0 && height > 0;
   }
 
