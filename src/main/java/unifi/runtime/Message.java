@@ -321,7 +321,8 @@ public final class Message {
    * @throws NullPointerException if this field has no handler.
    */
   public void sendToTarget() {
-    target.sendMessage(this);
+    //target.sendMessage(this);
+    throw new UnsupportedOperationException();
   }
 
   /**
