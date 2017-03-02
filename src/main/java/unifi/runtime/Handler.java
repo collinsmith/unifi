@@ -39,7 +39,7 @@ public interface Handler {
 
   void removeMessages(int what, @Nullable Object token);
 
-  void removeMessages(@NonNull Runnable r, @Nullable Object token);
+  void removeMessages(@Nullable Runnable r, @Nullable Object token);
 
   void removeCallbacksAndMessages(@Nullable Object token);
 

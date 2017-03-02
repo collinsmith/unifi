@@ -113,7 +113,11 @@ public abstract class AbstractHandler implements Handler {
   }
 
   @Override
-  public final void removeMessages(@NonNull Runnable r, @Nullable Object token) {
+  public final void removeMessages(@Nullable Runnable r, @Nullable Object token) {
+    if (r == null) {
+      return;
+    }
+
     for (Iterator<Message> it = mQueue.iterator(); it.hasNext(); ) {
       Message msg = it.next();
       if (msg.callback == r && (token == null || msg.obj == token)) {
