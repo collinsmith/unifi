@@ -92,8 +92,26 @@ public abstract class AbstractHandler implements Handler {
     return sendMessageAtTime(msg, SystemClock.millisTime() + delayMillis);
   }
 
+  @Override
   public final boolean sendMessageAtTime(@NonNull Message msg, long whenMillis) {
     return enqueueMessage(msg, whenMillis);
+  }
+
+  @Override
+  public boolean sendEmptyMessage(int what) {
+    return sendEmptyMessageDelayed(what, 0);
+  }
+
+  @Override
+  public boolean sendEmptyMessageDelayed(int what, long delayMillis) {
+    Message msg = obtainMessage(what);
+    return sendMessageDelayed(msg, delayMillis);
+  }
+
+  @Override
+  public boolean sendEmptyMessageAtTime(int what, long whenMillis) {
+    Message msg = obtainMessage(what);
+    return sendMessageAtTime(msg, whenMillis);
   }
 
   @Override

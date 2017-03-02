@@ -35,6 +35,14 @@ public interface Handler {
 
   boolean sendMessageDelayed(@NonNull Message msg, long delayMillis);
 
+  boolean sendMessageAtTime(@NonNull Message msg, long whenMillis);
+
+  boolean sendEmptyMessage(int what);
+
+  boolean sendEmptyMessageDelayed(int what, long delayMillis);
+
+  boolean sendEmptyMessageAtTime(int what, long whenMillis);
+
   void removeMessages(int what);
 
   void removeMessages(int what, @Nullable Object token);
