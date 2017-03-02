@@ -166,12 +166,12 @@ public abstract class AbstractHandler implements Handler {
   }
 
   @Override
-  public final void removeCallbacks(@NonNull Runnable r) {
+  public final void removeCallbacks(@Nullable Runnable r) {
     removeMessages(r, null);
   }
 
   @Override
-  public final void removeCallbacks(@NonNull Runnable r, @Nullable Object token) {
+  public final void removeCallbacks(@Nullable Runnable r, @Nullable Object token) {
     removeMessages(r, token);
   }
 
