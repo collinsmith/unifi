@@ -41,7 +41,7 @@ public final class Message {
 
   //region Flags
   static final int FLAG_IN_USE = 1 << 0;
-  static final int FLAG_ASYNCHRONOUS = 1 << 1;
+  @Deprecated static final int FLAG_ASYNCHRONOUS = 1 << 1;
   static final int FLAGS_TO_CLEAR_ON_COPY_FROM = FLAG_IN_USE;
   //endregion
 
@@ -331,6 +331,7 @@ public final class Message {
    *
    * @see #setAsynchronous(boolean)
    */
+  @Deprecated
   public boolean isAsynchronous() {
     return (flags & FLAG_ASYNCHRONOUS) == FLAG_ASYNCHRONOUS;
   }
@@ -349,6 +350,7 @@ public final class Message {
    *
    * @see #isAsynchronous()
    */
+  @Deprecated
   public void setAsynchronous(boolean async) {
     if (async) {
       flags |= FLAG_ASYNCHRONOUS;
