@@ -311,6 +311,7 @@ public final class Message {
    * dispatch it. If not set, the message will be dispatched to the receiving
    * handler's {@link Handler#handleMessage(Message)} method.
    */
+  @Nullable
   public Runnable getCallback() {
     return callback;
   }
