@@ -25,4 +25,9 @@ public class Paint {
   public void setFlags(int flags) {
     mFlags = flags;
   }
+
+  @ColorInt
+  public int getColor() {
+    return mColor;
+  }
 }
