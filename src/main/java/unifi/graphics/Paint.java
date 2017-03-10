@@ -1,6 +1,9 @@
 package unifi.graphics;
 
+import com.google.common.base.Preconditions;
+
 import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 
 public class Paint {
 
@@ -9,6 +12,10 @@ public class Paint {
   private int mFlags;
 
   @ColorInt int mColor;
+
+  @NonNull Style mStyle = Style.FILL;
+
+  float mStrokeWidth;
 
   public Paint() {
     this(0);
@@ -29,5 +36,31 @@ public class Paint {
   @ColorInt
   public int getColor() {
     return mColor;
+  }
+
+  public void setColor(@ColorInt int color) {
+    mColor = color;
+  }
+
+  @NonNull
+  public Style getStyle() {
+    return mStyle;
+  }
+
+  public void setStyle(@NonNull Style style) {
+    mStyle = Preconditions.checkNotNull(style);
+  }
+
+  public float getStrokeWidth() {
+    return mStrokeWidth;
+  }
+
+  public void setStrokeWidth(float strokeWidth) {
+    mStrokeWidth = strokeWidth;
+  }
+
+  public enum Style {
+    FILL,
+    STROKE,
   }
 }
