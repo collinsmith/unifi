@@ -527,7 +527,24 @@ public class Canvas implements Disposable {
    */
   public void drawRect(float l, float t, float r, float b, @NonNull Paint paint) {
     preparePixmap(paint);
-    mBatch.draw(mTexture, l, t, r - l, b - t);
+    final float width = r - l;
+    final float height = b - t;
+    switch (paint.mStyle) {
+      case STROKE:
+        // Only draw strokes if the rect area can accommodate stroke width
+        final float strokeWidth = paint.mStrokeWidth;
+        final float doubleStrokeWidth = strokeWidth * 2f;
+        if (doubleStrokeWidth < width && doubleStrokeWidth < height) {
+          mBatch.draw(mTexture, l, t, width, strokeWidth);
+          mBatch.draw(mTexture, l, t + height - strokeWidth, width, strokeWidth);
+          mBatch.draw(mTexture, l, t, strokeWidth, height);
+          mBatch.draw(mTexture, l + width - strokeWidth, t, strokeWidth, height);
+          break;
+        }
+      case FILL:
+      default:
+        mBatch.draw(mTexture, l, t, width, height);
+    }
   }
 
   /**

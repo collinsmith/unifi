@@ -15,7 +15,7 @@ public class Paint {
 
   @NonNull Style mStyle = Style.FILL;
 
-  float mStrokeWidth;
+  float mStrokeWidth = 1.0f;
 
   public Paint() {
     this(0);
@@ -56,7 +56,7 @@ public class Paint {
   }
 
   public void setStrokeWidth(float strokeWidth) {
-    mStrokeWidth = strokeWidth;
+    mStrokeWidth = Math.max(strokeWidth, 1.0f);
   }
 
   public enum Style {
