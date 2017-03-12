@@ -11,7 +11,7 @@ public class Paint {
 
   private int mFlags;
 
-  @ColorInt int mColor;
+  @ColorInt int mColor = Color.BLACK;
 
   @NonNull Style mStyle = Style.FILL;
 
