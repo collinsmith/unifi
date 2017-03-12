@@ -142,6 +142,20 @@ public final class Color {
   }
 
   /**
+   * Returns a string representation of the specified color int in {@code #RRGGBB}
+   * if there is no alpha, or {@code #AARRGGBB} format if there is alpha. The
+   * returned value will be parseable by {@link #parseColor(String)}.
+   */
+  @NonNull
+  public static String toString(@ColorInt int color) {
+    if (alpha(color) == 0) {
+      return String.format("#%06x", color);
+    } else {
+      return String.format("#%08x", color);
+    }
+  }
+
+  /**
    * Parse the color string, and return the corresponding color-int. Supported
    * formats are:
    * <ul>
