@@ -249,25 +249,26 @@ public class Canvas implements Disposable {
   protected void onFlush() {}
 
   /**
-   * Calculates the scissors' bounds and stores the result in {@link #mScissors}.
+   * Calculates the scissors' bounds and stores the result in {@code dst}.
    *
    * <p>Implementation Note: This will automatically convert the representation
    * and flip the y-axis, so top > bottom, even though OpenGL expects scissors
    * bounds to be given with bottom left = (0,0)
    */
-  private void calculateScissors(float left, float top, float right, float bottom) {
+  private void calculateScissors(@NonNull Rect dst,
+                                 float left, float top, float right, float bottom) {
     Matrix4 batchTransform = mBatch.getTransformMatrix();
     tmp.set(left, top, 0);
     tmp.mul(batchTransform);
     mViewport.project(tmp);
-    mScissors.left = Math.round(tmp.x);
-    mScissors.bottom = Math.round(tmp.y);
+    dst.left = Math.round(tmp.x);
+    dst.bottom = Math.round(tmp.y);
 
     tmp.set(right, bottom, 0);
     tmp.mul(batchTransform);
     mViewport.project(tmp);
-    mScissors.right = Math.round(tmp.x);
-    mScissors.top = Math.round(tmp.y);
+    dst.right = Math.round(tmp.x);
+    dst.top = Math.round(tmp.y);
   }
 
   /**
@@ -307,7 +308,7 @@ public class Canvas implements Disposable {
     }
 
     flush();
-    calculateScissors(left, top, right, bottom);
+    calculateScissors(mScissors, left, top, right, bottom);
     int width = mScissors.right - mScissors.left;
     int height = mScissors.bottom - mScissors.top;
     HdpiUtils.glScissor(mScissors.left, mScissors.top, width, height);
