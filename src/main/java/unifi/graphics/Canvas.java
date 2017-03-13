@@ -293,6 +293,7 @@ public class Canvas implements Disposable {
    * @see #clipRect(Rect)
    */
   public boolean clipRect(float left, float top, float right, float bottom) {
+    flush();
     if (mClip == null) {
       assert mSaves.length > 0 : "mSaves initial size should be > 0";
       if (mSaves[0] != null) {
@@ -307,7 +308,6 @@ public class Canvas implements Disposable {
       mClip.intersect(left, top, right, bottom);
     }
 
-    flush();
     calculateScissors(mScissors, left, top, right, bottom);
     int width = mScissors.right - mScissors.left;
     int height = mScissors.bottom - mScissors.top;
