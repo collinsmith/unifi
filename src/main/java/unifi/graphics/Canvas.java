@@ -583,8 +583,7 @@ public class Canvas implements Disposable {
    *
    * @param texture The texture to render
    * @param bounds  The bounds to stretch to
-   * @param paint   The paint used to tint the texture, or {@code null} for no
-   *                tint
+   * @param paint   The paint used to tint the texture, or {@code null} for no tint
    */
   public void draw(@NonNull Texture texture, @NonNull Rect bounds, @Nullable Paint paint) {
     draw(texture, bounds.left, bounds.top, bounds.right, bounds.bottom, paint);
