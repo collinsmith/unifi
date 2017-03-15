@@ -54,18 +54,28 @@ public class ColorDrawable extends AbstractDrawable {
 
   @Override
   public void draw(@NonNull Canvas canvas) {
-    sPaint.setColor(mColor);
-    canvas.fill(sPaint);
+    if (Color.alpha(sPaint.getColor()) != 0) {
+      sPaint.setColor(mColor);
+      canvas.drawRect(getBounds(), sPaint);
+    }
   }
 
   @Override
   public int getOpacity() {
-    return Color.alpha(mColor) == 255 ? PixelFormat.OPAQUE : PixelFormat.TRANSLUCENT;
+    switch (Color.alpha(mColor)) {
+      case 0:   return PixelFormat.TRANSPARENT;
+      case 255: return PixelFormat.OPAQUE;
+      default:  return PixelFormat.TRANSLUCENT;
+    }
+  }
+
+  @Override
+  public int getAlpha() {
+    return Color.alpha(mColor);
   }
 
   @Override
   public void setAlpha(@IntRange(from = 0, to = 255) int alpha) {
-    mColor &= ~0xFF000000;
-    mColor |= (alpha << 24);
+    mColor = Color.setAlpha(mColor, alpha);
   }
 }

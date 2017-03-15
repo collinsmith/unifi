@@ -549,6 +549,19 @@ public class Canvas implements Disposable {
   }
 
   /**
+   * Fills the specified bounds of this canvas with the given paint.
+   *
+   * <p>Note: The bounds are specified assuming the y-axis is pointing down,
+   * that is, {@code (0, 0)} is located in the top left of the screen.
+   *
+   * @param bounds The bounds to fill, given in pixels
+   * @param paint  The paint to fill the bounds with
+   */
+  public void drawRect(@NonNull Rect bounds, @NonNull Paint paint) {
+    drawRect(bounds.left, bounds.top, bounds.right, bounds.bottom, paint);
+  }
+
+  /**
    * Draws the specified texture, stretching it to fill the given bounds.
    *
    * @param texture The texture to render
