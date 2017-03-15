@@ -81,6 +81,20 @@ public interface Drawable {
   void draw(@NonNull Canvas canvas);
 
   /**
+   * Makes this drawable mutable. This operation cannot be reversed. A mutable
+   * drawable is guaranteed to not share its state with any other drawable.
+   *
+   * <p>This method can be used when it becomes necessary to modify the
+   * properties of drawables loaded from resources. By default, all drawables
+   * loaded from resources share a common state; if you modify the state of one
+   * instance, the change will propagate to all other instances.
+   *
+   * <p>Note: Calling this method on a mutable drawable will have no effect.
+   */
+  @NonNull
+  Drawable mutate();
+
+  /**
    * Binds the specified {@link Callback} to this drawable. This is required for
    * clients who want to support animated drawables.
    */

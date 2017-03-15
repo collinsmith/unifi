@@ -59,6 +59,17 @@ public abstract class AbstractDrawable implements Drawable {
   @LayoutDirection.Resolved
   private int mLayoutDirection;
 
+  /**
+   * {@inheritDoc}
+   *
+   * @return This drawable
+   */
+  @NonNull
+  @Override
+  public Drawable mutate() {
+    return this;
+  }
+
   @Override
   public void setCallback(@NonNull Callback callback) {
     mCallback = new WeakReference<>(callback);
