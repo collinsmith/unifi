@@ -100,6 +100,20 @@ public final class Color {
   }
 
   /**
+   * Sets the alpha channel of the specified color and returns the new color.
+   *
+   * @param color The color to transform
+   * @param alpha The new alpha value for the color
+   *
+   * @return The transformed color-int, with the rgb values from {@code color}
+   *         and the specified {@code alpha} value
+   */
+  @ColorInt
+  public static int setAlpha(@ColorInt int color, int alpha) {
+    return (color & ~(0xFF << ALPHA_OFFSET)) | (alpha << ALPHA_OFFSET);
+  }
+
+  /**
    * Return a color-int from alpha, red, green, blue components. These component
    * values should be {@code [0..255]}, but there is no range check performed,
    * so if they are out of range, the returned color is undefined.
