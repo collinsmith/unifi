@@ -574,6 +574,19 @@ public class Canvas implements Disposable {
   public void draw(@NonNull Texture texture, float l, float t, float r, float b,
                    @Nullable Paint paint) {
     prepareTint(paint);
-    mBatch.draw(texture, l, t, r - l, b - t, 0, 0, 1, 1, false, true);
+    mBatch.draw(texture, l, t, r - l, b - t,
+        0, 0, texture.getWidth(), texture.getHeight(), false, true);
+  }
+
+  /**
+   * Draws the specified texture, stretching it to fill the given bounds.
+   *
+   * @param texture The texture to render
+   * @param bounds  The bounds to stretch to
+   * @param paint   The paint used to tint the texture, or {@code null} for no
+   *                tint
+   */
+  public void draw(@NonNull Texture texture, @NonNull Rect bounds, @Nullable Paint paint) {
+    draw(texture, bounds.left, bounds.top, bounds.right, bounds.bottom, paint);
   }
 }
