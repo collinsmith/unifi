@@ -48,6 +48,7 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.+'
     testCompile "com.badlogicgames.gdx:gdx:$gdxVersion"
     testCompile "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
+    testCompile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
     testCompile "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
     testCompile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
     testCompile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
