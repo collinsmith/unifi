@@ -98,6 +98,16 @@ public interface Drawable {
   Drawable mutate();
 
   /**
+   * Clears the mutated state, allowing this drawable to be cached and mutated
+   * again.
+   *
+   * <p>This method is inherited from <a href="http://grepcode.com/file/repository.grepcode.com/java/ext/com.google.android/android/5.1.1_r1/android/graphics/drawable/Drawable.java#Drawable.clearMutated%28%29">
+   * android.graphics.drawable.Drawable</a> and used internally, and should
+   * generally not be used.
+   */
+  void clearMutated();
+
+  /**
    * Binds the specified {@link Callback} to this drawable. This is required for
    * clients who want to support animated drawables.
    */

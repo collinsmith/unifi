@@ -70,6 +70,14 @@ public abstract class AbstractDrawable implements Drawable {
     return this;
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * <p>Default implementation is no-op.
+   */
+  @Override
+  public void clearMutated() {}
+
   @Override
   public void setCallback(@NonNull Callback callback) {
     mCallback = new WeakReference<>(callback);
