@@ -78,8 +78,8 @@ public interface ViewParent {
    * @param direction One of {@link FocusDirection#FOCUS_UP}, {@link FocusDirection#FOCUS_DOWN},
    *                  {@link FocusDirection#FOCUS_LEFT}, or {@link FocusDirection#FOCUS_RIGHT}
    *
-   * @return The nearest view that wants to take focus, or {@code null} if none
-   *         could be found
+   * @return The nearest focusable in the specified direction, or {@code null}
+   *         if none could be found
    */
   @Nullable
   View focusSearch(@Nullable View v, @FocusDirection.Real int direction);
