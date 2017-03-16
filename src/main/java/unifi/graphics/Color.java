@@ -110,7 +110,7 @@ public final class Color {
    */
   @ColorInt
   public static int setAlpha(@ColorInt int color, int alpha) {
-    return (color & ~(0xFF << ALPHA_OFFSET)) | (alpha << ALPHA_OFFSET);
+    return (color << 8 >>> 8) | (alpha << ALPHA_OFFSET);
   }
 
   /**
