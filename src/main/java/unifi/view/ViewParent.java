@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.Size;
 
 import unifi.graphics.Rect;
+import unifi.util.FocusDirection;
 import unifi.util.LayoutDirection;
 
 /**
@@ -69,6 +70,19 @@ public interface ViewParent {
    */
   @Nullable
   ViewParent invalidateChildInParent(@NonNull @Size(value = 2) int[] location, @NonNull Rect r);
+
+  /**
+   * Finds the nearest view in the specified direction that wants to take focus.
+   *
+   * @param v         The view that currently has focus
+   * @param direction One of {@link FocusDirection#FOCUS_UP}, {@link FocusDirection#FOCUS_DOWN},
+   *                  {@link FocusDirection#FOCUS_LEFT}, or {@link FocusDirection#FOCUS_RIGHT}
+   *
+   * @return The nearest view that wants to take focus, or {@code null} if none
+   *         could be found
+   */
+  @Nullable
+  View focusSearch(@Nullable View v, @FocusDirection.Real int direction);
 
   /**
    * Notifies this parent that the specified child has become available for
