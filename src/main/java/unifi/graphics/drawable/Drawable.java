@@ -90,6 +90,9 @@ public interface Drawable {
    * instance, the change will propagate to all other instances.
    *
    * <p>Note: Calling this method on a mutable drawable will have no effect.
+   *
+   * @see ConstantState
+   * @see #getConstantState()
    */
   @NonNull
   Drawable mutate();
@@ -416,6 +419,16 @@ public interface Drawable {
   int getMinimumHeight();
 
   /**
+   * Returns the constant state instance that holds the shared state of this
+   * drawable.
+   *
+   * @see ConstantState
+   * @see #mutate()
+   */
+  @Nullable
+  ConstantState getConstantState();
+
+  /**
    * Defines the behavior of an animated drawable. Upon retrieving a drawable,
    * use {@link Drawable#setCallback} to supply your implementation of this
    * interface to the drawable; it uses this interface to schedule and execute
@@ -455,4 +468,10 @@ public interface Drawable {
      */
     void unscheduleDrawable(@NonNull Drawable who, @NonNull Runnable what);
   }
+
+  /**
+   * Abstract class used by drawables to store shared constant state and data
+   * between drawable instances.
+   */
+  interface ConstantState {}
 }

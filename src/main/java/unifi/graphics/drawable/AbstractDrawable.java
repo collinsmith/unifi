@@ -323,4 +323,10 @@ public abstract class AbstractDrawable implements Drawable {
     final int intrinsicHeight = getIntrinsicHeight();
     return intrinsicHeight > 0 ? intrinsicHeight : 0;
   }
+
+  @Nullable
+  @Override
+  public ConstantState getConstantState() {
+    return null;
+  }
 }
