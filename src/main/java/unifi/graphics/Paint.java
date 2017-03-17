@@ -25,6 +25,13 @@ public class Paint {
     setFlags(flags | DEFAULT_PAINT_FLAGS);
   }
 
+  public Paint(@NonNull Paint src) {
+    mFlags = src.mFlags;
+    mColor = src.mColor;
+    mStyle = src.mStyle;
+    mStrokeWidth = src.mStrokeWidth;
+  }
+
   public int getFlags() {
     return mFlags;
   }
