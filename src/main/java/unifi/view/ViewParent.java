@@ -75,8 +75,8 @@ public interface ViewParent {
    * Finds the nearest view in the specified direction that wants to take focus.
    *
    * @param v         The view that currently has focus
-   * @param direction One of {@link FocusDirection#FOCUS_UP}, {@link FocusDirection#FOCUS_DOWN},
-   *                  {@link FocusDirection#FOCUS_LEFT}, or {@link FocusDirection#FOCUS_RIGHT}
+   * @param direction One of {@link FocusDirection#UP}, {@link FocusDirection#DOWN},
+   *                  {@link FocusDirection#LEFT}, or {@link FocusDirection#RIGHT}
    *
    * @return The nearest focusable in the specified direction, or {@code null}
    *         if none could be found
