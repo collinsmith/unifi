@@ -3,6 +3,7 @@ package unifi.graphics;
 import com.google.common.base.Preconditions;
 
 import android.support.annotation.ColorInt;
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 
 public class Paint {
@@ -11,7 +12,7 @@ public class Paint {
 
   private int mFlags;
 
-  @ColorInt int mColor = Color.BLACK;
+  @ColorInt int mColor = Color.WHITE;
 
   @NonNull Style mStyle = Style.FILL;
 
@@ -47,6 +48,19 @@ public class Paint {
 
   public void setColor(@ColorInt int color) {
     mColor = color;
+  }
+
+  @IntRange(from = 0, to = 255)
+  public int getAlpha() {
+    return Color.alpha(mColor);
+  }
+
+  public void setAlpha(@IntRange(from = 0, to = 255) int alpha) {
+    if (alpha < 0 || alpha > 255) {
+      throw new IllegalArgumentException("alpha must be in range [0..255] inclusive");
+    }
+
+    mColor = Color.setAlpha(mColor, alpha);
   }
 
   @NonNull
