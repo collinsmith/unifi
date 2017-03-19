@@ -18,7 +18,7 @@ public class TextureDrawable extends AbstractDrawable {
 
   @NonNull private static final Paint sPaint = new Paint();
 
-  @Nullable private Texture mTexture;
+  @Nullable private ConstantState mTextureState;
 
   @IntRange(from = 0, to = 255) private int mAlpha;
 
@@ -26,8 +26,8 @@ public class TextureDrawable extends AbstractDrawable {
    * Constructs a texture drawable with a {@code null} texture. This is intended
    * for internal use only when loading texture drawables from resources.
    */
-  public TextureDrawable() {
-    mTexture = null;
+  TextureDrawable() {
+    mTextureState.mTexture = null;
     mAlpha = 255;
   }
 
@@ -49,7 +49,7 @@ public class TextureDrawable extends AbstractDrawable {
       throw new IllegalArgumentException("Alpha must be between [0..255] (inclusive)");
     }
 
-    mTexture = texture;
+    mTextureState.mTexture = texture;
     mAlpha = alpha;
   }
 
@@ -60,7 +60,7 @@ public class TextureDrawable extends AbstractDrawable {
    */
   @Nullable
   public Texture getTexture() {
-    return mTexture;
+    return mTextureState.mTexture;
   }
 
   /**
@@ -71,17 +71,17 @@ public class TextureDrawable extends AbstractDrawable {
       throw new IllegalArgumentException("Cannot create a TextureDrawable with a null texture");
     }
 
-    if (mTexture != texture) {
-      mTexture = texture;
+    if (mTextureState.mTexture != texture) {
+      mTextureState.mTexture = texture;
       invalidateSelf();
     }
   }
 
   @Override
   public void draw(@NonNull Canvas canvas) {
-    if (mTexture != null) {
+    if (mTextureState.mTexture != null) {
       sPaint.setColor(mAlpha == 255 ? Color.WHITE : Color.setAlpha(Color.WHITE, mAlpha));
-      canvas.draw(mTexture, getBounds(), sPaint);
+      canvas.draw(mTextureState.mTexture, getBounds(), sPaint);
     }
   }
 
@@ -110,19 +110,43 @@ public class TextureDrawable extends AbstractDrawable {
 
   @Override
   public int getIntrinsicWidth() {
-    if (mTexture == null) {
+    if (mTextureState.mTexture == null) {
       return 0;
     }
 
-    return mTexture.getWidth();
+    return mTextureState.mTexture.getWidth();
   }
 
   @Override
   public int getIntrinsicHeight() {
-    if (mTexture == null) {
+    if (mTextureState.mTexture == null) {
       return 0;
     }
 
-    return mTexture.getHeight();
+    return mTextureState.mTexture.getHeight();
+  }
+
+  private TextureDrawable(ConstantState state) {
+    mTextureState = state;
+  }
+
+  final static class ConstantState implements Drawable.ConstantState {
+
+    @NonNull final Paint mPaint;
+
+    @Nullable Texture mTexture;
+
+    @IntRange(from = 0, to = 255) int mAlpha;
+
+    ConstantState(@Nullable Texture texture) {
+      mTexture = texture;
+      mPaint = new Paint();
+    }
+
+    ConstantState(@NonNull ConstantState state) {
+      mTexture = state.mTexture;
+      mPaint = new Paint(state.mPaint);
+    }
+
   }
 }
