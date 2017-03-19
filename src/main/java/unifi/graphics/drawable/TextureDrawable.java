@@ -16,19 +16,14 @@ import unifi.graphics.PixelFormat;
  */
 public class TextureDrawable extends AbstractDrawable {
 
-  @NonNull private static final Paint sPaint = new Paint();
-
   @Nullable private ConstantState mTextureState;
-
-  @IntRange(from = 0, to = 255) private int mAlpha;
 
   /**
    * Constructs a texture drawable with a {@code null} texture. This is intended
    * for internal use only when loading texture drawables from resources.
    */
   TextureDrawable() {
-    mTextureState.mTexture = null;
-    mAlpha = 255;
+    mTextureState = new ConstantState();
   }
 
   /**
@@ -49,8 +44,7 @@ public class TextureDrawable extends AbstractDrawable {
       throw new IllegalArgumentException("Alpha must be between [0..255] (inclusive)");
     }
 
-    mTextureState.mTexture = texture;
-    mAlpha = alpha;
+    mTextureState = new ConstantState(texture);
   }
 
   /**
@@ -80,14 +74,17 @@ public class TextureDrawable extends AbstractDrawable {
   @Override
   public void draw(@NonNull Canvas canvas) {
     if (mTextureState.mTexture != null) {
-      sPaint.setColor(mAlpha == 255 ? Color.WHITE : Color.setAlpha(Color.WHITE, mAlpha));
-      canvas.draw(mTextureState.mTexture, getBounds(), sPaint);
+      final Paint p = mTextureState.mPaint;
+      final int alpha = mTextureState.mPaint.getAlpha();
+      mTextureState.mPaint.setColor(alpha == 255
+          ? Color.WHITE : Color.setAlpha(Color.WHITE, alpha));
+      canvas.draw(mTextureState.mTexture, getBounds(), mTextureState.mPaint);
     }
   }
 
   @Override
   public int getOpacity() {
-    switch (mAlpha) {
+    switch (mTextureState.mPaint.getAlpha()) {
       case 0:   return PixelFormat.TRANSPARENT;
       case 255: return PixelFormat.OPAQUE;
       default:  return PixelFormat.TRANSLUCENT;
@@ -96,16 +93,12 @@ public class TextureDrawable extends AbstractDrawable {
 
   @Override
   public int getAlpha() {
-    return mAlpha;
+    return mTextureState.mPaint.getAlpha();
   }
 
   @Override
   public void setAlpha(@IntRange(from = 0, to = 255) int alpha) {
-    if (alpha < 0 || alpha > 255) {
-      throw new IllegalArgumentException("Alpha must be between [0..255] (inclusive)");
-    }
-
-    mAlpha = alpha;
+    mTextureState.mPaint.setAlpha(255);
   }
 
   @Override
@@ -136,7 +129,10 @@ public class TextureDrawable extends AbstractDrawable {
 
     @Nullable Texture mTexture;
 
-    @IntRange(from = 0, to = 255) int mAlpha;
+    ConstantState() {
+      mTexture = null;
+      mPaint = new Paint();
+    }
 
     ConstantState(@Nullable Texture texture) {
       mTexture = texture;
