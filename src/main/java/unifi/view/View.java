@@ -148,6 +148,7 @@ public class View implements Drawable.Callback {
   static final int PFLAG_DIRTY_MASK = PFLAG_DIRTY | PFLAG_DIRTY_OPAQUE;
   static final int PFLAG_WANTS_FOCUS                  = 0x00020000;
   static final int PFLAG_FOCUSED                      = 0x00040000;
+  static final int PFLAG_OVER                         = 0x00080000;
 
 
   static final int PFLAG_LAYOUT_DIRECTION_MASK_SHIFT = 24;
@@ -3092,12 +3093,45 @@ public class View implements Drawable.Callback {
 
   //region Hit
   /**
+   * Indicates whether or not the cursor is over this view.
+   */
+  public boolean isOver() {
+    return (mPrivateFlags & PFLAG_OVER) == PFLAG_OVER;
+  }
+
+  /**
+   * Sets whether or not this view has the cursor over it.
+   */
+  protected void setOver(boolean over) {
+    if (over != isOver()) {
+      if (over) {
+        mPrivateFlags |= PFLAG_OVER;
+      } else {
+        mPrivateFlags &= ~PFLAG_OVER;
+      }
+    }
+  }
+
+  /**
    * Indicates whether or not the specified coordinates lie within the bounds
    * of this view.
    */
-  final boolean pointInView(float localX, float localY) {
-    return mLeft <= localX && localX <= mRight
-        && mBottom <= localY && localY <= mTop;
+  final boolean pointInView(float x, float y) {
+    return mLeft <= x && x <= mRight
+        && mBottom <= y && y <= mTop;
+  }
+
+  /**
+   * Returns the deepest view in this view at the specified coordinates, or
+   * {@code null} if none is found.
+   */
+  @Nullable
+  View hitDeepestFocusableView(float x, float y) {
+    if (pointInView(x, y) && hasFocusable()) {
+      return this;
+    }
+
+    return null;
   }
   //endregion
 
